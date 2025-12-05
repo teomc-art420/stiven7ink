@@ -1,10 +1,12 @@
 <div style="padding: 20px;">
+  <app-header></app-header>
   <h1>Stiven7ink - Tatuador Profesional</h1>
   
-  <mat-card>
-    <mat-card-content>
-      <p>Bienvenido a la página de Stiven7ink</p>
-      <button mat-raised-button color="primary">Probar Material</button>
-    </mat-card-content>
-  </mat-card>
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="footer-container">
+    <app-footer></app-footer>
+  </div>
 </div>
