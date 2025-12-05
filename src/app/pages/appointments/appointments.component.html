@@ -1,1 +1,133 @@
-<p>appointments works!</p>
+<section class="appointments-section">
+    <div class="container">
+      <div class="appointments-header">
+        <h1>Agendar Cita</h1>
+        <p class="subtitle">Reserva tu sesión de tatuaje</p>
+      </div>
+  
+      <div class="appointments-content">
+        <!-- Formulario de cita -->
+        <div class="appointment-form-container">
+          <form class="appointment-form" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Nombre Completo *</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  required
+                  placeholder="Tu nombre completo">
+              </div>
+  
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  required
+                  placeholder="tu@email.com">
+              </div>
+            </div>
+  
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Teléfono *</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  required
+                  placeholder="Tu número de teléfono">
+              </div>
+  
+              <div class="form-group">
+                <label for="date">Fecha Preferida *</label>
+                <input 
+                  type="date" 
+                  id="date" 
+                  name="date" 
+                  required>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="style">Estilo de Tatuaje *</label>
+              <select id="style" name="style" required>
+                <option value="">Selecciona un estilo</option>
+                <option value="realismo">Realismo</option>
+                <option value="tradicional">Tradicional</option>
+                <option value="minimalista">Minimalista</option>
+                <option value="geometrico">Geométrico</option>
+                <option value="acuarela">Acuarela</option>
+                <option value="blackwork">Blackwork</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for="size">Tamaño Aproximado *</label>
+              <select id="size" name="size" required>
+                <option value="">Selecciona un tamaño</option>
+                <option value="pequeno">Pequeño (5-10 cm)</option>
+                <option value="mediano">Mediano (10-20 cm)</option>
+                <option value="grande">Grande (20-30 cm)</option>
+                <option value="muy-grande">Muy Grande (+30 cm)</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for="description">Descripción del Tatuaje *</label>
+              <textarea 
+                id="description" 
+                name="description" 
+                rows="5" 
+                required
+                placeholder="Describe tu idea, ubicación del tatuaje, referencias, etc..."></textarea>
+            </div>
+  
+            <div class="form-group">
+              <label for="budget">Presupuesto Aproximado</label>
+              <input 
+                type="text" 
+                id="budget" 
+                name="budget"
+                placeholder="Tu presupuesto aproximado">
+            </div>
+  
+            <button type="submit" class="submit-btn">Solicitar Cita</button>
+          </form>
+        </div>
+  
+        <!-- Información adicional -->
+        <div class="appointment-info">
+          <div class="info-card">
+            <h3>📋 Proceso de Cita</h3>
+            <ol>
+              <li>Completa el formulario con tus datos</li>
+              <li>Recibirás una confirmación por email</li>
+              <li>Revisaremos tu solicitud y te contactaremos</li>
+              <li>Confirmaremos la fecha y hora de tu cita</li>
+            </ol>
+          </div>
+  
+          <div class="info-card">
+            <h3>⏰ Horarios Disponibles</h3>
+            <p><strong>Lunes - Viernes:</strong> 10:00 AM - 7:00 PM</p>
+            <p><strong>Sábados:</strong> 10:00 AM - 5:00 PM</p>
+            <p><strong>Domingos:</strong> Cerrado</p>
+          </div>
+  
+          <div class="info-card">
+            <h3>💡 Consejos</h3>
+            <ul>
+              <li>Trae referencias visuales si las tienes</li>
+              <li>Considera el tiempo de curación</li>
+              <li>Ven descansado y bien alimentado</li>
+              <li>Pregunta todas tus dudas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
