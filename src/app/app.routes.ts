@@ -13,5 +13,6 @@ export const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'appointments', component: AppointmentsComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'admin', loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes) },
   { path: '**', redirectTo: '' } // Ruta por defecto si no encuentra ninguna
 ];

@@ -15,6 +15,18 @@
         <a mat-button routerLink="/blog" routerLinkActive="active">Blog</a>
         <a mat-button routerLink="/appointments" routerLinkActive="active">Citas</a>
         <a mat-button routerLink="/contact" routerLinkActive="active">Contacto</a>
+      
+        @if (!isLoggedIn) {
+          <a mat-button routerLink="/admin/login" class="login-btn">
+            <mat-icon>login</mat-icon>
+            Iniciar Sesión
+          </a>
+        } @else {
+          <a mat-button routerLink="/admin/dashboard" class="admin-btn">
+            <mat-icon>dashboard</mat-icon>
+            Admin
+          </a>
+        }
       </nav>
     </div>
   </mat-toolbar>

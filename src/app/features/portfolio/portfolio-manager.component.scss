@@ -1,0 +1,155 @@
+.portfolio-manager-container {
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      margin: 0;
+    }
+  }
+  
+  .form-card {
+    margin-bottom: 30px;
+    padding: 20px;
+  }
+  
+  .work-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-row {
+    width: 100%;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .file-label {
+    display: inline-block;
+    cursor: pointer;
+  
+    input[type="file"] {
+      display: none;
+    }
+  
+    .file-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background-color: #667eea;
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #5568d3;
+      }
+    }
+  }
+  
+  .image-preview {
+    margin-top: 20px;
+    
+    img {
+      max-width: 300px;
+      max-height: 300px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+  }
+  
+  .work-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  .work-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+  
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  
+  .work-card {
+    mat-card-content {
+      h3 {
+        font-size: 1.3rem;
+        color: #333;
+        margin: 15px 0 10px;
+      }
+  
+      .style {
+        color: #667eea;
+        font-weight: 500;
+        margin: 5px 0;
+      }
+  
+      .description {
+        color: #666;
+        margin: 10px 0;
+        line-height: 1.5;
+      }
+    }
+  
+    mat-card-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 16px;
+    }
+  }
+  
+  .empty-message {
+    text-align: center;
+    color: #999;
+    font-size: 1.1rem;
+    padding: 40px;
+    grid-column: 1 / -1;
+  }
+  
+  // Responsive
+  @media (max-width: 768px) {
+    .header-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  
+    .works-grid {
+      grid-template-columns: 1fr;
+    }
+  }

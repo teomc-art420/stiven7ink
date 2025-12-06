@@ -1,10 +1,22 @@
 <section class="appointments-section">
-    <div class="container">
-      <div class="appointments-header">
-        <h1>Agendar Cita</h1>
-        <p class="subtitle">Reserva tu sesión de tatuaje</p>
+  <div class="container">
+    <div class="appointments-header">
+      <h1>Agendar Cita</h1>
+      <p class="subtitle">Reserva tu sesión de tatuaje</p>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    @if (submitted) {
+      <div class="success-message">
+        <h2>¡Solicitud enviada correctamente!</h2>
+        <p>Hemos recibido tu solicitud de cita. Te contactaremos pronto para confirmar la fecha y hora.</p>
+        <button mat-raised-button color="primary" (click)="submitted = false">
+          Enviar otra solicitud
+        </button>
       </div>
-  
+    }
+
+    @if (!submitted) {
       <div class="appointments-content">
         <!-- Formulario de cita -->
         <div class="appointment-form-container">
@@ -16,21 +28,23 @@
                   type="text" 
                   id="name" 
                   name="name" 
+                  [(ngModel)]="formData.name"
                   required
                   placeholder="Tu nombre completo">
               </div>
-  
+
               <div class="form-group">
                 <label for="email">Email *</label>
                 <input 
                   type="email" 
                   id="email" 
                   name="email" 
+                  [(ngModel)]="formData.email"
                   required
                   placeholder="tu@email.com">
               </div>
             </div>
-  
+
             <div class="form-row">
               <div class="form-group">
                 <label for="phone">Teléfono *</label>
@@ -38,36 +52,38 @@
                   type="tel" 
                   id="phone" 
                   name="phone" 
+                  [(ngModel)]="formData.phone"
                   required
                   placeholder="Tu número de teléfono">
               </div>
-  
+
               <div class="form-group">
                 <label for="date">Fecha Preferida *</label>
                 <input 
                   type="date" 
                   id="date" 
                   name="date" 
+                  [(ngModel)]="formData.date"
                   required>
               </div>
             </div>
-  
+
             <div class="form-group">
               <label for="style">Estilo de Tatuaje *</label>
-              <select id="style" name="style" required>
+              <select id="style" name="style" [(ngModel)]="formData.style" required>
                 <option value="">Selecciona un estilo</option>
-                <option value="realismo">Realismo</option>
-                <option value="tradicional">Tradicional</option>
-                <option value="minimalista">Minimalista</option>
-                <option value="geometrico">Geométrico</option>
-                <option value="acuarela">Acuarela</option>
-                <option value="blackwork">Blackwork</option>
+                <option value="Realismo">Realismo</option>
+                <option value="Tradicional">Tradicional</option>
+                <option value="Minimalista">Minimalista</option>
+                <option value="Geométrico">Geométrico</option>
+                <option value="Acuarela">Acuarela</option>
+                <option value="Blackwork">Blackwork</option>
               </select>
             </div>
-  
+
             <div class="form-group">
               <label for="size">Tamaño Aproximado *</label>
-              <select id="size" name="size" required>
+              <select id="size" name="size" [(ngModel)]="formData.size" required>
                 <option value="">Selecciona un tamaño</option>
                 <option value="pequeno">Pequeño (5-10 cm)</option>
                 <option value="mediano">Mediano (10-20 cm)</option>
@@ -75,30 +91,34 @@
                 <option value="muy-grande">Muy Grande (+30 cm)</option>
               </select>
             </div>
-  
+
             <div class="form-group">
               <label for="description">Descripción del Tatuaje *</label>
               <textarea 
                 id="description" 
                 name="description" 
+                [(ngModel)]="formData.description"
                 rows="5" 
                 required
                 placeholder="Describe tu idea, ubicación del tatuaje, referencias, etc..."></textarea>
             </div>
-  
+
             <div class="form-group">
               <label for="budget">Presupuesto Aproximado</label>
               <input 
                 type="text" 
                 id="budget" 
                 name="budget"
+                [(ngModel)]="formData.budget"
                 placeholder="Tu presupuesto aproximado">
             </div>
-  
-            <button type="submit" class="submit-btn">Solicitar Cita</button>
+
+            <button type="submit" class="submit-btn" [disabled]="loading">
+              {{ loading ? 'Enviando...' : 'Solicitar Cita' }}
+            </button>
           </form>
         </div>
-  
+
         <!-- Información adicional -->
         <div class="appointment-info">
           <div class="info-card">
@@ -110,14 +130,14 @@
               <li>Confirmaremos la fecha y hora de tu cita</li>
             </ol>
           </div>
-  
+
           <div class="info-card">
             <h3>⏰ Horarios Disponibles</h3>
             <p><strong>Lunes - Viernes:</strong> 10:00 AM - 7:00 PM</p>
             <p><strong>Sábados:</strong> 10:00 AM - 5:00 PM</p>
             <p><strong>Domingos:</strong> Cerrado</p>
           </div>
-  
+
           <div class="info-card">
             <h3>💡 Consejos</h3>
             <ul>
@@ -129,5 +149,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    }
+  </div>
+</section>
