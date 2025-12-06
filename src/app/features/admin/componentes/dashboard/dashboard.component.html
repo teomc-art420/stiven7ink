@@ -1,65 +1,65 @@
 <div class="dashboard-container">
-    <div class="dashboard-header">
-      <h1>Panel de Administración</h1>
-      <div class="user-info">
-        <span>Bienvenido, {{ currentUser?.email }}</span>
-        <button mat-raised-button color="warn" (click)="logout()">
-          Cerrar Sesión
-        </button>
-      </div>
-    </div>
-  
-    <div class="dashboard-grid">
-      <mat-card class="dashboard-card" routerLink="/admin/portfolio-manager">
-        <mat-card-header>
-          <mat-card-title>
-            <mat-icon>photo_library</mat-icon>
-            Portafolio
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Gestiona los trabajos del portafolio</p>
-          <p class="count">0 trabajos</p>
-        </mat-card-content>
-      </mat-card>
-  
-      <mat-card class="dashboard-card" routerLink="/admin/appointments-manager">
-        <mat-card-header>
-          <mat-card-title>
-            <mat-icon>event</mat-icon>
-            Citas
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Gestiona las solicitudes de citas</p>
-          <p class="count">0 citas pendientes</p>
-        </mat-card-content>
-      </mat-card>
-  
-      <mat-card class="dashboard-card" routerLink="/admin/blog-manager">
-        <mat-card-header>
-          <mat-card-title>
-            <mat-icon>article</mat-icon>
-            Blog
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Gestiona los artículos del blog</p>
-          <p class="count">0 artículos</p>
-        </mat-card-content>
-      </mat-card>
-  
-      <mat-card class="dashboard-card" routerLink="/admin/leads-manager">
-        <mat-card-header>
-          <mat-card-title>
-            <mat-icon>mail</mat-icon>
-            Leads/Contactos
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Ver mensajes de contacto</p>
-          <p class="count">0 mensajes</p>
-        </mat-card-content>
-      </mat-card>
+  <div class="dashboard-header">
+    <h1>Panel de Administración</h1>
+    <div class="user-info">
+      <span>Bienvenido, {{ currentUser?.email }}</span>
+      <button mat-raised-button color="warn" (click)="logout()">
+        Cerrar Sesión
+      </button>
     </div>
   </div>
+
+  <div class="dashboard-grid">
+    <mat-card class="dashboard-card" routerLink="/admin/portfolio-manager">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>photo_library</mat-icon>
+          Portafolio
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Gestiona los trabajos del portafolio</p>
+        <p class="count">0 trabajos</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-card" routerLink="/admin/appointments-manager">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>event</mat-icon>
+          Citas
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Gestiona las solicitudes de citas</p>
+        <p class="count">{{ appointmentCount }} citas pendientes</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-card" routerLink="/admin/blog-manager">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>article</mat-icon>
+          Blog
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Gestiona los artículos del blog</p>
+        <p class="count">{{ blogCount }} artículos</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-card" routerLink="/admin/leads-manager">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>mail</mat-icon>
+          Leads/Contactos
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Ver mensajes de contacto</p>
+        <p class="count">{{ leadsCount }} mensajes</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

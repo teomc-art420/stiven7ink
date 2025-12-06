@@ -1,61 +1,35 @@
 <section class="blog-section">
-    <div class="container">
-      <div class="blog-header">
-        <h1>Blog</h1>
-        <p class="subtitle">Noticias, consejos y actualizaciones</p>
-      </div>
-  
-      <div class="blog-grid">
-        <article class="blog-card">
-          <div class="blog-image">
-            <div class="image-placeholder">
-              <p>Imagen del post</p>
-            </div>
-          </div>
-          <div class="blog-content">
-            <span class="blog-date">15 de Diciembre, 2024</span>
-            <h2>Título del Artículo</h2>
-            <p class="blog-excerpt">
-              Aquí irá un resumen del artículo. Este es un ejemplo de cómo se verá 
-              el contenido del blog cuando tengas artículos reales.
-            </p>
-            <a href="#" class="read-more">Leer más →</a>
-          </div>
-        </article>
-  
-        <article class="blog-card">
-          <div class="blog-image">
-            <div class="image-placeholder">
-              <p>Imagen del post</p>
-            </div>
-          </div>
-          <div class="blog-content">
-            <span class="blog-date">10 de Diciembre, 2024</span>
-            <h2>Título del Artículo</h2>
-            <p class="blog-excerpt">
-              Aquí irá un resumen del artículo. Este es un ejemplo de cómo se verá 
-              el contenido del blog cuando tengas artículos reales.
-            </p>
-            <a href="#" class="read-more">Leer más →</a>
-          </div>
-        </article>
-  
-        <article class="blog-card">
-          <div class="blog-image">
-            <div class="image-placeholder">
-              <p>Imagen del post</p>
-            </div>
-          </div>
-          <div class="blog-content">
-            <span class="blog-date">5 de Diciembre, 2024</span>
-            <h2>Título del Artículo</h2>
-            <p class="blog-excerpt">
-              Aquí irá un resumen del artículo. Este es un ejemplo de cómo se verá 
-              el contenido del blog cuando tengas artículos reales.
-            </p>
-            <a href="#" class="read-more">Leer más →</a>
-          </div>
-        </article>
-      </div>
+  <div class="container">
+    <div class="blog-header">
+      <h1>Blog</h1>
+      <p class="subtitle">Noticias, consejos y actualizaciones</p>
     </div>
-  </section>
+
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && posts.length === 0" class="empty-state">
+      <mat-icon>article</mat-icon>
+      <p>No hay artículos publicados aún.</p>
+    </div>
+
+    <div *ngIf="!loading && posts.length > 0" class="blog-grid">
+      <article class="blog-card" *ngFor="let post of posts">
+        <div class="blog-image">
+          <img [src]="post.imageUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+        </div>
+        <div class="blog-content">
+          <span class="blog-date">
+            {{ post.createdAt?.seconds * 1000 | date:'longDate' }}
+          </span>
+          <h2>{{ post.title }}</h2>
+          <p class="blog-excerpt">
+            {{ post.content }}
+          </p>
+          <!-- <a href="#" class="read-more">Leer más →</a> -->
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,72 @@
+<div class="blog-manager-container">
+    <div class="header">
+        <h1><mat-icon>article</mat-icon> Gestión del Blog</h1>
+        <button mat-raised-button color="primary" (click)="toggleForm()">
+            <mat-icon>{{ showForm ? 'close' : 'add' }}</mat-icon>
+            {{ showForm ? 'Cancelar' : 'Nuevo Artículo' }}
+        </button>
+    </div>
+
+    <!-- Formulario de Creación/Edición -->
+    <div class="form-container" *ngIf="showForm">
+        <h2>{{ editingId ? 'Editar Artículo' : 'Crear Nuevo Artículo' }}</h2>
+
+        <form (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+                <mat-label>Título</mat-label>
+                <input matInput [(ngModel)]="formData.title" name="title" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Contenido</mat-label>
+                <textarea matInput [(ngModel)]="formData.content" name="content" rows="10" required></textarea>
+            </mat-form-field>
+
+            <div class="file-input-container" (click)="fileInput.click()">
+                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*">
+                <mat-icon>cloud_upload</mat-icon>
+                <p>Haz clic para subir una imagen de portada</p>
+                <p *ngIf="selectedFile" class="selected-file">Archivo seleccionado: {{ selectedFile.name }}</p>
+            </div>
+
+            <img *ngIf="previewUrl" [src]="previewUrl" class="preview-image" alt="Vista previa">
+
+            <div class="form-actions">
+                <button mat-button type="button" (click)="toggleForm()">Cancelar</button>
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="loading || !formData.title || !formData.content">
+                    {{ loading ? 'Guardando...' : (editingId ? 'Actualizar' : 'Publicar') }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista de Artículos -->
+    <div *ngIf="loading && !showForm" class="loading-spinner">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && posts.length === 0 && !showForm" class="empty-state">
+        <mat-icon>article</mat-icon>
+        <p>No hay artículos publicados aún.</p>
+    </div>
+
+    <div *ngIf="!loading && posts.length > 0" class="posts-grid">
+        <mat-card *ngFor="let post of posts" class="post-card">
+            <img mat-card-image [src]="post.imageUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+            <mat-card-header>
+                <mat-card-title>{{ post.title }}</mat-card-title>
+                <mat-card-subtitle>
+                    {{ post.createdAt?.seconds * 1000 | date:'mediumDate' }}
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ post.content }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button color="primary" (click)="editPost(post)">EDITAR</button>
+                <button mat-button color="warn" (click)="deletePost(post)">ELIMINAR</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

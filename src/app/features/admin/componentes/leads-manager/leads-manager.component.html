@@ -1,0 +1,49 @@
+<div class="leads-manager-container">
+    <div class="header">
+        <h1><mat-icon>mail</mat-icon> Mensajes de Contacto</h1>
+    </div>
+
+    <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && messages.length === 0" class="empty-state">
+        <mat-icon>inbox</mat-icon>
+        <p>No hay mensajes de contacto.</p>
+    </div>
+
+    <div *ngIf="!loading && messages.length > 0" class="messages-list">
+        <mat-card *ngFor="let msg of messages" class="message-card" [class.unread]="!msg.read">
+            <mat-card-content>
+                <div class="message-header">
+                    <div class="sender-info">
+                        <h3>{{ msg.name }}</h3>
+                        <span class="email">
+                            <mat-icon inline>email</mat-icon> {{ msg.email }}
+                        </span>
+                    </div>
+                    <span class="date">
+                        {{ msg.createdAt?.seconds * 1000 | date:'medium' }}
+                    </span>
+                </div>
+
+                <div class="message-content">
+                    <h4 *ngIf="msg.subject">Asunto: {{ msg.subject }}</h4>
+                    <p>{{ msg.message }}</p>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions>
+                <button mat-button color="primary" *ngIf="!msg.read" (click)="markAsRead(msg)">
+                    <mat-icon>mark_email_read</mat-icon> MARCAR LEÍDO
+                </button>
+                <button mat-button color="warn" (click)="deleteMessage(msg)">
+                    <mat-icon>delete</mat-icon> ELIMINAR
+                </button>
+                <a mat-button [href]="'mailto:' + msg.email">
+                    <mat-icon>reply</mat-icon> RESPONDER
+                </a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
