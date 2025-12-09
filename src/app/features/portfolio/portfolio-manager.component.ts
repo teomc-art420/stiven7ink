@@ -23,12 +23,12 @@ import { FirebaseService } from '../../core/services/firebase.service';
     MatIconModule
   ],
   templateUrl: './portfolio-manager.component.html',
-  styleUrl: './portfolio-manager.component.scss'
+  styleUrls: ['./portfolio-manager.component.scss']
 })
 export class PortfolioManagerComponent implements OnInit {
   works: any[] = [];
   loading: boolean = false;
-  
+
   // Formulario
   showForm: boolean = false;
   editingWork: any = null;
@@ -105,7 +105,7 @@ export class PortfolioManagerComponent implements OnInit {
 
       // 3. Recargar lista
       await this.loadWorks();
-      
+
       // 4. Limpiar formulario
       this.resetForm();
       alert(this.editingWork ? 'Trabajo actualizado correctamente' : 'Trabajo agregado correctamente');

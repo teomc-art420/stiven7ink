@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './blog.component.html',
-  styleUrl: './blog.component.scss'
+  styleUrls: ['./blog.component.scss']
 })
 export class BlogComponent implements OnInit {
   posts: any[] = [];

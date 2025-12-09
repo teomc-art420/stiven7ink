@@ -17,7 +17,7 @@ import { FirebaseService } from '../../../../core/services/firebase.service';
     MatIconModule
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   currentUser: any = null;

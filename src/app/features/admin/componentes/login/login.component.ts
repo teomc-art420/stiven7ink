@@ -19,7 +19,7 @@ import { FirebaseService } from '../../../../core/services/firebase.service';
     MatFormFieldModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   email: string = '';

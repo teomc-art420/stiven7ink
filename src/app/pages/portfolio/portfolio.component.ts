@@ -7,7 +7,7 @@ import { FirebaseService } from '../../core/services/firebase.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './portfolio.component.html',
-  styleUrl: './portfolio.component.scss'
+  styleUrls: ['./portfolio.component.scss']
 })
 export class PortfolioComponent implements OnInit {
   works: any[] = [];
