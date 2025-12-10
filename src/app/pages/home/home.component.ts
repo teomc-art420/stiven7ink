@@ -1,62 +1,31 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FirebaseService } from '../../core/services/firebase.service';
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  works: Array<{ imageUrl?: string; focus?: string }> = [];
-  current = 0;
-  private intervalRef: any = null;
+export class HomeComponent {
+  // Small preview data to avoid template runtime errors.
+  // Replace with Firestore-loaded items when ready.
+  preview = [
+    { id: '1', title: 'Tatuaje A', imageUrl: 'assets/portfolio/1.jpg' },
+    { id: '2', title: 'Tatuaje B', imageUrl: 'assets/portfolio/2.jpg' },
+    { id: '3', title: 'Tatuaje C', imageUrl: 'assets/portfolio/3.jpg' }
+  ];
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private router: Router) { }
 
-  async ngOnInit() {
-    try {
-      const items = await this.firebaseService.getCollection('portfolio');
-      // Keep only items with imageUrl but preserve focus if present
-      this.works = items.map((w: any) => ({ imageUrl: w.imageUrl, focus: w.focus })).filter((w: any) => !!w.imageUrl);
-    } catch (err) {
-      console.error('Error loading carousel images', err);
-      this.works = [];
-    }
-
-    this.startAutoplay();
-  }
-
-  startAutoplay() {
-    if (this.intervalRef) return;
-    this.intervalRef = setInterval(() => this.next(), 5000);
-  }
-
-  stopAutoplay() {
-    if (this.intervalRef) {
-      clearInterval(this.intervalRef);
-      this.intervalRef = null;
+  // Called from the template when a preview item is clicked.
+  open(p: any) {
+    if (p?.id) {
+      this.router.navigate(['/portfolio', p.id]);
+    } else {
+      this.router.navigate(['/portfolio']);
     }
   }
 
-  next() {
-    const len = Math.max(1, this.works.length);
-    this.current = (this.current + 1) % len;
-  }
-
-  prev() {
-    const len = Math.max(1, this.works.length);
-    this.current = (this.current - 1 + len) % len;
-  }
-
-  goTo(index: number) {
-    this.current = index;
-  }
-
-  ngOnDestroy() {
-    this.stopAutoplay();
-  }
 }

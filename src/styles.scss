@@ -1,5 +1,229 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+    --wine: #6B1638;
+    --wine-accent: #D4236B;
+    --bg: #000000;
+    --text: #ffffff;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+/* Global buttons used across templates */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.btn.primary {
+    background: linear-gradient(180deg, var(--wine) 0%, #4b0f2a 100%);
+    color: white;
+    border: 0;
+    box-shadow: 0 6px 18px rgba(107, 22, 56, 0.25);
+}
+
+.btn.outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Cinematic hero */
+.hero {
+    position: relative;
+    min-height: 64vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-media {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.35) contrast(1.05);
+    transform: scale(1.02);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: var(--text);
+    padding: 3rem 1rem;
+    max-width: 1100px;
+}
+
+.hero-logo {
+    width: 140px;
+    margin-bottom: 1rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    letter-spacing: 1px;
+    margin: 0 0 0.6rem 0;
+}
+
+.hero .lead {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    margin-bottom: 1.4rem;
+}
+
+.hero-ctas {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+}
+
+/* Portfolio preview grid (mosaic) */
+.portfolio-preview {
+    padding: 3rem 1rem;
+}
+
+.portfolio-preview .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    max-width: 1200px;
+    margin: 0 auto 1.6rem auto;
+}
+
+.portfolio-preview .item {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    border-radius: 8px;
+}
+
+.portfolio-preview img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.portfolio-preview .meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.6));
+    color: white;
+}
+
+@media (max-width: 900px) {
+    .hero h1 {
+        font-size: 2.1rem;
+    }
+
+    .portfolio-preview .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 540px) {
+    .portfolio-preview .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 56vh;
+    }
+}
+
+/* Global container utility */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Ensure material toolbar uses the wine color globally */
+mat-toolbar,
+.mat-toolbar {
+    background: var(--wine) !important;
+    color: var(--text) !important;
+    box-shadow: none !important;
+}
+
+/* Footer baseline to keep consistent dark look */
+.footer {
+    background-color: #111 !important;
+    color: #ddd !important;
+}
+
+.footer .footer-content {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer .footer-bottom {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px 20px;
+}
+
+/* Alias for components that use .hero-section naming */
+.hero-section {
+    position: relative;
+    min-height: 64vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Generic images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Helpful utilities */
+.text-muted {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.center {
+    text-align: center;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(6px);
+}
+
+/* Notes:
+ - Many components still include their own rules; after verifying the app visually,
+     we can remove duplicated declarations from component SCSS files and rely on these globals.
+ - Use the variables in :root for color consistency. */

@@ -1,64 +1,68 @@
 mat-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(253, 0, 0, 0.1);
+
+
+
+}
+
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo {
+  .logo-link {
+    text-decoration: none;
+    color: white;
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
   }
-  
+}
+
+.navigation {
+  display: flex;
+  gap: 10px;
+
+  a {
+    color: white;
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
   .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  .logo {
-    .logo-link {
-      text-decoration: none;
-      color: white;
-      
-      .logo-text {
-        font-size: 1.5rem;
-        font-weight: bold;
-        letter-spacing: 2px;
-      }
-    }
-  }
-  
-  .navigation {
-    display: flex;
-    gap: 10px;
-    
-    a {
-      color: white;
-      
-      &.active {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-    }
-  }
-  
-  // Responsive
-  @media (max-width: 768px) {
-    .header-content {
-      flex-direction: column;
-      padding: 10px;
-    }
-    
-    .navigation {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+    flex-direction: column;
+    padding: 10px;
   }
 
-  .login-btn,
+  .navigation {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.login-btn,
 .admin-btn {
   margin-left: 10px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  
+
   mat-icon {
     margin-right: 5px;
   }
@@ -66,4 +70,14 @@ mat-toolbar {
 
 .admin-btn {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+:host ::ng-deep .mat-toolbar {
+  height: 64px;
+  box-shadow: none;
+}
+
+:host ::ng-deep .mat-toolbar a,
+:host ::ng-deep .mat-toolbar button {
+  color: var(--text) !important;
 }
