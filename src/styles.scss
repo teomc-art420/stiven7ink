@@ -2,7 +2,7 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 :root {
-    --wine: #6B1638;
+    --wine: #d6083b94;
     --wine-accent: #D4236B;
     --bg: #000000;
     --text: #ffffff;
@@ -44,6 +44,45 @@ body {
 
 .btn:hover {
     transform: translateY(-2px);
+}
+
+/* Submit buttons (forms) */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background: var(--wine);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(107, 22, 56, 0.3);
+}
+
+/* Filter buttons (portfolio) */
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--wine);
+    background-color: transparent;
+    color: var(--wine);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 200ms ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background-color: var(--wine);
+    color: white;
 }
 
 /* Cinematic hero */
@@ -200,6 +239,17 @@ mat-toolbar,
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+/* Section backgrounds unified */
+.appointments-section,
+.portfolio-section,
+.blog-section,
+.contact-section,
+.about-section,
+.features-section {
+    background: var(--bg) !important;
+    color: var(--text) !important;
 }
 
 /* Generic images */

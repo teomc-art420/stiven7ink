@@ -8,7 +8,7 @@ import { FirebaseService } from '../../core/services/firebase.service';
   standalone: true,
   imports: [FormsModule, MatButtonModule],
   templateUrl: './appointments.component.html',
-  styleUrls: ['./appointments.component.scss']
+  styleUrl: './appointments.component.scss'
 })
 export class AppointmentsComponent {
   formData = {
@@ -27,9 +27,9 @@ export class AppointmentsComponent {
   constructor(private firebaseService: FirebaseService) { }
 
   async onSubmit() {
-    if (!this.formData.name || !this.formData.email || !this.formData.phone ||
-      !this.formData.date || !this.formData.style || !this.formData.size ||
-      !this.formData.description) {
+    if (!this.formData.name || !this.formData.email || !this.formData.phone || 
+        !this.formData.date || !this.formData.style || !this.formData.size || 
+        !this.formData.description) {
       alert('Por favor completa todos los campos requeridos');
       return;
     }

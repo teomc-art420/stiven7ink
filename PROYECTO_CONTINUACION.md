@@ -19,12 +19,39 @@ src/app/
 │   └── services/
 │       └── firebase.service.ts (✅ COMPLETO - todos los métodos implementados)
 ├── shared/ (vacía, lista para componentes reutilizables)
+├── features/
+│   ├── admin/
+│   │   ├── componentes/
+│   │   │   ├── login/ (✅ COMPLETO - login funcionando)
+│   │   │   ├── dashboard/ (✅ COMPLETO - dashboard básico)
+│   │   │   ├── portfolio-manager/ (✅ COMPLETO - gestión de portafolio)
+│   │   │   ├── appointments-manager/ (⏳ PENDIENTE - crear componente)
+│   │   │   ├── blog-manager/ (⏳ PENDIENTE)
+│   │   │   └── leads-manager/ (⏳ PENDIENTE)
+│   │   ├── guards/
+│   │   │   └── admin.guard.ts (✅ COMPLETO - protege rutas)
+│   │   └── admin.routes.ts (✅ COMPLETO - rutas configuradas)
+│   ├── portfolio/ (componente de gestión, ya creado)
+│   ├── auth/ (vacía)
 │   ├── appointments/ (vacía)
 │   ├── blog/ (vacía)
 │   ├── clients/ (vacía)
 │   └── contact/ (vacía)
 ├── layout/
 │   ├── header/ (✅ COMPLETO - con botón de login/admin)
+│   └── footer/ (✅ COMPLETO)
+└── pages/
+    ├── home/ (✅ COMPLETO - con contenido)
+    ├── portfolio/ (✅ COMPLETO - consulta Firebase dinámicamente)
+    ├── about/ (✅ COMPLETO - con contenido)
+    ├── blog/ (✅ COMPLETO - estructura básica)
+    ├── appointments/ (✅ COMPLETO - guarda en Firebase)
+    └── contact/ (✅ COMPLETO - formulario básico)
+```
+
+#### 3. Funcionalidades Implementadas
+
+**Autenticación:**
 - ✅ Login de admin funcionando
 - ✅ Guard protegiendo rutas del admin
 - ✅ Botón "Iniciar Sesión" / "Admin" en Header (cambia según estado)
@@ -40,7 +67,7 @@ src/app/
 **Citas:**
 - ✅ Formulario público guarda solicitudes en Firebase
 - ✅ Mensaje de éxito después de enviar
-- ✅ Componente de gestión de citas (COMPLETO)
+- ⏳ Componente de gestión de citas (PENDIENTE - siguiente paso)
 
 #### 4. Firebase Service - Métodos Implementados
 
@@ -69,6 +96,20 @@ src/app/
 - ✅ `/about` - Sobre Mí
 - ✅ `/blog` - Blog
 - ✅ `/appointments` - Formulario de citas (guarda en Firebase)
+- ✅ `/contact` - Contacto
+
+**Rutas Admin (`admin.routes.ts`):**
+- ✅ `/admin/login` - Login
+- ✅ `/admin/dashboard` - Dashboard (protegido)
+- ✅ `/admin/portfolio-manager` - Gestión de portafolio (protegido)
+- ⏳ `/admin/appointments-manager` - Gestión de citas (PENDIENTE)
+- ⏳ `/admin/blog-manager` - Gestión de blog (PENDIENTE)
+- ⏳ `/admin/leads-manager` - Ver leads/contactos (PENDIENTE)
+
+---
+
+## 🎯 PRÓXIMOS PASOS INMEDIATOS
+
 ### PASO 1: Crear Componente de Gestión de Citas (PRIORITARIO)
 
 **Ubicación:** `src/app/features/admin/componentes/appointments-manager/`
@@ -123,15 +164,15 @@ appointments/{id}
 **Ubicación:** `src/app/features/admin/componentes/blog-manager/`
 
 **Funcionalidades:**
-- ✅ Crear artículos (título, contenido, imagen opcional)
-- ✅ Editar artículos
-- ✅ Eliminar artículos
-- ✅ Los artículos deben aparecer en la página pública `/blog`
+- Crear artículos (título, contenido, imagen opcional)
+- Editar artículos
+- Eliminar artículos
+- Los artículos deben aparecer en la página pública `/blog`
 
 **Modificar página pública de Blog:**
-- ✅ Consultar Firebase collection `blog`
-- ✅ Mostrar artículos dinámicamente
-- ✅ Similar a como funciona Portfolio
+- Consultar Firebase collection `blog`
+- Mostrar artículos dinámicamente
+- Similar a como funciona Portfolio
 
 ---
 
@@ -140,14 +181,14 @@ appointments/{id}
 **Ubicación:** `src/app/features/admin/componentes/leads-manager/`
 
 **Funcionalidades:**
-- ✅ Ver mensajes del formulario de contacto
-- ✅ Marcar como leído/no leído
-- ✅ Filtrar por fecha
-- ✅ Eliminar mensajes
+- Ver mensajes del formulario de contacto
+- Marcar como leído/no leído
+- Filtrar por fecha
+- Eliminar mensajes
 
 **Modificar formulario de contacto:**
-- ✅ Guardar en Firebase collection `contacts`
-- ✅ Similar a como funciona el formulario de citas
+- Guardar en Firebase collection `contacts`
+- Similar a como funciona el formulario de citas
 
 ---
 
@@ -279,14 +320,14 @@ git commit -m "descripción"
 
 ## 📌 CHECKLIST PARA CONTINUAR
 
-- [x] Crear `appointments-manager.component.ts`
-- [x] Crear `appointments-manager.component.html` (lista + filtros + acciones)
-- [x] Crear `appointments-manager.component.scss`
-- [x] Agregar ruta en `admin.routes.ts`
-- [x] Probar ver citas desde admin
-- [x] Probar cambiar estados de citas
-- [x] Probar eliminar citas
-- [x] Actualizar dashboard con contador de citas pendientes
+- [ ] Crear `appointments-manager.component.ts`
+- [ ] Crear `appointments-manager.component.html` (lista + filtros + acciones)
+- [ ] Crear `appointments-manager.component.scss`
+- [ ] Agregar ruta en `admin.routes.ts`
+- [ ] Probar ver citas desde admin
+- [ ] Probar cambiar estados de citas
+- [ ] Probar eliminar citas
+- [ ] Actualizar dashboard con contador de citas pendientes
 
 ---
 
@@ -304,5 +345,5 @@ git commit -m "descripción"
 
 ---
 
-**Última actualización:** Gestión de leads/contactos completada. Todas las funcionalidades principales están implementadas.
+**Última actualización:** Gestión de portafolio completada y funcionando. Formulario de citas guardando en Firebase. Listo para implementar gestión de citas.
 

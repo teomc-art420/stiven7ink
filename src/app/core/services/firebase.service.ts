@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState } from '@angular/fire/auth';
-import { Firestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, collectionData } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { Router } from '@angular/router';
+import { Observable, of, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -134,5 +136,29 @@ export class FirebaseService {
             console.error('Error deleting file:', error);
             return { success: false, error: error.message };
         }
+    }
+
+    // Get hero carousel images from Firestore
+    // Método específico que no ordena por createdAt (el ordenamiento se hace en el cliente)
+    async getHeroCarouselCollection(): Promise<any[]> {
+        try {
+            const collectionRef = collection(this.firestore, 'heroCarousel');
+            // No usamos orderBy para evitar problemas de índice
+            const snapshot = await getDocs(collectionRef);
+            return snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+        } catch (error: any) {
+            console.error('Error getting hero carousel collection:', error);
+            return [];
+        }
+    }
+
+    // Get hero carousel images from Firestore as Observable
+    getHeroCarouselImages(): Observable<any[]> {
+        return from(this.getHeroCarouselCollection()).pipe(
+            map(images => images || [])
+        );
     }
 }

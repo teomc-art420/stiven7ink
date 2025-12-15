@@ -2,7 +2,6 @@
 
 .features-section {
   padding: 80px 20px;
-  background-color: #f5f5f5;
 }
 
 .container {
@@ -45,6 +44,141 @@
   p {
     color: #666;
     line-height: 1.6;
+  }
+}
+
+/* Carousel styles for HomeComponent */
+.carousel-hero .carousel-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+/* Track & images */
+.carousel-track {
+  display: flex;
+  width: 100%;
+  height: 60vh;
+  align-items: stretch;
+}
+
+.carousel-image {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* <-- mantiene la imagen centrada y recortada si hace falta */
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 450ms ease, transform 450ms ease;
+  display: block;
+}
+
+.carousel-image.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Controls */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  transition: background 160ms ease;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-btn.prev {
+  left: 12px;
+}
+
+.carousel-btn.next {
+  right: 12px;
+}
+
+/* Dots */
+.carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 30;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.dot.active {
+  background: var(--wine);
+  transform: scale(1.25);
+}
+
+/* Button below carousel */
+.carousel-cta {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  
+  .btn {
+    display: inline-block;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn.primary {
+    background-color: var(--wine, #D4236B);
+    color: white;
+    
+    &:hover {
+      background-color: var(--wine-dark, #B01D55);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 35, 107, 0.4);
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .carousel-track {
+    height: 44vh;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
   }
 }
 

@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   appointmentCount: number = 0;
   blogCount: number = 0;
   leadsCount: number = 0;
+  carouselCount: number = 0;
 
   constructor(private firebaseService: FirebaseService) { }
 
@@ -42,6 +43,9 @@ export class DashboardComponent implements OnInit {
 
       const leads = await this.firebaseService.getCollection('contacts');
       this.leadsCount = leads.filter(l => !l.read).length;
+
+      const carousel = await this.firebaseService.getCollection('carousel');
+      this.carouselCount = carousel.length;
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     }

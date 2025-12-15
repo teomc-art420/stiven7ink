@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { FirebaseService } from '../../core/services/firebase.service';
+import { FirebaseService } from '../../../../core/services/firebase.service';
 
 @Component({
   selector: 'app-portfolio-manager',

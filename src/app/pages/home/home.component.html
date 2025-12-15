@@ -1,27 +1,57 @@
-<section class="hero">
-  <div class="hero-media" [style.backgroundImage]="'url(assets/hero.jpg)'"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-inner">
-    <img src="assets/logo-white.svg" alt="Stiven7ink" class="hero-logo" />
-    <h1>Arte que llevas para siempre</h1>
-    <p class="lead">Diseños personalizados · Higiene profesional · Reserva fácil</p>
-    <div class="hero-ctas">
+<!-- Carousel Hero Section -->
+<section class="hero carousel-hero" *ngIf="carouselImages.length > 0; else loadingHero">
+  <div class="carousel-container">
+    <div class="carousel-wrapper">
+      <!-- Carousel Images -->
+      <div class="carousel-track">
+        <img *ngFor="let img of carouselImages; let i = index" [src]="img.imageUrl" [alt]="img.title"
+          class="carousel-image" [class.active]="i === currentIndex" loading="lazy" />
+      </div>
+
+      <!-- Controls -->
+      <button class="carousel-btn prev" (click)="prev()" aria-label="Anterior">
+        <span>❮</span>
+      </button>
+      <button class="carousel-btn next" (click)="next()" aria-label="Siguiente">
+        <span>❯</span>
+      </button>
+
+      <!-- Dots Navigation -->
+      <div class="carousel-dots">
+        <button *ngFor="let img of carouselImages; let i = index" class="dot" [class.active]="i === currentIndex"
+          (click)="goToSlide(i)" [attr.aria-label]="'Ir a diapositiva ' + (i + 1)"></button>
+      </div>
+    </div>
+
+    <!-- Button below carousel -->
+    <div class="carousel-cta">
       <a routerLink="/portfolio" class="btn primary">Ver Portafolio</a>
-      <a routerLink="/appointments" class="btn outline">Agendar Cita</a>
     </div>
   </div>
 </section>
 
+<!-- Loading State -->
+<ng-template #loadingHero>
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <p>Cargando galería...</p>
+    </div>
+  </section>
+</ng-template>
+
+<!-- Features Section -->
 <section class="features-section">
   <div class="container">
-
+    <!-- Features content here if needed -->
   </div>
 </section>
 
+<!-- Portfolio Preview -->
 <section class="portfolio-preview">
   <div class="grid">
     <a *ngFor="let p of preview" class="item" (click)="open(p)">
-      <img [src]="p.imageUrl" alt="">
+      <img [src]="p.imageUrl" alt="" loading="lazy" />
       <div class="meta">
         <h4>{{p.title}}</h4>
       </div>

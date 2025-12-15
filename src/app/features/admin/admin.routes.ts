@@ -14,12 +14,17 @@ export const adminRoutes: Routes = [
   },
   {
     path: 'portfolio-manager',
-    loadComponent: () => import('../portfolio/portfolio-manager.component').then(m => m.PortfolioManagerComponent),
+    loadComponent: () => import('./componentes/portfolio-manager/portfolio-manager.component').then(m => m.PortfolioManagerComponent),
     canActivate: [adminGuard]
   },
   {
     path: 'appointments-manager',
     loadComponent: () => import('./componentes/appointments-manager/appointments-manager.component').then(m => m.AppointmentsManagerComponent),
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'carousel-manager',
+    loadComponent: () => import('./componentes/carousel-manager/carousel-manager.component').then(m => m.CarouselManagerComponent),
     canActivate: [adminGuard]
   },
   {

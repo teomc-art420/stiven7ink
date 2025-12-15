@@ -3,11 +3,12 @@ mat-toolbar {
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(253, 0, 0, 0.1);
-
-
-
 }
 
+
+:host ::ng-deep .mat-toolbar {
+  background: var(--wine) !important;
+}
 
 .header-content {
   display: flex;
@@ -73,6 +74,9 @@ mat-toolbar {
 }
 
 :host ::ng-deep .mat-toolbar {
+  background: var(--wine) !important;
+  /* vinotinto */
+  color: var(--text) !important;
   height: 64px;
   box-shadow: none;
 }

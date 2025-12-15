@@ -1,0 +1,34 @@
+<div class="admin-card">
+    <h2>Carousel Manager</h2>
+
+    <div class="upload-form">
+        <label>Título (opcional)</label>
+        <input type="text" [(ngModel)]="title" />
+
+        <label>Orden</label>
+        <input type="number" [(ngModel)]="order" />
+
+        <label>Archivo</label>
+        <input type="file" (change)="onFileChange($event)" />
+
+        <button class="btn primary" (click)="upload()" [disabled]="loading">{{ loading ? 'Subiendo...' : 'Subir Imagen'
+            }}</button>
+    </div>
+
+    <hr />
+
+    <div class="list">
+        <h3>Imágenes existentes</h3>
+        <div *ngIf="images?.length === 0">No hay imágenes aún.</div>
+        <ul>
+            <li *ngFor="let i of images">
+                <img [src]="i.imageUrl" alt="" />
+                <div class="meta">
+                    <strong>{{ i.title }}</strong>
+                    <div>order: {{ i.order }}</div>
+                </div>
+                <button class="btn outline" (click)="remove(i)">Eliminar</button>
+            </li>
+        </ul>
+    </div>
+</div>
