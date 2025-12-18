@@ -1,92 +1,149 @@
 .dashboard-container {
-    padding: 30px;
-    max-width: 1400px;
-    margin: 0 auto;
+  padding: 40px 30px;
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
-  
-  .dashboard-header {
+
+  .user-info {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e0e0e0;
-  
-    h1 {
-      font-size: 2.5rem;
-      color: #333;
-      margin: 0;
+    gap: 25px;
+
+    span {
+      color: #b0b0b0;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
     }
-  
-    .user-info {
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.dashboard-card {
+  background: #0e0e0e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--wine-accent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(212, 35, 107, 0.3);
+    background: #141414;
+
+    &::before {
+      opacity: 1;
+    }
+
+    mat-card-title {
+      mat-icon {
+        transform: scale(1.1);
+        color: var(--wine-accent);
+      }
+    }
+
+    .count {
+      transform: translateX(5px);
+    }
+  }
+
+  mat-card-header {
+    margin-bottom: 20px;
+    padding: 24px 24px 0 24px;
+
+    mat-card-title {
       display: flex;
       align-items: center;
-      gap: 20px;
-  
-      span {
-        color: #666;
-        font-size: 1rem;
+      gap: 15px;
+      font-size: 1.4rem;
+      color: white;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0;
+
+      mat-icon {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+        color: #4a4a4a; // Darker initial state
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
     }
   }
-  
+
+  mat-card-content {
+    padding: 0 24px 24px 24px;
+
+    p {
+      color: #999;
+      margin: 10px 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .count {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--wine-accent);
+      margin-top: 25px;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
   .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: 1fr;
   }
-  
-  .dashboard-card {
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-  
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-    }
-  
-    mat-card-header {
-      margin-bottom: 15px;
-  
-      mat-card-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 1.5rem;
-        color: #667eea;
-  
-        mat-icon {
-          font-size: 2rem;
-          width: 2rem;
-          height: 2rem;
-        }
-      }
-    }
-  
-    mat-card-content {
-      p {
-        color: #666;
-        margin: 10px 0;
-      }
-  
-      .count {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #667eea;
-        margin-top: 15px;
-      }
-    }
-  }
-  
-  // Responsive
-  @media (max-width: 768px) {
-    .dashboard-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-    }
-  
-    .dashboard-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+}

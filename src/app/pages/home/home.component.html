@@ -4,58 +4,147 @@
     <div class="carousel-wrapper">
       <!-- Carousel Images -->
       <div class="carousel-track">
-        <img *ngFor="let img of carouselImages; let i = index" [src]="img.imageUrl" [alt]="img.title"
-          class="carousel-image" [class.active]="i === currentIndex" loading="lazy" />
+        <div *ngFor="let img of carouselImages; let i = index" class="carousel-item"
+          [class.active]="i === currentIndex">
+          <img [src]="img.imageUrl" [alt]="img.title" class="carousel-image" loading="lazy" />
+          <div class="carousel-caption">
+            <h2>{{ img.title }}</h2>
+          </div>
+        </div>
       </div>
 
       <!-- Controls -->
       <button class="carousel-btn prev" (click)="prev()" aria-label="Anterior">
-        <span>❮</span>
+        <mat-icon>chevron_left</mat-icon>
       </button>
       <button class="carousel-btn next" (click)="next()" aria-label="Siguiente">
-        <span>❯</span>
+        <mat-icon>chevron_right</mat-icon>
       </button>
 
       <!-- Dots Navigation -->
       <div class="carousel-dots">
         <button *ngFor="let img of carouselImages; let i = index" class="dot" [class.active]="i === currentIndex"
-          (click)="goToSlide(i)" [attr.aria-label]="'Ir a diapositiva ' + (i + 1)"></button>
+          (click)="goToSlide(i)" [attr.aria-label]="'Ir a diapositiva ' + (i + 1)">
+        </button>
       </div>
     </div>
 
-    <!-- Button below carousel -->
-    <div class="carousel-cta">
-      <a routerLink="/portfolio" class="btn primary">Ver Portafolio</a>
-    </div>
+    <!-- CTA Overlay -->
+
   </div>
 </section>
 
 <!-- Loading State -->
 <ng-template #loadingHero>
-  <section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-inner">
-      <p>Cargando galería...</p>
-    </div>
+  <section class="hero loading-hero">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando experiencia...</p>
   </section>
 </ng-template>
 
-<!-- Features Section -->
-<section class="features-section">
+<!-- Stats Section (Social Proof) -->
+<section class="stats-section">
   <div class="container">
-    <!-- Features content here if needed -->
+    <div class="stat-item">
+      <span class="stat-number">500+</span>
+      <span class="stat-label">Tatuajes Realizados</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">8+</span>
+      <span class="stat-label">Años de Experiencia</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">100%</span>
+      <span class="stat-label">Clientes Satisfechos</span>
+    </div>
+  </div>
+</section>
+
+<!-- Why Me Section -->
+<section class="why-me-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="subtitle">FILOSOFÍA</span>
+      <h2>¿Por Qué Elegir Stiven7ink?</h2>
+      <p class="lead">No es solo un tatuaje. Es una obra que llevarás para siempre.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon-wrapper">
+          <mat-icon>brush</mat-icon>
+        </div>
+        <h3>Diseño Único</h3>
+        <p>Tu visión es única y tu tatuaje también debe serlo. Cada diseño es personalizado.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-wrapper">
+          <mat-icon>palette</mat-icon>
+        </div>
+        <h3>Arte Puro</h3>
+        <p>Técnica experta y pasión por el detalle para lograr el mejor resultado posible.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-wrapper">
+          <mat-icon>verified</mat-icon>
+        </div>
+        <h3>Seguridad</h3>
+        <p>Máximos estándares de higiene y material estéril de un solo uso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Section -->
+<section class="process-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="subtitle">MI PROCESO</span>
+      <h2>De la Idea a la Piel</h2>
+    </div>
+
+    <div class="process-timeline">
+      <div class="process-step">
+        <div class="step-number">01</div>
+        <h3>Consulta</h3>
+        <p>Escucho tu visión y entiendo lo que imaginaste.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">02</div>
+        <h3>Diseño</h3>
+        <p>Creo tu idea con tu feedback hasta que sea perfecta.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">03</div>
+        <h3>Ejecución</h3>
+        <p>Perfecciono cada detalle con técnica y cuidado.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- Portfolio Preview -->
 <section class="portfolio-preview">
-  <div class="grid">
-    <a *ngFor="let p of preview" class="item" (click)="open(p)">
-      <img [src]="p.imageUrl" alt="" loading="lazy" />
-      <div class="meta">
-        <h4>{{p.title}}</h4>
-      </div>
-    </a>
+  <div class="container">
+    <div class="section-header">
+      <span class="subtitle">TRABAJOS RECIENTES</span>
+      <h2>Inspiración para tu Próxima Pieza</h2>
+    </div>
+
+    <div class="cta-center">
+      <a routerLink="/portfolio" class="btn primary">Ver Todo el Portafolio</a>
+    </div>
   </div>
-  <div class="cta"><a routerLink="/portfolio" class="btn primary">Ver todo el portafolio</a></div>
+</section>
+
+<!-- CTA Final -->
+<section class="final-cta">
+  <div class="container">
+    <h2>¿Listo para tu próximo tatuaje?</h2>
+    <p>Hablemos de tu idea y hagamos realidad esa pieza que tienes en mente.</p>
+    <div class="cta-buttons">
+      <a routerLink="/appointments" class="btn primary-inverse">Solicitar Cita</a>
+      <a routerLink="/contact" class="btn outline-inverse">Contactar</a>
+    </div>
+  </div>
 </section>

@@ -1,22 +1,31 @@
+// Use variables from styles.scss inheritance or hardcode for full control if :host encapsulation blocks it.
+// :host encapsulation actually effectively blocks pure global class styling inheritance for *local* components unless ViewEncapsulation is None, 
+// BUT variables (custom properties) pierce shadow DOM.
+// So var(--bg) should work.
+
 .portfolio-section {
   padding: 60px 20px;
+  background-color: transparent; // It sits on body's black bg, but explicit is fine
+  min-height: 80vh;
 }
-
-/* use global .container from src/styles.scss */
 
 .portfolio-header {
   text-align: center;
   margin-bottom: 50px;
+  margin-top: 20px;
 
   h1 {
-    font-size: 3rem;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 3.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: 900;
+    letter-spacing: -1px;
   }
 
   .subtitle {
     font-size: 1.2rem;
     color: #666;
+    font-weight: 300;
   }
 }
 
@@ -24,8 +33,10 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   flex-wrap: wrap;
+
+  // Rely on global .filter-btn for button styles
 }
 
 .portfolio-grid {
@@ -35,54 +46,62 @@
 }
 
 .portfolio-item {
-  background: white;
-  border-radius: 10px;
+  background: #0e0e0e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
+  position: relative;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--wine-accent);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    .portfolio-image img {
+      transform: scale(1.1);
+    }
   }
 }
 
 .portfolio-image {
   width: 100%;
-  height: 300px;
+  height: 320px; // Slightly taller
   overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s;
-  }
-
-  &:hover img {
-    transform: scale(1.05);
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
 
 .portfolio-info {
-  padding: 20px;
+  padding: 24px;
 
   h3 {
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-weight: 700;
   }
 
   .style {
-    color: #667eea;
-    font-weight: 500;
-    margin: 5px 0;
+    color: var(--wine-accent);
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
   }
 
   .description {
-    color: #666;
-    margin-top: 10px;
-    line-height: 1.5;
+    color: #b0b0b0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    display: block;
   }
 }
 
@@ -97,10 +116,11 @@
 // Responsive
 @media (max-width: 768px) {
   .portfolio-header h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
 
   .portfolio-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 }

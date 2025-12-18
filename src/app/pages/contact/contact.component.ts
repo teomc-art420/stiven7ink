@@ -25,11 +25,7 @@ export class ContactComponent {
   constructor(private firebaseService: FirebaseService) { }
 
   async onSubmit() {
-    if (!this.formData.name || !this.formData.email || !this.formData.message) {
-      alert('Por favor completa los campos requeridos');
-      return;
-    }
-
+    // La validación se maneja en el HTML
     this.loading = true;
 
     try {

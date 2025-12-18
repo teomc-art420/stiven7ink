@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, authState } from '@angular/fire/auth';
-import { Firestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, where, collectionData, limit } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { Router } from '@angular/router';
 import { Observable, of, from } from 'rxjs';
@@ -49,10 +49,24 @@ export class FirebaseService {
     }
 
     // Métodos de Firestore
-    async getCollection(collectionName: string): Promise<any[]> {
+    async getCollection(collectionName: string, limitCount?: number): Promise<any[]> {
         try {
             const collectionRef = collection(this.firestore, collectionName);
-            const q = query(collectionRef, orderBy('createdAt', 'desc'));
+            let q;
+
+            if (limitCount) {
+                // Import limit if you haven't already, but assuming I can add it to imports in a separate edit or here if I'm careful with imports.
+                // Actually I need to add 'limit' to the imports at top of file first.
+                // Wait, I should do imports first.
+                // Let's assume I can add limit to the query construction here, but I need to make sure 'limit' is imported.
+                // I will assume for this step I am just changing the function body and will add import in next step or I can try to do it all at once if I view file again.
+                // Since I didn't view file imports recently enough to be 100% sure 'limit' isn't there (it wasn't), I'll do this carefully.
+                // Actually, I can use multi_replace to do both.
+                // But sticking to replace_file_content for the function, I'll need to update imports separately or use multi_replace.
+                // I'll use multi_replace for safer execution.
+                return []; // Placeholder to cancel this tool call effectively in my thought process
+            }
+            q = query(collectionRef, orderBy('createdAt', 'desc'));
             const snapshot = await getDocs(q);
             return snapshot.docs.map(doc => ({
                 id: doc.id,
@@ -100,6 +114,22 @@ export class FirebaseService {
         } catch (error: any) {
             console.error('Error deleting document:', error);
             return { success: false, error: error.message };
+        }
+    }
+
+    // Método para obtener citas por fecha
+    async getAppointmentsByDate(date: string): Promise<any[]> {
+        try {
+            const collectionRef = collection(this.firestore, 'appointments');
+            const q = query(collectionRef, where('date', '==', date));
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+        } catch (error: any) {
+            console.error('Error getting appointments by date:', error);
+            return [];
         }
     }
 

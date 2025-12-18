@@ -1,32 +1,51 @@
-<section class="about-section">
-    <div class="container">
-      <div class="about-header">
-        <h1>Sobre Mí</h1>
-        <p class="intro">Conoce la historia y pasión detrás de Stiven7ink</p>
+<section class="about-hero">
+  <div class="hero-content">
+    <h1>Sobre Mí</h1>
+    <p class="subtitle">Más que tinta, una historia en cada trazo</p>
+  </div>
+</section>
+
+<section class="about-content">
+  <div class="container">
+    <div class="grid-layout">
+      <!-- Image Column -->
+      <div class="image-column">
+        <div class="artist-frame">
+          <!-- Placeholder for artist image, could be an actual <img> tag later -->
+          <div class="image-placeholder">
+            <span>Foto del Artista</span>
+          </div>
+          <div class="frame-accent"></div>
+        </div>
       </div>
-  
-      <div class="about-content">
-        <div class="about-text">
+
+      <!-- Text Column -->
+      <div class="text-column">
+        <div class="text-block">
           <h2>Mi Historia</h2>
           <p>
-            Soy Stiven, un tatuador profesional apasionado por transformar ideas y emociones 
-            en arte permanente sobre la piel. Con años de experiencia en diferentes estilos, 
-            me especializo en crear diseños únicos y personalizados para cada cliente.
+            Soy <span class="highlight">Stiven</span>, un tatuador profesional apasionado por transformar ideas y
+            emociones
+            en arte permanente sobre la piel. Con años de experiencia en diferentes estilos,
+            me especializo en crear diseños únicos y personalizados que capturen la esencia de cada cliente.
           </p>
           <p>
-            Mi objetivo es no solo crear tatuajes, sino también experiencias memorables. 
-            Cada sesión es una oportunidad para conocer historias, entender visiones y 
-            materializar sueños a través del arte del tatuaje.
+            Mi viaje en el mundo del tatuaje comenzó con un lápiz y un papel, fascinado por cómo una imagen
+            podía evocar tanto sentimiento. Hoy, mi lienzo es la piel y mi compromiso es la excelencia en cada línea.
           </p>
-  
+        </div>
+
+        <div class="text-block">
           <h2>Mi Filosofía</h2>
           <p>
-            Creo firmemente que cada tatuaje cuenta una historia. Por eso, dedico tiempo 
-            a entender las motivaciones y deseos de mis clientes, asegurándome de que cada 
-            pieza sea significativa y refleje su personalidad.
+            Creo firmemente que cada tatuaje cuenta una historia. No se trata solo de estética, sino de
+            <span class="highlight">conexión</span>. Dedico tiempo a entender las motivaciones y deseos de mis
+            clientes, asegurándome de que cada pieza sea significativa, segura y ejecutada con la más alta técnica.
           </p>
-  
-          <h2>Estilos que Manejo</h2>
+        </div>
+
+        <div class="skills-block">
+          <h3>Estilos que Domino</h3>
           <div class="styles-list">
             <span class="style-tag">Realismo</span>
             <span class="style-tag">Tradicional</span>
@@ -36,13 +55,12 @@
             <span class="style-tag">Blackwork</span>
           </div>
         </div>
-  
-        <div class="about-image">
-          <div class="image-placeholder">
-            <p>Foto del artista</p>
-            <p class="placeholder-note">(Aquí irá una foto de Stiven)</p>
-          </div>
+
+        <div class="cta-block">
+          <p>¿Tienes una idea en mente?</p>
+          <a routerLink="/contact" class="btn primary">Hablemos</a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>

@@ -62,20 +62,31 @@
                 </div>
             </mat-card-content>
 
-            <mat-card-actions>
-                <button mat-button color="warn" (click)="deleteAppointment(appointment.id)">
-                    ELIMINAR
-                </button>
+            <mat-card-actions class="actions-column">
+                <div class="price-input-container" *ngIf="appointment.status === 'pending'">
+                    <mat-form-field appearance="outline" density="compact" class="price-field">
+                        <mat-label>Precio Acordado</mat-label>
+                        <span matTextPrefix>$&nbsp;</span>
+                        <input matInput [(ngModel)]="appointment.negotiatedPrice" placeholder="0.00">
+                    </mat-form-field>
+                </div>
 
-                <button mat-stroked-button color="warn" *ngIf="appointment.status !== 'cancelled'"
-                    (click)="updateStatus(appointment.id, 'cancelled')">
-                    CANCELAR
-                </button>
+                <div class="action-buttons">
+                    <button mat-button color="warn" (click)="deleteAppointment(appointment.id)">
+                        ELIMINAR
+                    </button>
 
-                <button mat-raised-button color="primary" *ngIf="appointment.status !== 'confirmed'"
-                    (click)="updateStatus(appointment.id, 'confirmed')">
-                    CONFIRMAR
-                </button>
+                    <button mat-stroked-button color="warn" *ngIf="appointment.status !== 'cancelled'"
+                        (click)="updateStatus(appointment.id, 'cancelled')">
+                        CANCELAR
+                    </button>
+
+                    <button mat-raised-button color="primary" *ngIf="appointment.status !== 'confirmed'"
+                        (click)="updateStatus(appointment.id, 'confirmed', appointment.negotiatedPrice)"
+                        [disabled]="!appointment.negotiatedPrice && appointment.status === 'pending'">
+                        CONFIRMAR
+                    </button>
+                </div>
             </mat-card-actions>
         </mat-card>
     </div>

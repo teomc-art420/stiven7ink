@@ -97,19 +97,36 @@ export class PortfolioManagerComponent implements OnInit {
 
       if (this.editingWork) {
         // Actualizar trabajo existente
-        await this.firebaseService.updateDocument('portfolio', this.editingWork.id, workData);
+        const result = await this.firebaseService.updateDocument('portfolio', this.editingWork.id, workData);
+        if (result.success) {
+          // Update local state
+          const index = this.works.findIndex(w => w.id === this.editingWork.id);
+          if (index !== -1) {
+            this.works[index] = { ...this.works[index], ...workData };
+          }
+          alert('Trabajo actualizado correctamente');
+        } else {
+          throw new Error(result.error);
+        }
+
       } else {
         // Crear nuevo trabajo
-        await this.firebaseService.addDocument('portfolio', workData);
+        const result = await this.firebaseService.addDocument('portfolio', workData);
+        if (result.success) {
+          // Add to local state (prepend to top)
+          this.works.unshift({ id: result.id, ...workData });
+          alert('Trabajo agregado correctamente');
+        } else {
+          throw new Error(result.error);
+        }
       }
 
-      // 3. Recargar lista
-      await this.loadWorks();
-
       // 4. Limpiar formulario
+      this.loading = false; // Stop loading before resetting/closing
       this.resetForm();
-      alert(this.editingWork ? 'Trabajo actualizado correctamente' : 'Trabajo agregado correctamente');
+
     } catch (error) {
+      console.error(error);
       alert('Error al guardar el trabajo');
       this.loading = false;
     }
@@ -129,13 +146,20 @@ export class PortfolioManagerComponent implements OnInit {
       }
 
       // Eliminar documento de Firestore
-      await this.firebaseService.deleteDocument('portfolio', work.id);
+      const result = await this.firebaseService.deleteDocument('portfolio', work.id);
 
-      // Recargar lista
-      await this.loadWorks();
-      alert('Trabajo eliminado correctamente');
+      if (result.success) {
+        // Remove from local state
+        this.works = this.works.filter(w => w.id !== work.id);
+        alert('Trabajo eliminado correctamente');
+      } else {
+        throw new Error(result.error);
+      }
+
     } catch (error) {
+      console.error(error);
       alert('Error al eliminar el trabajo');
+    } finally {
       this.loading = false;
     }
   }

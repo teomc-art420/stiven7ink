@@ -7,148 +7,181 @@
 
     <!-- Mensaje de éxito -->
     @if (submitted) {
-      <div class="success-message">
-        <h2>¡Solicitud enviada correctamente!</h2>
-        <p>Hemos recibido tu solicitud de cita. Te contactaremos pronto para confirmar la fecha y hora.</p>
-        <button mat-raised-button color="primary" (click)="submitted = false">
-          Enviar otra solicitud
-        </button>
-      </div>
+    <div class="success-message">
+      <h2>¡Solicitud enviada correctamente!</h2>
+      <p>Hemos recibido tu solicitud de cita. Te contactaremos pronto para confirmar la fecha y hora.</p>
+      <button mat-raised-button color="primary" (click)="submitted = false">
+        Enviar otra solicitud
+      </button>
+    </div>
     }
 
     @if (!submitted) {
-      <div class="appointments-content">
-        <!-- Formulario de cita -->
-        <div class="appointment-form-container">
-          <form class="appointment-form" (ngSubmit)="onSubmit()">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name">Nombre Completo *</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  [(ngModel)]="formData.name"
-                  required
-                  placeholder="Tu nombre completo">
-              </div>
-
-              <div class="form-group">
-                <label for="email">Email *</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  [(ngModel)]="formData.email"
-                  required
-                  placeholder="tu@email.com">
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="phone">Teléfono *</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  name="phone" 
-                  [(ngModel)]="formData.phone"
-                  required
-                  placeholder="Tu número de teléfono">
-              </div>
-
-              <div class="form-group">
-                <label for="date">Fecha Preferida *</label>
-                <input 
-                  type="date" 
-                  id="date" 
-                  name="date" 
-                  [(ngModel)]="formData.date"
-                  required>
+    <div class="appointments-content">
+      <!-- Formulario de cita -->
+      <div class="appointment-form-container">
+        <form class="appointment-form" (ngSubmit)="appointmentForm.valid && onSubmit()" #appointmentForm="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Nombre Completo <span class="required">*</span></label>
+              <input type="text" id="name" name="name" [(ngModel)]="formData.name" required
+                placeholder="Tu nombre completo" #name="ngModel">
+              <div class="error-msg" *ngIf="name.invalid && (name.dirty || name.touched)">
+                <span *ngIf="name.errors?.['required']">El nombre es obligatorio.</span>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="style">Estilo de Tatuaje *</label>
-              <select id="style" name="style" [(ngModel)]="formData.style" required>
-                <option value="">Selecciona un estilo</option>
-                <option value="Realismo">Realismo</option>
-                <option value="Tradicional">Tradicional</option>
-                <option value="Minimalista">Minimalista</option>
-                <option value="Geométrico">Geométrico</option>
-                <option value="Acuarela">Acuarela</option>
-                <option value="Blackwork">Blackwork</option>
+              <label for="email">Email <span class="required">*</span></label>
+              <input type="email" id="email" name="email" [(ngModel)]="formData.email" required email
+                placeholder="tu@email.com" #email="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+              <div class="error-msg" *ngIf="email.invalid && (email.dirty || email.touched)">
+                <span *ngIf="email.errors?.['required']">El email es obligatorio.</span>
+                <span *ngIf="email.errors?.['email'] || email.errors?.['pattern']">Ingresa un email válido.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Teléfono <span class="required">*</span></label>
+              <input type="tel" id="phone" name="phone" [(ngModel)]="formData.phone" required placeholder="Solo números"
+                #phone="ngModel" pattern="^[0-9]*$" minlength="7" maxlength="15" (keypress)="validateNumber($event)">
+              <div class="error-msg" *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                <span *ngIf="phone.errors?.['required']">El teléfono es obligatorio.</span>
+                <span *ngIf="phone.errors?.['pattern']">Solo se permiten números.</span>
+                <span *ngIf="phone.errors?.['minlength']">Mínimo 7 dígitos.</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Fecha Preferida <span class="required">*</span></label>
+              <input type="date" id="date" name="date" [(ngModel)]="formData.date" (ngModelChange)="onDateChange()"
+                required #date="ngModel">
+              <div class="error-msg" *ngIf="date.invalid && (date.dirty || date.touched)">
+                <span *ngIf="date.errors?.['required']">Selecciona una fecha.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="dateSelected">
+            <label for="timeSlot">Horario Disponible <span class="required">*</span></label>
+            <div class="select-wrapper">
+              <select id="timeSlot" name="timeSlot" [(ngModel)]="formData.timeSlot" required
+                [disabled]="checkingAvailability" #timeSlot="ngModel">
+                <option value="">Selecciona un horario</option>
+                <option *ngFor="let slot of availableSlots" [value]="slot.value">
+                  {{ slot.label }}
+                </option>
               </select>
+              <mat-spinner diameter="20" *ngIf="checkingAvailability" class="spinner-inline"></mat-spinner>
             </div>
-
-            <div class="form-group">
-              <label for="size">Tamaño Aproximado *</label>
-              <select id="size" name="size" [(ngModel)]="formData.size" required>
-                <option value="">Selecciona un tamaño</option>
-                <option value="pequeno">Pequeño (5-10 cm)</option>
-                <option value="mediano">Mediano (10-20 cm)</option>
-                <option value="grande">Grande (20-30 cm)</option>
-                <option value="muy-grande">Muy Grande (+30 cm)</option>
-              </select>
+            <div class="error-msg" *ngIf="timeSlot.invalid && (timeSlot.dirty || timeSlot.touched)">
+              <span *ngIf="timeSlot.errors?.['required']">Selecciona un horario.</span>
             </div>
+            <p class="hint" *ngIf="availableSlots.length === 0 && !checkingAvailability && dateSelected">
+              No hay horarios disponibles. Selecciona otra fecha.
+            </p>
+          </div>
 
-            <div class="form-group">
-              <label for="description">Descripción del Tatuaje *</label>
-              <textarea 
-                id="description" 
-                name="description" 
-                [(ngModel)]="formData.description"
-                rows="5" 
-                required
-                placeholder="Describe tu idea, ubicación del tatuaje, referencias, etc..."></textarea>
+          <div class="form-group">
+            <label for="style">Estilo de Tatuaje <span class="required">*</span></label>
+            <select id="style" name="style" [(ngModel)]="formData.style" required #style="ngModel">
+              <option value="">Selecciona un estilo</option>
+              <option value="Realismo">Realismo</option>
+              <option value="Tradicional">Tradicional</option>
+              <option value="Minimalista">Minimalista</option>
+              <option value="Geométrico">Geométrico</option>
+              <option value="Acuarela">Acuarela</option>
+              <option value="Blackwork">Blackwork</option>
+            </select>
+            <div class="error-msg" *ngIf="style.invalid && (style.dirty || style.touched)">
+              <span *ngIf="style.errors?.['required']">Selecciona un estilo.</span>
             </div>
+          </div>
 
-            <div class="form-group">
-              <label for="budget">Presupuesto Aproximado</label>
-              <input 
-                type="text" 
-                id="budget" 
-                name="budget"
-                [(ngModel)]="formData.budget"
-                placeholder="Tu presupuesto aproximado">
+          <div class="form-group">
+            <label for="size">Tamaño Aproximado <span class="required">*</span></label>
+            <select id="size" name="size" [(ngModel)]="formData.size" required #size="ngModel">
+              <option value="">Selecciona un tamaño</option>
+              <option value="pequeno">Pequeño (5-10 cm)</option>
+              <option value="mediano">Mediano (10-20 cm)</option>
+              <option value="grande">Grande (20-30 cm)</option>
+              <option value="muy-grande">Muy Grande (+30 cm)</option>
+            </select>
+            <div class="error-msg" *ngIf="size.invalid && (size.dirty || size.touched)">
+              <span *ngIf="size.errors?.['required']">Selecciona un tamaño.</span>
             </div>
+          </div>
 
-            <button type="submit" class="submit-btn" [disabled]="loading">
-              {{ loading ? 'Enviando...' : 'Solicitar Cita' }}
-            </button>
-          </form>
+          <div class="form-group">
+            <label for="description">Descripción del Tatuaje <span class="required">*</span></label>
+            <textarea id="description" name="description" [(ngModel)]="formData.description" rows="5" required
+              placeholder="Describe tu idea, ubicación del tatuaje, referencias, etc..."
+              #description="ngModel"></textarea>
+            <div class="error-msg" *ngIf="description.invalid && (description.dirty || description.touched)">
+              <span *ngIf="description.errors?.['required']">La descripción es obligatoria.</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="referenceImage">Referencia / Diseño (Opcional)</label>
+            <div class="file-upload-wrapper">
+              <input type="file" id="referenceImage" (change)="onFileSelected($event)" accept="image/*"
+                class="file-input">
+              <label for="referenceImage" class="file-label">
+                <span *ngIf="!fileName">📷 Subir Imagen de Referencia</span>
+                <span *ngIf="fileName" class="file-name">✅ {{ fileName }}</span>
+              </label>
+            </div>
+            <p class="hint">Formatos: JPG, PNG. Máx 5MB.</p>
+          </div>
+
+          <div class="pricing-notice">
+            <p><strong>⚠️ Nota sobre el precio:</strong> El valor final del tatuaje se definirá mediante negociación
+              directa. Te contactaremos en un plazo máximo de 24 horas para ajustar detalles y confirmar el precio.</p>
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="loading || appointmentForm.invalid">
+            {{ loading ? 'Enviando...' : 'Solicitar Cita' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="appointment-info">
+        <div class="info-card">
+          <h3>📋 Proceso de Cita</h3>
+          <ol>
+            <li>Completa el formulario con tus datos</li>
+            <li>Recibirás una confirmación por email</li>
+            <li>Revisaremos tu solicitud y te contactaremos</li>
+            <li>Confirmaremos la fecha y hora de tu cita</li>
+          </ol>
         </div>
 
-        <!-- Información adicional -->
-        <div class="appointment-info">
-          <div class="info-card">
-            <h3>📋 Proceso de Cita</h3>
-            <ol>
-              <li>Completa el formulario con tus datos</li>
-              <li>Recibirás una confirmación por email</li>
-              <li>Revisaremos tu solicitud y te contactaremos</li>
-              <li>Confirmaremos la fecha y hora de tu cita</li>
-            </ol>
-          </div>
+        <div class="info-card">
+          <h3>⏰ Horarios Disponibles</h3>
+          <p><strong>Domingo a Domingo:</strong></p>
+          <ul class="schedule-list">
+            <li>Mañana: 9:00 AM - 1:00 PM</li>
+            <li>Tarde: 2:00 PM - 6:00 PM</li>
+            <li>Noche: 6:00 PM - 10:00 PM*</li>
+          </ul>
+          <p class="schedule-note">*Sujeto a confirmación previa</p>
+        </div>
 
-          <div class="info-card">
-            <h3>⏰ Horarios Disponibles</h3>
-            <p><strong>Lunes - Viernes:</strong> 10:00 AM - 7:00 PM</p>
-            <p><strong>Sábados:</strong> 10:00 AM - 5:00 PM</p>
-            <p><strong>Domingos:</strong> Cerrado</p>
-          </div>
-
-          <div class="info-card">
-            <h3>💡 Consejos</h3>
-            <ul>
-              <li>Trae referencias visuales si las tienes</li>
-              <li>Considera el tiempo de curación</li>
-              <li>Ven descansado y bien alimentado</li>
-              <li>Pregunta todas tus dudas</li>
-            </ul>
-          </div>
+        <div class="info-card">
+          <h3>💡 Consejos</h3>
+          <ul>
+            <li>Trae referencias visuales si las tienes</li>
+            <li>Considera el tiempo de curación</li>
+            <li>Ven descansado y bien alimentado</li>
+            <li>Pregunta todas tus dudas</li>
+          </ul>
         </div>
       </div>
+    </div>
     }
   </div>
 </section>

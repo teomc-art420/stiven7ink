@@ -5,7 +5,7 @@
 
   .header {
     margin-bottom: 2rem;
-    
+
     h1 {
       font-size: 2rem;
       font-weight: 500;
@@ -70,16 +70,24 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    &.status-pending { border-left: 4px solid #ffd740; }
-    &.status-confirmed { border-left: 4px solid #69f0ae; }
-    &.status-cancelled { border-left: 4px solid #ff5252; }
+    &.status-pending {
+      border-left: 4px solid #ffd740;
+    }
+
+    &.status-confirmed {
+      border-left: 4px solid #69f0ae;
+    }
+
+    &.status-cancelled {
+      border-left: 4px solid #ff5252;
+    }
 
     mat-card-header {
       margin-bottom: 1rem;
-      
+
       .mat-card-avatar {
         background-color: #eee;
         display: flex;
@@ -91,7 +99,7 @@
 
     mat-card-content {
       flex-grow: 1;
-      
+
       .info-row {
         display: flex;
         align-items: flex-start;
@@ -117,7 +125,7 @@
         margin-top: 1rem;
         padding-top: 1rem;
         border-top: 1px solid #eee;
-        
+
         h4 {
           margin: 0 0 0.5rem 0;
           font-size: 0.9rem;
@@ -125,7 +133,7 @@
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
-        
+
         p {
           margin: 0;
           color: #444;
@@ -135,11 +143,26 @@
     }
 
     mat-card-actions {
-      padding: 1rem;
-      border-top: 1px solid #eee;
       display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
+      flex-direction: column;
+      padding: 16px;
+      gap: 15px;
+
+      .price-input-container {
+        width: 100%;
+
+        .price-field {
+          width: 100%;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        width: 100%;
+        flex-wrap: wrap;
+      }
     }
   }
 }
@@ -148,7 +171,7 @@
 @media (max-width: 600px) {
   .appointments-container {
     padding: 1rem;
-    
+
     .appointments-grid {
       grid-template-columns: 1fr;
     }

@@ -7,6 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-appointments-manager',
@@ -18,7 +21,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatIconModule,
     MatChipsModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
   ],
   templateUrl: './appointments-manager.component.html',
   styleUrls: ['./appointments-manager.component.scss']
@@ -70,14 +76,22 @@ export class AppointmentsManagerComponent implements OnInit {
     }
   }
 
-  async updateStatus(id: string, status: 'confirmed' | 'cancelled') {
+  async updateStatus(id: string, status: 'confirmed' | 'cancelled', price?: string) {
     try {
-      const result = await this.firebaseService.updateDocument('appointments', id, { status });
+      const data: any = { status };
+      if (status === 'confirmed' && price) {
+        data.negotiatedPrice = price;
+      }
+
+      const result = await this.firebaseService.updateDocument('appointments', id, data);
       if (result.success) {
         // Update local state
         const index = this.appointments.findIndex(a => a.id === id);
         if (index !== -1) {
           this.appointments[index].status = status;
+          if (price) {
+            this.appointments[index].negotiatedPrice = price;
+          }
           this.applyFilter();
         }
         this.showSnackBar(`Cita ${status === 'confirmed' ? 'confirmada' : 'cancelada'} correctamente`, 'OK');
