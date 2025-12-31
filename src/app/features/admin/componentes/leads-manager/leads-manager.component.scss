@@ -2,6 +2,8 @@
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
+    background-color: var(--bg, #0a0a0a);
+    min-height: 100vh;
 
     .header {
         display: flex;
@@ -11,8 +13,8 @@
 
         h1 {
             font-size: 2rem;
-            font-weight: 500;
-            color: #333;
+            font-weight: 600;
+            color: #fff;
             margin: 0;
             display: flex;
             align-items: center;
@@ -22,6 +24,7 @@
                 font-size: 2rem;
                 width: 2rem;
                 height: 2rem;
+                color: var(--wine-accent, #8b1538);
             }
         }
     }
@@ -29,21 +32,40 @@
     .messages-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem;
     }
 
     .message-card {
-        transition: all 0.2s;
+        background-color: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        transition: all 0.3s ease;
         border-left: 4px solid transparent;
 
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 21, 56, 0.2);
+            border-color: var(--wine-accent, #8b1538);
+        }
+
         &.unread {
-            border-left-color: #3f51b5;
-            background-color: #f8f9ff;
+            border-left-color: var(--wine-accent, #8b1538);
+            background-color: rgba(139, 21, 56, 0.05);
 
             .message-header h3 {
                 font-weight: 700;
-                color: #3f51b5;
+                color: var(--wine-accent, #8b1538);
             }
+        }
+
+        mat-card-header {
+            background-color: #0f0f0f;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        mat-card-content {
+            padding: 20px;
         }
 
         .message-header {
@@ -54,23 +76,48 @@
 
             .sender-info {
                 h3 {
-                    margin: 0 0 0.25rem 0;
-                    font-size: 1.1rem;
-                    color: #333;
+                    margin: 0 0 0.5rem 0;
+                    font-size: 1.2rem;
+                    color: #fff;
+                    font-weight: 600;
                 }
 
                 .email {
-                    color: #666;
+                    color: #999;
                     font-size: 0.9rem;
                     display: flex;
                     align-items: center;
-                    gap: 0.25rem;
+                    gap: 0.5rem;
+
+                    mat-icon {
+                        font-size: 16px;
+                        width: 16px;
+                        height: 16px;
+                        color: var(--wine-accent, #8b1538);
+                    }
+                }
+
+                .phone {
+                    color: #999;
+                    font-size: 0.9rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-top: 0.25rem;
+
+                    mat-icon {
+                        font-size: 16px;
+                        width: 16px;
+                        height: 16px;
+                        color: var(--wine-accent, #8b1538);
+                    }
                 }
             }
 
             .date {
                 font-size: 0.85rem;
-                color: #999;
+                color: #666;
+                white-space: nowrap;
             }
         }
 
@@ -78,25 +125,72 @@
             margin-bottom: 1rem;
 
             h4 {
-                margin: 0 0 0.5rem 0;
+                margin: 0 0 0.75rem 0;
                 font-size: 1rem;
-                color: #444;
+                color: #ccc;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-size: 0.85rem;
             }
 
             p {
-                color: #555;
+                color: #ccc;
                 line-height: 1.6;
                 margin: 0;
                 white-space: pre-wrap;
+                background-color: #0f0f0f;
+                padding: 15px;
+                border-radius: 8px;
+                border-left: 3px solid var(--wine-accent, #8b1538);
             }
         }
 
         mat-card-actions {
-            padding: 0.5rem;
-            border-top: 1px solid #eee;
+            padding: 15px 20px;
+            border-top: 1px solid #333;
+            background-color: #0f0f0f;
             display: flex;
             justify-content: flex-end;
-            gap: 0.5rem;
+            gap: 10px;
+
+            button {
+                border-radius: 6px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                mat-icon {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+
+                &[color="primary"] {
+                    color: var(--wine-accent, #8b1538);
+
+                    &:hover {
+                        background-color: rgba(139, 21, 56, 0.1);
+                    }
+                }
+
+                &[color="accent"] {
+                    color: #28a745;
+
+                    &:hover {
+                        background-color: rgba(40, 167, 69, 0.1);
+                    }
+                }
+
+                &[color="warn"] {
+                    color: #dc3545;
+
+                    &:hover {
+                        background-color: rgba(220, 53, 69, 0.1);
+                    }
+                }
+            }
         }
     }
 
@@ -109,8 +203,9 @@
     .empty-state {
         text-align: center;
         padding: 4rem 2rem;
-        background: #f5f5f5;
-        border-radius: 8px;
+        background: #1a1a1a;
+        border-radius: 12px;
+        border: 2px dashed #333;
         color: #666;
 
         mat-icon {
@@ -119,6 +214,11 @@
             height: 4rem;
             margin-bottom: 1rem;
             opacity: 0.5;
+            color: #666;
+        }
+
+        p {
+            font-size: 1.1rem;
         }
     }
 }
@@ -126,5 +226,24 @@
 @media (max-width: 768px) {
     .leads-manager-container {
         padding: 1rem;
+
+        .message-card {
+            .message-header {
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .date {
+                    align-self: flex-start;
+                }
+            }
+
+            mat-card-actions {
+                flex-direction: column;
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
     }
 }

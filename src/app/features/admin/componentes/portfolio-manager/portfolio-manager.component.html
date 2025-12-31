@@ -1,113 +1,109 @@
 <div class="portfolio-manager-container">
-    <div class="header-section">
-      <h1>Gestión de Portafolio</h1>
-      @if (showForm) {
-        <button mat-raised-button color="primary" (click)="showForm = !showForm">
-          Cancelar
-        </button>
-      } @else {
-        <button mat-raised-button color="primary" (click)="showForm = !showForm">
-          <mat-icon>add</mat-icon>
-          Agregar Trabajo
-        </button>
-      }
-    </div>
-  
-    <!-- Formulario -->
+  <div class="header-section">
+    <h1>Gestión de Portafolio</h1>
     @if (showForm) {
-      <mat-card class="form-card">
-        <mat-card-header>
-          <mat-card-title>{{ editingWork ? 'Editar Trabajo' : 'Nuevo Trabajo' }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form (ngSubmit)="onSubmit()" class="work-form">
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Título *</mat-label>
-                <input matInput [(ngModel)]="formData.title" name="title" required>
-              </mat-form-field>
-            </div>
-  
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Estilo *</mat-label>
-                <mat-select [(ngModel)]="formData.style" name="style" required>
-                  @for (style of styles; track style) {
-                    <mat-option [value]="style">{{ style }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-            </div>
-  
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Descripción</mat-label>
-                <textarea matInput [(ngModel)]="formData.description" name="description" rows="3"></textarea>
-              </mat-form-field>
-            </div>
-  
-            <div class="form-row">
-              <label class="file-label">
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  (change)="onImageSelected($event)"
-                  [required]="!editingWork">
-                <span class="file-button">
-                  <mat-icon>upload</mat-icon>
-                  {{ formData.image ? 'Cambiar Imagen' : 'Seleccionar Imagen' }}
-                </span>
-              </label>
-            </div>
-  
-            @if (imagePreview) {
-              <div class="image-preview">
-                <img [src]="imagePreview" alt="Preview">
-              </div>
-            }
-  
-            <div class="form-actions">
-              <button mat-raised-button type="button" (click)="resetForm()">Cancelar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="loading">
-                {{ loading ? 'Guardando...' : (editingWork ? 'Actualizar' : 'Guardar') }}
-              </button>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
+    <button mat-raised-button class="cancel-btn" (click)="showForm = !showForm">
+      Cancelar
+    </button>
+    } @else {
+    <button mat-raised-button class="add-btn" (click)="showForm = !showForm">
+      <mat-icon>add</mat-icon>
+      Agregar Trabajo
+    </button>
     }
-  
-    <!-- Lista de trabajos -->
-    <div class="works-grid">
-      @if (loading && works.length === 0) {
-        <p>Cargando trabajos...</p>
-      } @else if (works.length === 0) {
-        <p class="empty-message">No hay trabajos aún. Agrega el primero usando el botón arriba.</p>
-      } @else {
-        @for (work of works; track work.id) {
-          <mat-card class="work-card">
-            <div class="work-image">
-              <img [src]="work.imageUrl" [alt]="work.title">
-            </div>
-            <mat-card-content>
-              <h3>{{ work.title }}</h3>
-              <p class="style">{{ work.style }}</p>
-              @if (work.description) {
-                <p class="description">{{ work.description }}</p>
-              }
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button color="primary" (click)="editWork(work)">
-                <mat-icon>edit</mat-icon>
-                Editar
-              </button>
-              <button mat-button color="warn" (click)="deleteWork(work)">
-                <mat-icon>delete</mat-icon>
-                Eliminar
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        }
-      }
-    </div>
   </div>
+
+  <!-- Formulario -->
+  @if (showForm) {
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>{{ editingWork ? 'Editar Trabajo' : 'Nuevo Trabajo' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()" class="work-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título *</mat-label>
+            <input matInput [(ngModel)]="formData.title" name="title" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Estilo *</mat-label>
+            <mat-select [(ngModel)]="formData.style" name="style" required>
+              @for (style of styles; track style) {
+              <mat-option [value]="style">{{ style }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput [(ngModel)]="formData.description" name="description" rows="3"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <label class="file-label">
+            <input type="file" accept="image/*" (change)="onImageSelected($event)" [required]="!editingWork">
+            <span class="file-button">
+              <mat-icon>upload</mat-icon>
+              {{ formData.image ? 'Cambiar Imagen' : 'Seleccionar Imagen' }}
+            </span>
+          </label>
+        </div>
+
+        @if (imagePreview) {
+        <div class="image-preview">
+          <img [src]="imagePreview" alt="Preview">
+        </div>
+        }
+
+        <div class="form-actions">
+          <button mat-raised-button type="button" (click)="resetForm()">Cancelar</button>
+          <button mat-raised-button class="submit-btn" type="submit" [disabled]="loading">
+            {{ loading ? 'Guardando...' : (editingWork ? 'Actualizar' : 'Guardar') }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  <!-- Lista de trabajos -->
+  <div class="works-grid">
+    @if (loading && works.length === 0) {
+    <p>Cargando trabajos...</p>
+    } @else if (works.length === 0) {
+    <p class="empty-message">No hay trabajos aún. Agrega el primero usando el botón arriba.</p>
+    } @else {
+    @for (work of works; track work.id) {
+    <mat-card class="work-card">
+      <div class="work-image">
+        <img [src]="work.imageUrl" [alt]="work.title">
+      </div>
+      <mat-card-content>
+        <h3>{{ work.title }}</h3>
+        <p class="style">{{ work.style }}</p>
+        @if (work.description) {
+        <p class="description">{{ work.description }}</p>
+        }
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="editWork(work)">
+          <mat-icon>edit</mat-icon>
+          Editar
+        </button>
+        <button mat-button color="warn" (click)="deleteWork(work)">
+          <mat-icon>delete</mat-icon>
+          Eliminar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    }
+    }
+  </div>
+</div>

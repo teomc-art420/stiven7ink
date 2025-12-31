@@ -1,13 +1,18 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>Iniciar Sesión - Admin</mat-card-title>
+      <div class="login-header">
+        <img src="/assets/images/logo.png" alt="Stiven7ink Logo" class="login-logo">
+        <h1 class="brand-name">Stiven7ink</h1>
+        <mat-card-title>Panel de Administración</mat-card-title>
+      </div>
     </mat-card-header>
     <mat-card-content>
       <form (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="admin@stiven7ink.com">
+          <input type="email" id="email" [(ngModel)]="email" name="email" required
+            placeholder="Harolstiven110@gmail.com">
         </div>
 
         <div class="form-group">

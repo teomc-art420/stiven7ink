@@ -60,6 +60,27 @@
                     <h4>Descripción</h4>
                     <p>"{{ appointment.description }}"</p>
                 </div>
+
+                <!-- Reference Image Section -->
+                <div class="reference-image-section" *ngIf="appointment.referenceImageUrl">
+                    <h4>
+                        <mat-icon>image</mat-icon>
+                        Imagen de Referencia
+                    </h4>
+                    <div class="image-preview">
+                        <img [src]="appointment.referenceImageUrl" alt="Referencia del cliente">
+                        <div class="image-actions">
+                            <a [href]="appointment.referenceImageUrl" target="_blank" mat-mini-fab color="primary"
+                                matTooltip="Ver en tamaño completo">
+                                <mat-icon>open_in_new</mat-icon>
+                            </a>
+                            <a [href]="appointment.referenceImageUrl" download mat-mini-fab
+                                matTooltip="Descargar imagen">
+                                <mat-icon>download</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </mat-card-content>
 
             <mat-card-actions class="actions-column">

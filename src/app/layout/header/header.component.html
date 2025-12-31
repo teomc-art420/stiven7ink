@@ -1,32 +1,33 @@
 <mat-toolbar color="primary">
-    <div class="header-content">
-      <!-- Logo -->
-      <div class="logo">
-        <a routerLink="/" class="logo-link">
-          <span class="logo-text">Stiven7ink</span>
-        </a>
-      </div>
-  
-      <!-- Navegación -->
-      <nav class="navigation">
-        <a mat-button routerLink="/" routerLinkActive="active">Inicio</a>
-        <a mat-button routerLink="/portfolio" routerLinkActive="active">Portafolio</a>
-        <a mat-button routerLink="/about" routerLinkActive="active">Sobre Mí</a>
-        <a mat-button routerLink="/blog" routerLinkActive="active">Blog</a>
-        <a mat-button routerLink="/appointments" routerLinkActive="active">Citas</a>
-        <a mat-button routerLink="/contact" routerLinkActive="active">Contacto</a>
-      
-        @if (!isLoggedIn) {
-          <a mat-button routerLink="/admin/login" class="login-btn">
-            <mat-icon>login</mat-icon>
-            Iniciar Sesión
-          </a>
-        } @else {
-          <a mat-button routerLink="/admin/dashboard" class="admin-btn">
-            <mat-icon>dashboard</mat-icon>
-            Admin
-          </a>
-        }
-      </nav>
+  <div class="header-content">
+    <!-- Logo -->
+    <div class="logo">
+      <a routerLink="/" class="logo-link">
+        <img src="/assets/images/logo.png" alt="Stiven7ink Logo" class="logo-img">
+        <span class="logo-text">Stiven7ink</span>
+      </a>
     </div>
-  </mat-toolbar>
+
+    <!-- Navegación -->
+    <nav class="navigation">
+      <a mat-button routerLink="/" routerLinkActive="active">Inicio</a>
+      <a mat-button routerLink="/portfolio" routerLinkActive="active">Portafolio</a>
+      <a mat-button routerLink="/about" routerLinkActive="active">Sobre Mí</a>
+      <a mat-button routerLink="/blog" routerLinkActive="active">Blog</a>
+      <a mat-button routerLink="/appointments" routerLinkActive="active">Citas</a>
+      <a mat-button routerLink="/contact" routerLinkActive="active">Contacto</a>
+
+      @if (!isLoggedIn) {
+      <a mat-button routerLink="/admin/login" class="login-btn">
+        <mat-icon>login</mat-icon>
+        Iniciar Sesión
+      </a>
+      } @else {
+      <a mat-button routerLink="/admin/dashboard" class="admin-btn">
+        <mat-icon>dashboard</mat-icon>
+        Admin
+      </a>
+      }
+    </nav>
+  </div>
+</mat-toolbar>

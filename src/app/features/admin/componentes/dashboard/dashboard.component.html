@@ -3,7 +3,8 @@
     <h1>Panel de Administración</h1>
     <div class="user-info">
       <span>Bienvenido, {{ currentUser?.email }}</span>
-      <button mat-raised-button color="warn" (click)="logout()">
+      <button mat-raised-button class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
         Cerrar Sesión
       </button>
     </div>
@@ -19,7 +20,8 @@
       </mat-card-header>
       <mat-card-content>
         <p>Gestiona los trabajos del portafolio</p>
-        <p class="count">0 trabajos</p>
+        <p class="count" *ngIf="!loading">{{ portfolioCount }} trabajo{{ portfolioCount !== 1 ? 's' : '' }}</p>
+        <p class="count" *ngIf="loading">Cargando...</p>
       </mat-card-content>
     </mat-card>
 
@@ -32,7 +34,9 @@
       </mat-card-header>
       <mat-card-content>
         <p>Gestiona las solicitudes de citas</p>
-        <p class="count">{{ appointmentCount }} citas pendientes</p>
+        <p class="count" *ngIf="!loading">{{ appointmentCount }} pendiente{{ appointmentCount !== 1 ? 's' : '' }} de {{
+          totalAppointments }}</p>
+        <p class="count" *ngIf="loading">Cargando...</p>
       </mat-card-content>
     </mat-card>
 
@@ -45,7 +49,8 @@
       </mat-card-header>
       <mat-card-content>
         <p>Gestiona los artículos del blog</p>
-        <p class="count">{{ blogCount }} artículos</p>
+        <p class="count" *ngIf="!loading">{{ blogCount }} artículo{{ blogCount !== 1 ? 's' : '' }}</p>
+        <p class="count" *ngIf="loading">Cargando...</p>
       </mat-card-content>
     </mat-card>
 
@@ -58,7 +63,8 @@
       </mat-card-header>
       <mat-card-content>
         <p>Ver mensajes de contacto</p>
-        <p class="count">{{ leadsCount }} mensajes</p>
+        <p class="count" *ngIf="!loading">{{ leadsCount }} sin leer de {{ totalLeads }}</p>
+        <p class="count" *ngIf="loading">Cargando...</p>
       </mat-card-content>
     </mat-card>
 

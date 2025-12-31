@@ -21,14 +21,15 @@
         </div>
         <div class="info-item">
           <h3>Email</h3>
-          <p>contacto#!64stiven7ink.com</p>
+          <p>Harolstiven110&#64;gmail.com</p>
         </div>
         <div class="info-item">
           <h3>Redes Sociales</h3>
           <div class="social-links">
-            <a href="#" target="_blank">Instagram</a>
-            <a href="#" target="_blank">Facebook</a>
-            <a href="#" target="_blank">WhatsApp</a>
+            <a href="https://www.instagram.com/stiven7ink/" target="_blank">Instagram</a>
+            <a href="https://www.facebook.com/Stevencardenass/" target="_blank">Facebook</a>
+            <a href="https://www.tiktok.com/@stiven7ink" target="_blank">TikTok</a>
+            <a href="https://wa.me/573124194089" target="_blank">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -55,17 +56,23 @@
           </div>
 
           <div class="form-group">
-            <label for="subject">Asunto</label>
-            <input type="text" id="subject" name="subject" [(ngModel)]="formData.subject"
-              placeholder="Asunto del mensaje">
+            <label for="subject">Número de Celular <span class="required">*</span></label>
+            <input type="tel" id="subject" name="subject" [(ngModel)]="formData.subject" required
+              placeholder="Ej: 3001234567" pattern="^[0-9]*$" minlength="7" maxlength="15" #subject="ngModel">
+            <div class="error-msg" *ngIf="subject.invalid && (subject.dirty || subject.touched)">
+              <span *ngIf="subject.errors?.['required']">El número de celular es obligatorio.</span>
+              <span *ngIf="subject.errors?.['pattern']">Solo se permiten números.</span>
+              <span *ngIf="subject.errors?.['minlength']">Mínimo 7 dígitos.</span>
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="message">Mensaje <span class="required">*</span></label>
+            <label for="message">Observación <span class="required">*</span></label>
             <textarea id="message" name="message" [(ngModel)]="formData.message" required rows="5"
-              placeholder="Escribe tu mensaje aquí..." #message="ngModel"></textarea>
+              placeholder="Cuéntanos sobre tu idea de tatuaje, estilo, tamaño, ubicación..."
+              #message="ngModel"></textarea>
             <div class="error-msg" *ngIf="message.invalid && (message.dirty || message.touched)">
-              <span *ngIf="message.errors?.['required']">El mensaje es obligatorio.</span>
+              <span *ngIf="message.errors?.['required']">La observación es obligatoria.</span>
             </div>
           </div>
 

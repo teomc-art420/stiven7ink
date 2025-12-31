@@ -53,36 +53,58 @@
                 <span *ngIf="phone.errors?.['minlength']">Mínimo 7 dígitos.</span>
               </div>
             </div>
+          </div>
 
-            <div class="form-group">
-              <label for="date">Fecha Preferida <span class="required">*</span></label>
-              <input type="date" id="date" name="date" [(ngModel)]="formData.date" (ngModelChange)="onDateChange()"
-                required #date="ngModel">
-              <div class="error-msg" *ngIf="date.invalid && (date.dirty || date.touched)">
-                <span *ngIf="date.errors?.['required']">Selecciona una fecha.</span>
+          <!-- Calendar Carousel -->
+          <div class="calendar-section">
+            <div class="calendar-header">
+              <button type="button" (click)="prevWeek()" class="nav-btn" [disabled]="checkingAvailability">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <h3>{{ currentMonthYear }}</h3>
+              <button type="button" (click)="nextWeek()" class="nav-btn" [disabled]="checkingAvailability">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+
+            <div class="calendar-carousel">
+              <div *ngFor="let day of calendarDays" class="calendar-day" [class.selected]="day.isSelected"
+                [class.today]="day.isToday" [class.past]="day.isPast" [class.disabled]="checkingAvailability"
+                (click)="selectDate(day)">
+                <span class="day-name">{{ day.dayName }}</span>
+                <span class="day-number">{{ day.dayNumber }}</span>
+              </div>
+            </div>
+
+            <div class="calendar-hint" *ngIf="!selectedDate">
+              <mat-icon>info</mat-icon>
+              <span>Selecciona una fecha para ver los horarios disponibles</span>
+            </div>
+          </div>
+
+          <!-- Time Slots Cards -->
+          <div class="time-slots-section" *ngIf="selectedDate">
+            <h3>Selecciona tu horario</h3>
+
+            <div class="loading-slots" *ngIf="checkingAvailability">
+              <mat-spinner diameter="40"></mat-spinner>
+              <p>Verificando disponibilidad...</p>
+            </div>
+
+            <div class="time-slots-grid" *ngIf="!checkingAvailability">
+              <div *ngFor="let slot of timeSlots" class="time-slot-card" [class.selected]="selectedTimeSlot === slot.id"
+                [class.unavailable]="!slot.isAvailable" (click)="selectTimeSlot(slot)">
+                <mat-icon class="slot-icon">{{ slot.icon }}</mat-icon>
+                <div class="slot-content">
+                  <div class="slot-label">{{ slot.label }}</div>
+                  <div class="slot-time">{{ slot.time }}</div>
+                  <div class="slot-note" *ngIf="slot.note">{{ slot.note }}</div>
+                </div>
+                <div class="slot-status" *ngIf="!slot.isAvailable">No disponible</div>
               </div>
             </div>
           </div>
 
-          <div class="form-group" *ngIf="dateSelected">
-            <label for="timeSlot">Horario Disponible <span class="required">*</span></label>
-            <div class="select-wrapper">
-              <select id="timeSlot" name="timeSlot" [(ngModel)]="formData.timeSlot" required
-                [disabled]="checkingAvailability" #timeSlot="ngModel">
-                <option value="">Selecciona un horario</option>
-                <option *ngFor="let slot of availableSlots" [value]="slot.value">
-                  {{ slot.label }}
-                </option>
-              </select>
-              <mat-spinner diameter="20" *ngIf="checkingAvailability" class="spinner-inline"></mat-spinner>
-            </div>
-            <div class="error-msg" *ngIf="timeSlot.invalid && (timeSlot.dirty || timeSlot.touched)">
-              <span *ngIf="timeSlot.errors?.['required']">Selecciona un horario.</span>
-            </div>
-            <p class="hint" *ngIf="availableSlots.length === 0 && !checkingAvailability && dateSelected">
-              No hay horarios disponibles. Selecciona otra fecha.
-            </p>
-          </div>
 
           <div class="form-group">
             <label for="style">Estilo de Tatuaje <span class="required">*</span></label>
@@ -169,6 +191,39 @@
             <li>Noche: 6:00 PM - 10:00 PM*</li>
           </ul>
           <p class="schedule-note">*Sujeto a confirmación previa</p>
+        </div>
+
+        <div class="info-card payment-card">
+          <h3>💳 Facilidades de Pago</h3>
+
+          <div class="payment-section">
+            <h4>Sin Reporte en Centrales</h4>
+            <ul>
+              <li><strong>Sistecrédito:</strong> Aprobación en 5 min.</li>
+              <li>Todas las tarjetas (Codensa, Falabella, Éxito, Visa, MC).</li>
+              <li>Nequi, DaviPlata y Bancolombia.</li>
+            </ul>
+          </div>
+
+          <div class="payment-section reported-section">
+            <h4>¿Reportado? ¡Hay solución!</h4>
+            <p class="intro-text">Plan de confianza progresivo:</p>
+            <ul class="step-list">
+              <li>
+                <span class="step-num">1</span>
+                <span><strong>1er Tatuaje:</strong> Abonas todas las cuotas antes de la sesión.</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span><strong>2do Tatuaje:</strong> Pagas el 50%, te tatuamos y financias el resto.</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span><strong>3er Tatuaje:</strong> Inicial del 20% y el resto a cuotas.</span>
+              </li>
+            </ul>
+            <p class="trust-note">Llevamos agenda de control de pagos para tu tranquilidad.</p>
+          </div>
         </div>
 
         <div class="info-card">

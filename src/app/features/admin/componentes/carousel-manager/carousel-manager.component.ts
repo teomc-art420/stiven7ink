@@ -45,22 +45,21 @@ export class CarouselManagerComponent implements OnInit, OnDestroy {
             const path = `heroCarousel/${Date.now()}_${this.file.name}`;
             const res = await this.firebase.uploadFile(path, this.file);
             if (res.success && res.url) {
-                // No pasamos createdAt aquí porque addDocument ya lo agrega automáticamente
                 const result = await this.firebase.addDocument('heroCarousel', {
                     imageUrl: res.url,
                     title: this.title || this.file.name,
                     order: this.order || 0,
                     storagePath: path
                 });
-                
+
                 if (result.success) {
-                    // Limpiar formulario solo si fue exitoso
+                    // Limpiar formulario - la lista se actualiza automáticamente por la suscripción
                     this.title = '';
                     this.order = 0;
                     this.file = undefined;
-                    // Resetear el input de archivo
                     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
                     if (fileInput) fileInput.value = '';
+                    alert('Imagen agregada correctamente');
                 } else {
                     alert('Error al guardar en la base de datos: ' + (result.error || 'Error desconocido'));
                 }
@@ -77,13 +76,30 @@ export class CarouselManagerComponent implements OnInit, OnDestroy {
     }
 
     async remove(item: any) {
-        if (!confirm('Eliminar esta imagen del carrusel?')) return;
+        if (!confirm('¿Eliminar esta imagen del carrusel?')) return;
+        this.loading = true;
         try {
-            if (item.storagePath) await this.firebase.deleteFile(item.storagePath);
-            await this.firebase.deleteDocument('heroCarousel', item.id);
-        } catch (err) {
-            console.error(err);
-            alert('Error eliminando');
+            // Eliminar imagen de Storage
+            if (item.storagePath) {
+                const deleteResult = await this.firebase.deleteFile(item.storagePath);
+                if (!deleteResult.success) {
+                    console.warn('No se pudo eliminar la imagen de Storage:', deleteResult.error);
+                }
+            }
+
+            // Eliminar documento de Firestore - la lista se actualiza automáticamente por la suscripción
+            const result = await this.firebase.deleteDocument('heroCarousel', item.id);
+
+            if (result.success) {
+                alert('Imagen eliminada correctamente');
+            } else {
+                alert('Error al eliminar: ' + (result.error || 'Error desconocido'));
+            }
+        } catch (err: any) {
+            console.error('Error eliminando:', err);
+            alert('Error eliminando: ' + (err.message || 'Error desconocido'));
+        } finally {
+            this.loading = false;
         }
     }
 }

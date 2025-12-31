@@ -76,12 +76,38 @@ export class PortfolioManagerComponent implements OnInit {
     this.loading = true;
 
     try {
-      // 1. Subir imagen a Storage
-      const imagePath = `portfolio/${Date.now()}_${this.formData.image.name}`;
-      const uploadResult = await this.firebaseService.uploadFile(imagePath, this.formData.image);
+      let imageUrl = '';
+      let imagePath = '';
 
-      if (!uploadResult.success) {
-        alert('Error al subir la imagen');
+      // 1. Manejar imagen (nueva o existente)
+      if (this.formData.image) {
+        // Si hay una nueva imagen, subirla
+        imagePath = `portfolio/${Date.now()}_${this.formData.image.name}`;
+        const uploadResult = await this.firebaseService.uploadFile(imagePath, this.formData.image);
+
+        if (!uploadResult.success) {
+          alert('Error al subir la imagen');
+          this.loading = false;
+          return;
+        }
+
+        imageUrl = uploadResult.url!;
+
+        // Si estamos editando y había una imagen anterior, eliminarla
+        if (this.editingWork && this.editingWork.imagePath) {
+          console.log('Eliminando imagen anterior:', this.editingWork.imagePath);
+          const deleteResult = await this.firebaseService.deleteFile(this.editingWork.imagePath);
+          if (!deleteResult.success) {
+            console.warn('No se pudo eliminar la imagen anterior:', deleteResult.error);
+          }
+        }
+      } else if (this.editingWork) {
+        // Si estamos editando sin cambiar imagen, mantener la existente
+        imageUrl = this.editingWork.imageUrl;
+        imagePath = this.editingWork.imagePath;
+      } else {
+        // Nuevo trabajo sin imagen
+        alert('Por favor selecciona una imagen');
         this.loading = false;
         return;
       }
@@ -91,7 +117,7 @@ export class PortfolioManagerComponent implements OnInit {
         title: this.formData.title,
         style: this.formData.style,
         description: this.formData.description || '',
-        imageUrl: uploadResult.url,
+        imageUrl: imageUrl,
         imagePath: imagePath
       };
 
@@ -121,13 +147,13 @@ export class PortfolioManagerComponent implements OnInit {
         }
       }
 
-      // 4. Limpiar formulario
-      this.loading = false; // Stop loading before resetting/closing
+      // 3. Limpiar formulario
+      this.loading = false;
       this.resetForm();
 
     } catch (error) {
-      console.error(error);
-      alert('Error al guardar el trabajo');
+      console.error('Error completo:', error);
+      alert('Error al guardar el trabajo: ' + (error as Error).message);
       this.loading = false;
     }
   }
@@ -140,12 +166,21 @@ export class PortfolioManagerComponent implements OnInit {
     this.loading = true;
 
     try {
-      // Eliminar imagen de Storage
+      // 1. Eliminar imagen de Storage primero
       if (work.imagePath) {
-        await this.firebaseService.deleteFile(work.imagePath);
+        console.log('Intentando eliminar imagen:', work.imagePath);
+        const deleteResult = await this.firebaseService.deleteFile(work.imagePath);
+
+        if (!deleteResult.success) {
+          console.error('Error al eliminar imagen de Storage:', deleteResult.error);
+          // Continuar con la eliminación del documento aunque falle la imagen
+          alert('Advertencia: No se pudo eliminar la imagen de Storage, pero se eliminará el registro.');
+        } else {
+          console.log('Imagen eliminada correctamente de Storage');
+        }
       }
 
-      // Eliminar documento de Firestore
+      // 2. Eliminar documento de Firestore
       const result = await this.firebaseService.deleteDocument('portfolio', work.id);
 
       if (result.success) {
@@ -157,8 +192,8 @@ export class PortfolioManagerComponent implements OnInit {
       }
 
     } catch (error) {
-      console.error(error);
-      alert('Error al eliminar el trabajo');
+      console.error('Error completo al eliminar:', error);
+      alert('Error al eliminar el trabajo: ' + (error as Error).message);
     } finally {
       this.loading = false;
     }

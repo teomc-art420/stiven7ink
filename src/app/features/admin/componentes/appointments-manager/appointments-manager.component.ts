@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -24,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     MatSnackBarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTooltipModule,
     FormsModule
   ],
   templateUrl: './appointments-manager.component.html',

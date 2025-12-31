@@ -74,9 +74,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
 
         this.loading = false;
+
+        // Reiniciar autoplay si cambia el número de imágenes
         if (this.carouselImages.length > 0) {
-          console.log(`Carrusel iniciado con ${this.carouselImages.length} imágenes. CurrentIndex: ${this.currentIndex}`);
-          this.startAutoPlay();
+          console.log(`Carrusel actualizado con ${this.carouselImages.length} imágenes.`);
+
+          // Ajustar currentIndex si está fuera de rango
+          if (this.currentIndex >= this.carouselImages.length) {
+            this.currentIndex = 0;
+          }
+
+          // Reiniciar autoplay solo si no está activo
+          if (!this.autoPlaySub || this.autoPlaySub.closed) {
+            this.startAutoPlay();
+          }
+        } else {
+          // Si no hay imágenes, detener autoplay
+          if (this.autoPlaySub) {
+            this.autoPlaySub.unsubscribe();
+          }
         }
       },
       error: (err) => {
