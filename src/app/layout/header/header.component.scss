@@ -1,16 +1,19 @@
-mat-toolbar {
+:host {
+  display: block;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(253, 0, 0, 0.1);
 }
 
-
-:host ::ng-deep .mat-toolbar {
+mat-toolbar {
   background: var(--wine) !important;
+  color: var(--text) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  height: 70px;
 }
 
-.header-content {
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,8 +21,10 @@ mat-toolbar {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  height: 100%;
 }
 
+/* Logo Styles */
 .logo {
   .logo-link {
     text-decoration: none;
@@ -38,65 +43,118 @@ mat-toolbar {
 
     .logo-text {
       font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: 1.5px;
       color: white;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       margin-left: 10px;
+
+      @media (max-width: 480px) {
+        font-size: 1.2rem;
+        // Ocultar texto en móviles muy pequeños si es necesario
+      }
     }
   }
 }
 
-.navigation {
+/* Desktop Navigation */
+.desktop-nav {
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  align-items: center;
 
   a {
-    color: white;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 0.95rem;
 
     &.active {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
     }
   }
 }
 
-// Responsive
-@media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    padding: 10px;
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  color: white;
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 70px);
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  z-index: 999;
+
+  &.open {
+    transform: translateX(0);
   }
 
-  .navigation {
-    flex-wrap: wrap;
-    justify-content: center;
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+
+    a {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      width: 80%;
+      text-align: center;
+      border-radius: 8px;
+
+      &.active {
+        background-color: var(--wine);
+        color: white;
+      }
+
+      mat-icon {
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
   }
 }
 
+/* Specific button styles */
 .login-btn,
 .admin-btn {
-  margin-left: 10px;
   border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-left: 5px;
 
-  mat-icon {
-    margin-right: 5px;
+  @media (max-width: 900px) {
+    margin-left: 0;
+    margin-top: 10px;
+    border-color: var(--wine);
   }
 }
 
-.admin-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+/* Responsive Breakpoints */
+@media (max-width: 900px) {
+  .desktop-nav {
+    display: none;
+  }
 
-:host ::ng-deep .mat-toolbar {
-  background: var(--wine) !important;
-  /* vinotinto */
-  color: var(--text) !important;
-  height: 64px;
-  box-shadow: none;
-}
-
-:host ::ng-deep .mat-toolbar a,
-:host ::ng-deep .mat-toolbar button {
-  color: var(--text) !important;
+  .mobile-menu-btn {
+    display: block;
+  }
 }

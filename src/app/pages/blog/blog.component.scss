@@ -149,7 +149,24 @@
   }
 
   .blog-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    grid-template-columns: repeat(2, 1fr); // 2 columnas en móvil
+    gap: 15px;
+  }
+
+  .blog-content {
+    padding: 15px; // Menos padding
+  }
+
+  .blog-image {
+    height: 150px; // Imagen más pequeña
+  }
+
+  .blog-content h2 {
+    font-size: 1rem; // Título pequeño
+    margin-bottom: 5px;
+  }
+
+  .blog-excerpt {
+    display: none; // Ocultar resumen texto largo en móvil para ahorrar espacio
   }
 }

@@ -43,6 +43,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
+  // Una tarjeta por fila cuando no caben cómodamente dos columnas de 300px
+  grid-auto-flow: row;
 }
 
 .portfolio-item {
@@ -113,14 +115,68 @@
   font-size: 1.2rem;
 }
 
-// Responsive
-@media (max-width: 768px) {
-  .portfolio-header h1 {
-    font-size: 2.5rem;
+// Responsive: tablet y móvil en una sola columna (evita 2+ columnas “apretadas”).
+// Hasta 1024px muchos equipos seguían entrando en 2 columnas por minmax(300px, 1fr).
+@media (max-width: 1024px) {
+  .portfolio-section {
+    padding: 40px 16px;
+  }
+
+  .portfolio-header {
+    margin-bottom: 28px;
+
+    h1 {
+      font-size: 2.25rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 28px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .filters .filter-btn {
+    width: 100%;
+    text-align: center;
   }
 
   .portfolio-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .portfolio-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .portfolio-item:hover {
+    transform: none;
+  }
+
+  .portfolio-image {
+    height: 280px;
+    flex-shrink: 0;
+  }
+
+  .portfolio-info {
+    padding: 20px;
+    flex: 1;
+    min-width: 0;
   }
 }

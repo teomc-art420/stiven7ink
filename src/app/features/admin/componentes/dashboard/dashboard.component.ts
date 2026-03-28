@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
       this.leadsCount = leads.filter(l => !l.read).length;
 
       // Carousel
-      const carousel = await this.firebaseService.getCollection('carousel');
+      const carousel = await this.firebaseService.getHeroCarouselCollection();
       this.carouselCount = carousel.length;
     } catch (error) {
       console.error('Error loading dashboard data:', error);

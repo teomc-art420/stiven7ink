@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
+  isMenuOpen: boolean = false;
   private authSubscription: Subscription | null = null;
 
   constructor(private firebaseService: FirebaseService) { }
@@ -24,6 +25,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authSubscription = this.firebaseService.getAuthState().subscribe(user => {
       this.isLoggedIn = !!user;
     });
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   ngOnDestroy() {

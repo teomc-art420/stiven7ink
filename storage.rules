@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// Despliegue: firebase deploy --only storage
+//
+// portfolio / heroCarousel / blog: público lectura; escritura solo admin.
+// appointments: referencias de imagen desde el formulario público (imagen ≤ 5MB, solo image/*).
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isImageUpload() {
+      return request.resource != null
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /portfolio/{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if signedIn();
+    }
+
+    match /heroCarousel/{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if signedIn();
+    }
+
+    match /blog/{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if signedIn();
+    }
+
+    match /appointments/{allPaths=**} {
+      allow read: if signedIn();
+      allow write: if isImageUpload();
+      allow delete: if signedIn();
+    }
+  }
+}

@@ -1,0 +1,102 @@
+rules_version = '2';
+
+// Seguridad Stiven7ink:
+// - Contenido público (portfolio, blog, hero carousel, ocupación de agenda) solo lectura para todos.
+// - Datos sensibles (citas completas, mensajes de contacto) solo usuarios autenticados (admin).
+// - Escrituras públicas limitadas: nuevas solicitudes de cita (batch con busySlots), mensajes de contacto, subida de imágenes vía Storage.
+//
+// Despliegue: firebase deploy --only firestore:rules
+//
+// Si tenías citas antes de busySlots: crea documentos en busySlots con id "{fecha}_{timeSlot}" (ej. 2025-04-01_manana)
+// y campos date + timeSlot para que el calendario marque esos huecos como ocupados.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isValidYmd(d) {
+      return d is string && d.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+    }
+
+    function isAllowedTimeSlot(ts) {
+      return ts is string && ts in ['manana', 'tarde', 'noche'];
+    }
+
+    // Solo fecha + franja: lectura pública para armar el calendario sin exponer datos personales.
+    match /busySlots/{slotId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['date', 'timeSlot'])
+        && isValidYmd(request.resource.data.date)
+        && isAllowedTimeSlot(request.resource.data.timeSlot)
+        && slotId == request.resource.data.date + '_' + request.resource.data.timeSlot;
+      allow update: if false;
+      allow delete: if signedIn();
+    }
+
+    // Solicitudes de cita: crear solo estado pendiente; lectura y gestión solo admin.
+    match /appointments/{docId} {
+      allow read: if signedIn();
+      allow create: if request.resource.data.keys().hasOnly([
+          'name', 'email', 'phone', 'date', 'timeSlot', 'style', 'size', 'description',
+          'referenceImageUrl', 'status', 'createdAt'
+        ])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 120
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 320
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() <= 40
+        && isValidYmd(request.resource.data.date)
+        && isAllowedTimeSlot(request.resource.data.timeSlot)
+        && request.resource.data.style is string && request.resource.data.style.size() <= 120
+        && request.resource.data.size is string && request.resource.data.size() <= 120
+        && request.resource.data.description is string && request.resource.data.description.size() <= 8000
+        && request.resource.data.createdAt is timestamp
+        && (
+          !('referenceImageUrl' in request.resource.data)
+          || request.resource.data.referenceImageUrl == null
+          || (request.resource.data.referenceImageUrl is string
+              && request.resource.data.referenceImageUrl.size() <= 2000)
+        );
+      allow update, delete: if signedIn();
+    }
+
+    match /portfolio/{docId} {
+      allow read: if true;
+      allow create, update, delete: if signedIn();
+    }
+
+    match /blog/{docId} {
+      allow read: if true;
+      allow create, update, delete: if signedIn();
+    }
+
+    match /heroCarousel/{docId} {
+      allow read: if true;
+      allow create, update, delete: if signedIn();
+    }
+
+    // Mensajes de contacto: envío público controlado; lectura/gestión solo admin.
+    match /contacts/{docId} {
+      allow read: if signedIn();
+      allow create: if request.resource.data.keys().hasOnly([
+          'name', 'email', 'subject', 'message', 'read', 'createdAt'
+        ])
+        && request.resource.data.read == false
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 120
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 320
+        && request.resource.data.subject is string
+        && request.resource.data.subject.size() <= 200
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 8000
+        && request.resource.data.createdAt is timestamp;
+      allow update, delete: if signedIn();
+    }
+  }
+}

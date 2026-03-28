@@ -96,6 +96,12 @@ export class AppointmentsManagerComponent implements OnInit {
           }
           this.applyFilter();
         }
+        if (status === 'cancelled') {
+          const app = this.appointments.find(a => a.id === id);
+          if (app?.date && app?.timeSlot) {
+            await this.firebaseService.deleteBusySlot(app.date, app.timeSlot);
+          }
+        }
         this.showSnackBar(`Cita ${status === 'confirmed' ? 'confirmada' : 'cancelada'} correctamente`, 'OK');
       } else {
         this.showSnackBar('Error al actualizar el estado', 'Cerrar');
@@ -112,8 +118,12 @@ export class AppointmentsManagerComponent implements OnInit {
     }
 
     try {
+      const toRemove = this.appointments.find(a => a.id === id);
       const result = await this.firebaseService.deleteDocument('appointments', id);
       if (result.success) {
+        if (toRemove?.date && toRemove?.timeSlot) {
+          await this.firebaseService.deleteBusySlot(toRemove.date, toRemove.timeSlot);
+        }
         // Remove from local state
         this.appointments = this.appointments.filter(a => a.id !== id);
         this.applyFilter();

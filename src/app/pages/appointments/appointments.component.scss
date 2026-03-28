@@ -448,6 +448,25 @@
 
   .appointment-info {
     order: -1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // Cuadrícula 2x2
+    gap: 15px; // Espacio reducido
+  }
+
+  .info-card {
+    padding: 20px; // Menos padding interno
+
+    h3 {
+      font-size: 1rem; // Título más pequeño
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol,
+    p {
+      font-size: 0.85rem; // Texto compacto
+      line-height: 1.4;
+    }
   }
 }
 

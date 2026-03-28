@@ -167,14 +167,14 @@ export class AppointmentsComponent implements OnInit {
     this.checkingAvailability = true;
 
     try {
-      const existingAppointments = await this.firebaseService.getAppointmentsByDate(this.formData.date);
+      const busySlots = await this.firebaseService.getBusySlotsByDate(this.formData.date);
 
       // Reset all slots to available
       this.timeSlots.forEach(slot => slot.isAvailable = true);
 
-      // Mark taken slots as unavailable
-      existingAppointments.forEach(app => {
-        const slot = this.timeSlots.find(s => s.id === app.timeSlot);
+      // Mark taken slots as unavailable (solo fecha + franja; sin datos personales)
+      busySlots.forEach(busy => {
+        const slot = this.timeSlots.find(s => s.id === busy.timeSlot);
         if (slot) {
           slot.isAvailable = false;
         }
@@ -239,8 +239,8 @@ export class AppointmentsComponent implements OnInit {
 
     try {
       // Re-verificar disponibilidad antes de guardar
-      const existingAppointments = await this.firebaseService.getAppointmentsByDate(this.formData.date);
-      const isTaken = existingAppointments.some(app => app.timeSlot === this.formData.timeSlot);
+      const busySlots = await this.firebaseService.getBusySlotsByDate(this.formData.date);
+      const isTaken = busySlots.some(b => b.timeSlot === this.formData.timeSlot);
 
       if (isTaken) {
         alert('Lo sentimos, este horario acaba de ser ocupado. Por favor selecciona otro.');
@@ -264,14 +264,10 @@ export class AppointmentsComponent implements OnInit {
         }
       }
 
-      const appointmentData = {
+      const result = await this.firebaseService.createPublicAppointmentWithSlot({
         ...this.formData,
-        referenceImageUrl: referenceImageUrl || null,
-        status: 'pending',
-        createdAt: new Date()
-      };
-
-      const result = await this.firebaseService.addDocument('appointments', appointmentData);
+        referenceImageUrl: referenceImageUrl ? referenceImageUrl : null
+      });
 
       if (result.success) {
         this.submitted = true;
