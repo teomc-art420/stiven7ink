@@ -40,6 +40,7 @@ export class BlogManagerComponent implements OnInit {
 
     selectedFile: File | null = null;
     previewUrl: string | null = null;
+    isVideo: boolean = false;
 
     constructor(
         private firebaseService: FirebaseService,
@@ -73,13 +74,29 @@ export class BlogManagerComponent implements OnInit {
         this.formData = { title: '', content: '' };
         this.selectedFile = null;
         this.previewUrl = null;
+        this.isVideo = false;
         this.editingId = null;
     }
 
     onFileSelected(event: any) {
         const file = event.target.files[0];
         if (file) {
+            // Validar tipo de archivo: solo imágenes y videos
+            if (!file.type.match(/image\/*|video\/*/)) {
+                this.showSnackBar('Solo se permiten imágenes y videos', 'Cerrar');
+                return;
+            }
+
+            // Validar tamaño: máximo 500MB para videos 4K
+            const maxSize = 500 * 1024 * 1024; // 500MB
+            if (file.size > maxSize) {
+                this.showSnackBar('El archivo no debe superar 500MB', 'Cerrar');
+                return;
+            }
+
             this.selectedFile = file;
+            this.isVideo = file.type.startsWith('video/');
+
             const reader = new FileReader();
             reader.onload = () => {
                 this.previewUrl = reader.result as string;
@@ -107,7 +124,8 @@ export class BlogManagerComponent implements OnInit {
             const postData = {
                 ...this.formData,
                 imageUrl,
-                imagePath: this.selectedFile ? `blog/${Date.now()}_${this.selectedFile.name}` : null // Guardar path para borrar después
+                imagePath: this.selectedFile ? `blog/${Date.now()}_${this.selectedFile.name}` : null, // Guardar path para borrar después
+                mediaType: this.selectedFile ? (this.isVideo ? 'video' : 'image') : null
             };
 
             let result;
@@ -139,6 +157,7 @@ export class BlogManagerComponent implements OnInit {
             content: post.content
         };
         this.previewUrl = post.imageUrl;
+        this.isVideo = post.mediaType === 'video';
         this.showForm = true;
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -149,9 +168,13 @@ export class BlogManagerComponent implements OnInit {
 
         this.loading = true;
         try {
-            // 1. Eliminar imagen si existe (esto requeriría guardar el path de la imagen, 
-            // por ahora simplificamos borrando solo el doc si no tenemos el path exacto,
-            // pero idealmente deberíamos guardar imagePath en el documento)
+            // 1. Eliminar archivo si existe
+            if (post.imagePath) {
+                const deleteResult = await this.firebaseService.deleteFile(post.imagePath);
+                if (!deleteResult.success) {
+                    console.warn('No se pudo eliminar el archivo:', deleteResult.error);
+                }
+            }
 
             // 2. Eliminar documento
             const result = await this.firebaseService.deleteDocument('blog', post.id);

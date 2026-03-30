@@ -23,13 +23,14 @@
             </mat-form-field>
 
             <div class="file-input-container" (click)="fileInput.click()">
-                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*">
+                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*,video/*">
                 <mat-icon>cloud_upload</mat-icon>
-                <p>Haz clic para subir una imagen de portada</p>
+                <p>Haz clic para subir una imagen o video de portada</p>
                 <p *ngIf="selectedFile" class="selected-file">Archivo seleccionado: {{ selectedFile.name }}</p>
             </div>
 
-            <img *ngIf="previewUrl" [src]="previewUrl" class="preview-image" alt="Vista previa">
+            <img *ngIf="previewUrl && !isVideo" [src]="previewUrl" class="preview-image" alt="Vista previa">
+            <video *ngIf="previewUrl && isVideo" [src]="previewUrl" class="preview-video" controls></video>
 
             <div class="form-actions">
                 <button mat-button type="button" (click)="toggleForm()">Cancelar</button>
@@ -53,7 +54,9 @@
 
     <div *ngIf="!loading && posts.length > 0" class="posts-grid">
         <mat-card *ngFor="let post of posts" class="post-card">
-            <img mat-card-image [src]="post.imageUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+            <img mat-card-image *ngIf="post.mediaType !== 'video'"
+                [src]="post.imageUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+            <video mat-card-image *ngIf="post.mediaType === 'video'" [src]="post.imageUrl" controls></video>
             <mat-card-header>
                 <mat-card-title>{{ post.title }}</mat-card-title>
                 <mat-card-subtitle>
