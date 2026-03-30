@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon';
 import { FirebaseService } from '../../core/services/firebase.service';
 
 import { CommonModule } from '@angular/common';
@@ -29,7 +28,7 @@ interface TimeSlot {
 @Component({
   selector: 'app-appointments',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatProgressSpinnerModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './appointments.component.html',
   styleUrl: './appointments.component.scss'
 })
@@ -54,9 +53,9 @@ export class AppointmentsComponent implements OnInit {
 
   // Time Slots
   timeSlots: TimeSlot[] = [
-    { id: 'manana', label: 'Mañana', icon: 'wb_sunny', time: '9:00 AM - 1:00 PM', isAvailable: true },
-    { id: 'tarde', label: 'Tarde', icon: 'wb_twilight', time: '2:00 PM - 6:00 PM', isAvailable: true },
-    { id: 'noche', label: 'Noche', icon: 'nights_stay', time: '6:00 PM - 10:00 PM', note: 'Sujeto a aprobación', isAvailable: true }
+    { id: 'manana', label: 'Mañana', icon: '☀️', time: '9:00 AM - 1:00 PM', isAvailable: true },
+    { id: 'tarde', label: 'Tarde', icon: '🌤️', time: '2:00 PM - 6:00 PM', isAvailable: true },
+    { id: 'noche', label: 'Noche', icon: '🌙', time: '6:00 PM - 10:00 PM', note: 'Sujeto a aprobación', isAvailable: true }
   ];
   selectedTimeSlot: string | null = null;
   checkingAvailability: boolean = false;

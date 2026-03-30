@@ -2,10 +2,13 @@
 
 .calendar-section {
     margin-bottom: 2rem;
-    padding: 20px;
+    padding: clamp(12px, 3vw, 20px);
     background: #0e0e0e;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 
     .calendar-header {
         display: flex;
@@ -33,12 +36,13 @@
             cursor: pointer;
             transition: all 0.3s ease;
             padding: 0;
+            color: #fff;
 
-            mat-icon {
-                color: #fff;
-                font-size: 20px;
-                width: 20px;
-                height: 20px;
+            .nav-btn-icon {
+                width: 22px;
+                height: 22px;
+                display: block;
+                flex-shrink: 0;
             }
 
             &:hover:not(:disabled) {
@@ -56,15 +60,18 @@
 
     .calendar-carousel {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: clamp(4px, 1.5vw, 8px);
         margin-bottom: 1rem;
+        width: 100%;
+        min-width: 0;
 
         .calendar-day {
             background: #1a1a1a;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 10px 6px;
+            padding: clamp(6px, 2vw, 10px) clamp(4px, 1vw, 6px);
+            min-width: 0;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -142,11 +149,11 @@
         color: #999;
         font-size: 0.85rem;
 
-        mat-icon {
+        .calendar-hint-icon {
             color: var(--wine-accent, #8b1538);
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
     }
 }
@@ -155,10 +162,12 @@
 
 .time-slots-section {
     margin-bottom: 2rem;
-    padding: 20px;
+    padding: clamp(12px, 3vw, 20px);
     background: #0e0e0e;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
+    max-width: 100%;
+    box-sizing: border-box;
 
     h3 {
         color: #fff;
@@ -201,13 +210,15 @@
             gap: 15px;
 
             .slot-icon {
-                font-size: 2rem;
+                font-size: 1.85rem;
+                line-height: 1;
                 width: 2rem;
                 height: 2rem;
-                color: #999;
-                filter: grayscale(0.3);
-                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 flex-shrink: 0;
+                transition: all 0.3s ease;
             }
 
             .slot-content {
@@ -255,9 +266,7 @@
                 box-shadow: 0 4px 20px rgba(139, 21, 56, 0.5);
 
                 .slot-icon {
-                    filter: grayscale(0);
-                    color: #fff;
-                    transform: scale(1.1);
+                    transform: scale(1.08);
                 }
 
                 .slot-time {
@@ -285,8 +294,7 @@
                 box-shadow: 0 4px 15px rgba(139, 21, 56, 0.3);
 
                 .slot-icon {
-                    filter: grayscale(0);
-                    color: var(--wine-accent, #8b1538);
+                    transform: scale(1.05);
                 }
             }
         }
@@ -325,10 +333,9 @@
                 width: 32px;
                 height: 32px;
 
-                mat-icon {
-                    font-size: 18px;
-                    width: 18px;
-                    height: 18px;
+                .nav-btn-icon {
+                    width: 20px;
+                    height: 20px;
                 }
             }
         }
@@ -375,7 +382,7 @@
                 padding: 14px 16px;
 
                 .slot-icon {
-                    font-size: 1.8rem;
+                    font-size: 1.65rem;
                     width: 1.8rem;
                     height: 1.8rem;
                 }

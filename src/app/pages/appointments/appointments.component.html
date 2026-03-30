@@ -18,7 +18,53 @@
 
     @if (!submitted) {
     <div class="appointments-content">
-      <!-- Formulario de cita -->
+      <!-- Proceso y pagos al inicio (mismo ancho que el resto) -->
+      <div class="appointment-info-top">
+        <div class="info-card">
+          <h3>📋 Proceso de Cita</h3>
+          <ol>
+            <li>Completa el formulario con tus datos</li>
+            <li>Recibirás una confirmación por email</li>
+            <li>Revisaremos tu solicitud y te contactaremos</li>
+            <li>Confirmaremos la fecha y hora de tu cita</li>
+          </ol>
+        </div>
+
+        <div class="info-card payment-card">
+          <h3>💳 Facilidades de Pago</h3>
+
+          <div class="payment-section">
+            <h4>Sin Reporte en Centrales</h4>
+            <ul>
+              <li><strong>Sistecrédito:</strong> Aprobación en 5 min.</li>
+              <li>Todas las tarjetas (Codensa, Falabella, Éxito, Visa, MC).</li>
+              <li>Nequi, DaviPlata y Bancolombia.</li>
+            </ul>
+          </div>
+
+          <div class="payment-section reported-section">
+            <h4>¿Reportado? ¡Hay solución!</h4>
+            <p class="intro-text">Plan de confianza progresivo:</p>
+            <ul class="step-list">
+              <li>
+                <span class="step-num">1</span>
+                <span><strong>1er Tatuaje:</strong> Abonas todas las cuotas antes de la sesión.</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span><strong>2do Tatuaje:</strong> Pagas el 50%, te tatuamos y financias el resto.</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span><strong>3er Tatuaje:</strong> Inicial del 20% y el resto a cuotas.</span>
+              </li>
+            </ul>
+            <p class="trust-note">Llevamos agenda de control de pagos para tu tranquilidad.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario centrado, mismo ancho máximo que las tarjetas -->
       <div class="appointment-form-container">
         <form class="appointment-form" (ngSubmit)="appointmentForm.valid && onSubmit()" #appointmentForm="ngForm">
           <div class="form-row">
@@ -58,12 +104,18 @@
           <!-- Calendar Carousel -->
           <div class="calendar-section">
             <div class="calendar-header">
-              <button type="button" (click)="prevWeek()" class="nav-btn" [disabled]="checkingAvailability">
-                <mat-icon>chevron_left</mat-icon>
+              <button type="button" (click)="prevWeek()" class="nav-btn" [disabled]="checkingAvailability"
+                aria-label="Semana anterior">
+                <svg class="nav-btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                </svg>
               </button>
               <h3>{{ currentMonthYear }}</h3>
-              <button type="button" (click)="nextWeek()" class="nav-btn" [disabled]="checkingAvailability">
-                <mat-icon>chevron_right</mat-icon>
+              <button type="button" (click)="nextWeek()" class="nav-btn" [disabled]="checkingAvailability"
+                aria-label="Semana siguiente">
+                <svg class="nav-btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                </svg>
               </button>
             </div>
 
@@ -77,7 +129,10 @@
             </div>
 
             <div class="calendar-hint" *ngIf="!selectedDate">
-              <mat-icon>info</mat-icon>
+              <svg class="calendar-hint-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor"
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+              </svg>
               <span>Selecciona una fecha para ver los horarios disponibles</span>
             </div>
           </div>
@@ -94,7 +149,7 @@
             <div class="time-slots-grid" *ngIf="!checkingAvailability">
               <div *ngFor="let slot of timeSlots" class="time-slot-card" [class.selected]="selectedTimeSlot === slot.id"
                 [class.unavailable]="!slot.isAvailable" (click)="selectTimeSlot(slot)">
-                <mat-icon class="slot-icon">{{ slot.icon }}</mat-icon>
+                <span class="slot-icon" aria-hidden="true">{{ slot.icon }}</span>
                 <div class="slot-content">
                   <div class="slot-label">{{ slot.label }}</div>
                   <div class="slot-time">{{ slot.time }}</div>
@@ -170,18 +225,8 @@
         </form>
       </div>
 
-      <!-- Información adicional -->
-      <div class="appointment-info">
-        <div class="info-card">
-          <h3>📋 Proceso de Cita</h3>
-          <ol>
-            <li>Completa el formulario con tus datos</li>
-            <li>Recibirás una confirmación por email</li>
-            <li>Revisaremos tu solicitud y te contactaremos</li>
-            <li>Confirmaremos la fecha y hora de tu cita</li>
-          </ol>
-        </div>
-
+      <!-- Horarios y consejos al final -->
+      <div class="appointment-bottom-info">
         <div class="info-card">
           <h3>⏰ Horarios Disponibles</h3>
           <p><strong>Domingo a Domingo:</strong></p>
@@ -192,40 +237,6 @@
           </ul>
           <p class="schedule-note">*Sujeto a confirmación previa</p>
         </div>
-
-        <div class="info-card payment-card">
-          <h3>💳 Facilidades de Pago</h3>
-
-          <div class="payment-section">
-            <h4>Sin Reporte en Centrales</h4>
-            <ul>
-              <li><strong>Sistecrédito:</strong> Aprobación en 5 min.</li>
-              <li>Todas las tarjetas (Codensa, Falabella, Éxito, Visa, MC).</li>
-              <li>Nequi, DaviPlata y Bancolombia.</li>
-            </ul>
-          </div>
-
-          <div class="payment-section reported-section">
-            <h4>¿Reportado? ¡Hay solución!</h4>
-            <p class="intro-text">Plan de confianza progresivo:</p>
-            <ul class="step-list">
-              <li>
-                <span class="step-num">1</span>
-                <span><strong>1er Tatuaje:</strong> Abonas todas las cuotas antes de la sesión.</span>
-              </li>
-              <li>
-                <span class="step-num">2</span>
-                <span><strong>2do Tatuaje:</strong> Pagas el 50%, te tatuamos y financias el resto.</span>
-              </li>
-              <li>
-                <span class="step-num">3</span>
-                <span><strong>3er Tatuaje:</strong> Inicial del 20% y el resto a cuotas.</span>
-              </li>
-            </ul>
-            <p class="trust-note">Llevamos agenda de control de pagos para tu tranquilidad.</p>
-          </div>
-        </div>
-
         <div class="info-card">
           <h3>💡 Consejos</h3>
           <ul>

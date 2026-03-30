@@ -14,6 +14,8 @@ export class PortfolioComponent implements OnInit {
   filteredWorks: any[] = [];
   selectedFilter: string = 'Todos';
   loading: boolean = true;
+  /** Solo una tarjeta con descripción expandida; al abrir otra, esta se cierra. */
+  expandedWorkId: string | null = null;
 
   styles = ['Todos', 'Realismo', 'Tradicional', 'Minimalista', 'Geométrico', 'Acuarela', 'Blackwork'];
 
@@ -31,11 +33,24 @@ export class PortfolioComponent implements OnInit {
   }
 
   filterByStyle(style: string) {
+    this.expandedWorkId = null;
     this.selectedFilter = style;
     if (style === 'Todos') {
       this.filteredWorks = this.works;
     } else {
       this.filteredWorks = this.works.filter(work => work.style === style);
     }
+  }
+
+  toggleDescriptionExpand(workId: string): void {
+    if (this.expandedWorkId === workId) {
+      this.expandedWorkId = null;
+    } else {
+      this.expandedWorkId = workId;
+    }
+  }
+
+  isDescriptionExpanded(workId: string): boolean {
+    return this.expandedWorkId === workId;
   }
 }

@@ -2,9 +2,22 @@
 @import './appointments-calendar.scss';
 
 .appointments-section {
-  padding: 80px 20px;
+  padding: 80px 16px;
   background-color: var(--bg);
   min-height: 100vh;
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  // Misma caja de lectura para todo (evita formulario más ancho que las tarjetas / scroll horizontal)
+  .container {
+    max-width: 52rem; // ~832px: cabe en móvil sin alejar zoom
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(12px, 3vw, 20px);
+    padding-right: clamp(12px, 3vw, 20px);
+    box-sizing: border-box;
+    width: 100%;
+  }
 }
 
 .appointments-header {
@@ -46,30 +59,55 @@
 }
 
 .appointments-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+// Proceso + pagos arriba, dos columnas en escritorio
+.appointment-info-top {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 60px; // Increased gap for better spacing
-  align-items: start;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+// Horarios + consejos abajo
+.appointment-bottom-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .appointment-form-container {
   background: #0e0e0e;
-  padding: 50px; // Increased padding
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: clamp(1.25rem, 4vw, 2rem);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .appointment-form {
+  max-width: 100%;
+  box-sizing: border-box;
+
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 35px; // Increased gap between columns
-    margin-bottom: 30px;
+    gap: clamp(1rem, 3vw, 1.75rem);
+    margin-bottom: 1.25rem;
   }
 
   .form-group {
-    margin-bottom: 35px; // Increased gap between rows
+    margin-bottom: 1.25rem;
 
     label {
       display: block;
@@ -237,12 +275,6 @@
   }
 }
 
-.appointment-info {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
 .info-card {
   background: #0e0e0e;
   padding: 30px;
@@ -295,8 +327,8 @@
     margin-top: 5px;
   }
 
-  // Payment Card Styles
-  .payment-card {
+  // Misma tarjeta con ambas clases: info-card payment-card
+  &.payment-card {
     border-color: var(--wine-accent);
 
     .payment-section {
@@ -437,8 +469,13 @@
 // Responsive
 @media (max-width: 968px) {
   .appointments-content {
+    gap: 1.5rem;
+  }
+
+  .appointment-info-top,
+  .appointment-bottom-info {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 1rem;
   }
 
   .appointment-form .form-row {
@@ -446,36 +483,29 @@
     gap: 0;
   }
 
-  .appointment-info {
-    order: -1;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); // Cuadrícula 2x2
-    gap: 15px; // Espacio reducido
-  }
-
   .info-card {
-    padding: 20px; // Menos padding interno
+    padding: 20px;
 
     h3 {
-      font-size: 1rem; // Título más pequeño
+      font-size: 1rem;
       margin-bottom: 10px;
     }
 
     ul,
     ol,
     p {
-      font-size: 0.85rem; // Texto compacto
+      font-size: 0.85rem;
       line-height: 1.4;
     }
   }
 }
 
 @media (max-width: 768px) {
-  .appointments-header h1 {
-    font-size: 2.5rem;
+  .appointments-section {
+    padding: 48px 12px;
   }
 
-  .appointment-form-container {
-    padding: 30px;
+  .appointments-header h1 {
+    font-size: 2.5rem;
   }
 }

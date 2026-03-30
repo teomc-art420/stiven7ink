@@ -37,7 +37,18 @@
                 <h3>{{ work.title }}</h3>
                 <p class="style">Estilo: {{ work.style }}</p>
                 @if (work.description) {
-                  <p class="description">{{ work.description }}</p>
+                  <div
+                    class="description-block"
+                    [class.expanded]="isDescriptionExpanded(work.id)">
+                    <p class="description">{{ work.description }}</p>
+                    <button
+                      type="button"
+                      class="read-more-btn"
+                      [attr.aria-expanded]="isDescriptionExpanded(work.id)"
+                      (click)="toggleDescriptionExpand(work.id)">
+                      {{ isDescriptionExpanded(work.id) ? 'Ver menos' : 'Ver más' }}
+                    </button>
+                  </div>
                 }
               </div>
             </div>
