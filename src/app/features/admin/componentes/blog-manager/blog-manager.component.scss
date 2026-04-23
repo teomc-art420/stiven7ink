@@ -188,6 +188,28 @@
             background-color: #0f0f0f;
         }
 
+        .video-error {
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #0f0f0f;
+            color: #666;
+
+            mat-icon {
+                font-size: 48px;
+                width: 48px;
+                height: 48px;
+                margin-bottom: 10px;
+            }
+
+            p {
+                margin: 0;
+                font-size: 14px;
+            }
+        }
+
         mat-card-header {
             background-color: #0f0f0f;
             padding: 20px;

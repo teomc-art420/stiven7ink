@@ -30,7 +30,8 @@
             </div>
 
             <img *ngIf="previewUrl && !isVideo" [src]="previewUrl" class="preview-image" alt="Vista previa">
-            <video *ngIf="previewUrl && isVideo" [src]="previewUrl" class="preview-video" controls></video>
+            <video *ngIf="previewUrl && isVideo" [src]="previewUrl" class="preview-video" controls preload="metadata"
+                playsinline></video>
 
             <div class="form-actions">
                 <button mat-button type="button" (click)="toggleForm()">Cancelar</button>
@@ -55,8 +56,13 @@
     <div *ngIf="!loading && posts.length > 0" class="posts-grid">
         <mat-card *ngFor="let post of posts" class="post-card">
             <img mat-card-image *ngIf="post.mediaType !== 'video'"
-                [src]="post.imageUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
-            <video mat-card-image *ngIf="post.mediaType === 'video'" [src]="post.imageUrl" controls></video>
+                [src]="post.mediaUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+            <video mat-card-image *ngIf="post.mediaType === 'video' && post.mediaUrl" [src]="post.mediaUrl" controls
+                preload="metadata" playsinline (error)="onVideoError($event, post)"></video>
+            <div *ngIf="post.mediaType === 'video' && !post.mediaUrl" class="video-error">
+                <mat-icon>videocam_off</mat-icon>
+                <p>Video no disponible</p>
+            </div>
             <mat-card-header>
                 <mat-card-title>{{ post.title }}</mat-card-title>
                 <mat-card-subtitle>

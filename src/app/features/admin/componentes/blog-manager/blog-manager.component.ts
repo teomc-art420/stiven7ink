@@ -55,6 +55,12 @@ export class BlogManagerComponent implements OnInit {
         this.loading = true;
         try {
             this.posts = await this.firebaseService.getCollection('blog');
+            console.log('Posts cargados:', this.posts); // Debug
+            this.posts.forEach(post => {
+                if (post.mediaType === 'video') {
+                    console.log('Video post:', post.title, 'URL:', post.mediaUrl);
+                }
+            });
         } catch (error) {
             console.error('Error loading posts:', error);
             this.showSnackBar('Error al cargar los artículos', 'Cerrar');
@@ -123,7 +129,7 @@ export class BlogManagerComponent implements OnInit {
 
             const postData = {
                 ...this.formData,
-                imageUrl,
+                mediaUrl: imageUrl,
                 imagePath: this.selectedFile ? `blog/${Date.now()}_${this.selectedFile.name}` : null, // Guardar path para borrar después
                 mediaType: this.selectedFile ? (this.isVideo ? 'video' : 'image') : null
             };
@@ -156,7 +162,7 @@ export class BlogManagerComponent implements OnInit {
             title: post.title,
             content: post.content
         };
-        this.previewUrl = post.imageUrl;
+        this.previewUrl = post.mediaUrl;
         this.isVideo = post.mediaType === 'video';
         this.showForm = true;
         // Scroll to top
@@ -199,5 +205,10 @@ export class BlogManagerComponent implements OnInit {
             horizontalPosition: 'end',
             verticalPosition: 'bottom'
         });
+    }
+
+    onVideoError(event: any, post: any) {
+        console.error('Error cargando video:', post.title, event);
+        this.showSnackBar(`Error cargando video: ${post.title}`, 'Cerrar');
     }
 }
