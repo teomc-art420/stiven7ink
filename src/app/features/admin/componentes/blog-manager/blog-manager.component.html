@@ -25,7 +25,7 @@
             <div class="file-input-container" (click)="fileInput.click()">
                 <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime">
                 <mat-icon>cloud_upload</mat-icon>
-                <p><strong>Vídeo (recomendado):</strong> entrevistas o clips cortos · máx. ~1 min ({{ maxVideoDurationSec - 2 }} s) · hasta {{ maxVideoBytes / (1024*1024) | number:'1.0-0' }} MB · MP4, WebM o MOV.</p>
+                <p><strong>Vídeo (recomendado):</strong> entrevistas o clips cortos · máx. ~1 min ({{ maxVideoDurationSec - 2 }} s) · hasta {{ maxVideoBytes / (1024*1024) | number:'1.0-0' }} MB · MP4/WebM/MOV. <span class="file-hint-secondary">Exportar en 720p–1080p (no 4K): cargará mucho más rápido para los visitantes.</span></p>
                 <p class="file-hint-secondary">Opcional: imagen PNG/JPEG/WebP (máx. 12 MB) si prefieres solo foto.</p>
                 <p *ngIf="selectedFile" class="selected-file">Archivo: {{ selectedFile.name }}</p>
             </div>
@@ -59,7 +59,7 @@
             <img mat-card-image *ngIf="post.mediaType !== 'video'"
                 [src]="post.mediaUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
             <video mat-card-image *ngIf="post.mediaType === 'video' && post.mediaUrl" [src]="post.mediaUrl" controls
-                preload="metadata" playsinline (error)="onVideoError($event, post)"></video>
+                preload="none" playsinline (error)="onVideoError($event, post)"></video>
             <div *ngIf="post.mediaType === 'video' && !post.mediaUrl" class="video-error">
                 <mat-icon>videocam_off</mat-icon>
                 <p>Video no disponible</p>

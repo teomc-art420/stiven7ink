@@ -1,0 +1,140 @@
+.tourist-hero {
+  position: relative;
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)),
+    url('https://images.unsplash.com/photo-1531968455001-5c5272a41129?q=80&w=2071&auto=format&fit=crop') center / cover no-repeat;
+}
+
+.tourist-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(212, 35, 107, 0.25), transparent 45%);
+}
+
+.tourist-hero__content {
+  position: relative;
+  color: #fff;
+  text-align: left;
+  max-width: 760px;
+  padding: 4rem 1rem;
+}
+
+.tourist-eyebrow {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--wine-accent);
+  font-weight: 700;
+}
+
+.tourist-hero h1 {
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  margin: 0 0 1rem;
+  line-height: 1.05;
+}
+
+.tourist-hero p {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  max-width: 60ch;
+}
+
+.tourist-hero__actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.tourist-promise,
+.tourist-flow {
+  padding: 5rem 0;
+  background: var(--bg);
+  color: #fff;
+}
+
+.tourist-flow {
+  background: linear-gradient(180deg, #060606 0%, #0b0b0b 100%);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  margin-bottom: 0.75rem;
+}
+
+.section-header p {
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.7;
+}
+
+.promise-grid,
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.promise-card,
+.flow-step {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 1.4rem;
+}
+
+.promise-card h3,
+.flow-step h3 {
+  margin: 0 0 0.6rem;
+  color: #fff;
+}
+
+.promise-card p,
+.flow-step p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.6;
+}
+
+.flow-step span {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--wine-accent), #7f123f);
+}
+
+@media (max-width: 900px) {
+  .promise-grid,
+  .flow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tourist-hero {
+    min-height: 64vh;
+  }
+
+  .tourist-hero__content {
+    text-align: center;
+  }
+
+  .tourist-hero__actions {
+    justify-content: center;
+  }
+}

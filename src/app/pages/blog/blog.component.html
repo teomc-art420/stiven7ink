@@ -1,43 +1,70 @@
 <section class="blog-section">
-  <div class="container">
-    <div class="blog-header">
-      <h1>Blog</h1>
-      <p class="subtitle">Entrevistas en vídeo, consejos y novedades</p>
-    </div>
+  <!-- Fondo ambiental muy sutil (no cambia contenido, solo atmósfera) -->
+  <div class="blog-section__ambient" aria-hidden="true"></div>
 
-    <div *ngIf="loading" class="loading-container">
-      <mat-spinner diameter="50"></mat-spinner>
+  <div class="container">
+    <header class="blog-header">
+      <p class="blog-header__eyebrow">Journal · Stiven7 Ink</p>
+      <div class="blog-header__title-row">
+        <h1>Blog</h1>
+      </div>
+      <span class="blog-header__divider" aria-hidden="true"></span>
+      <p class="subtitle">Entrevistas en vídeo, consejos detrás del tatuaje y novedades del estudio.</p>
+      <p *ngIf="!loading && posts.length > 0" class="blog-header__stats">
+        <span class="blog-header__stat-pill">{{ posts.length }} historia{{ posts.length === 1 ? '' : 's' }}</span>
+      </p>
+    </header>
+
+    <div *ngIf="loading" class="blog-skeleton-grid" aria-busy="true" aria-label="Cargando publicaciones">
+      <article class="blog-skeleton-card" *ngFor="let _ of skeletonPlaceholders"></article>
     </div>
 
     <div *ngIf="!loading && posts.length === 0" class="empty-state">
-      <mat-icon>article</mat-icon>
-      <p>No hay artículos publicados aún.</p>
+      <div class="empty-state__icon-wrap">
+        <mat-icon>auto_stories</mat-icon>
+      </div>
+      <p class="empty-state__title">Pronto habrá historias por aquí</p>
+      <p class="empty-state__hint">Vuelve en unos días: estamos preparando contenido.</p>
     </div>
 
     <div *ngIf="!loading && posts.length > 0" class="blog-grid">
-      <article class="blog-card" *ngFor="let post of posts">
-        <div class="blog-media">
+      <article
+        class="blog-card"
+        [class.blog-card--reel]="isVideoPost(post)"
+        *ngFor="let post of posts; trackBy: trackByPost">
+        <div
+          class="blog-media"
+          [class.blog-media--reel]="isVideoPost(post)"
+          [class.blog-media--cover]="!isVideoPost(post)">
           <ng-container *ngIf="isVideoPost(post); else blogCoverImage">
-            <video
-              class="blog-video"
-              [src]="getMediaSrc(post)"
-              controls
-              playsinline
-              preload="metadata"></video>
+            <!-- Reels: marco 9:16 + contain = vídeo entero visible (sin recorte tipo cover) -->
+            <div class="reel-frame">
+              <video
+                class="blog-video blog-video--reel"
+                [src]="getMediaSrc(post)"
+                controls
+                playsinline
+                preload="metadata"></video>
+            </div>
           </ng-container>
           <ng-template #blogCoverImage>
-            <img [src]="getMediaSrc(post) || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+            <div class="image-frame">
+              <img [src]="getMediaSrc(post) || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+            </div>
           </ng-template>
+          <span *ngIf="isVideoPost(post)" class="blog-media-badge" aria-hidden="true">Vídeo</span>
         </div>
+
         <div class="blog-content">
-          <span class="blog-date">
-            {{ post.createdAt?.seconds * 1000 | date:'longDate' }}
-          </span>
+          <div class="blog-content__meta">
+            <span class="blog-date">
+              {{ post.createdAt?.seconds * 1000 | date:'longDate' }}
+            </span>
+          </div>
           <h2>{{ post.title }}</h2>
           <p class="blog-excerpt">
-            {{ post.content }}
+            {{ excerpt(post) }}
           </p>
-          <!-- <a href="#" class="read-more">Leer más →</a> -->
         </div>
       </article>
     </div>

@@ -1,6 +1,5 @@
 <mat-toolbar color="primary">
   <div class="header-container">
-    <!-- Logo -->
     <div class="logo">
       <a routerLink="/" class="logo-link">
         <img src="/assets/images/logo.png" alt="Stiven7ink Logo" class="logo-img">
@@ -8,30 +7,56 @@
       </a>
     </div>
 
-    <!-- Mobile Menu Toggle -->
+    <a
+      mat-flat-button
+      routerLink="/tattoo-tourist"
+      routerLinkActive="active"
+      class="tattoo-tourist-pill tattoo-tourist-pill--bridge">
+      Tattoo Tourist
+    </a>
+
     <button mat-icon-button class="mobile-menu-btn" (click)="toggleMenu()">
       <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
     </button>
 
-    <!-- Desktop Navigation -->
     <nav class="desktop-nav">
-      <ng-container *ngTemplateOutlet="navLinks"></ng-container>
+      <a mat-button routerLink="/" routerLinkActive="active" (click)="isMenuOpen = false">Inicio</a>
+      <a mat-button routerLink="/portfolio" routerLinkActive="active" (click)="isMenuOpen = false">Portafolio</a>
+      <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre Mi</a>
+      <a mat-button routerLink="/blog" routerLinkActive="active" (click)="isMenuOpen = false">Blog</a>
+      <a mat-button routerLink="/appointments" routerLinkActive="active" (click)="isMenuOpen = false">Citas</a>
+      <a mat-button routerLink="/contact" routerLinkActive="active" (click)="isMenuOpen = false">Contacto</a>
+
+      @if (!isLoggedIn) {
+      <a mat-button routerLink="/admin/login" class="login-btn" (click)="isMenuOpen = false">
+        <mat-icon>login</mat-icon>
+        Login
+      </a>
+      } @else {
+      <a mat-button routerLink="/admin/dashboard" class="admin-btn" (click)="isMenuOpen = false">
+        <mat-icon>dashboard</mat-icon>
+        Admin
+      </a>
+      }
     </nav>
   </div>
 </mat-toolbar>
 
-<!-- Mobile Navigation Overlay -->
 <div class="mobile-nav" [class.open]="isMenuOpen">
   <nav class="mobile-links">
+    <a mat-button routerLink="/tattoo-tourist" routerLinkActive="active" class="tattoo-tourist-mobile"
+      (click)="isMenuOpen = false">
+      Tattoo Tourist
+    </a>
+
     <ng-container *ngTemplateOutlet="navLinks"></ng-container>
   </nav>
 </div>
 
-<!-- Reusable Nav Links Template -->
 <ng-template #navLinks>
   <a mat-button routerLink="/" routerLinkActive="active" (click)="isMenuOpen = false">Inicio</a>
   <a mat-button routerLink="/portfolio" routerLinkActive="active" (click)="isMenuOpen = false">Portafolio</a>
-  <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre Mí</a>
+  <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre M?</a>
   <a mat-button routerLink="/blog" routerLinkActive="active" (click)="isMenuOpen = false">Blog</a>
   <a mat-button routerLink="/appointments" routerLinkActive="active" (click)="isMenuOpen = false">Citas</a>
   <a mat-button routerLink="/contact" routerLinkActive="active" (click)="isMenuOpen = false">Contacto</a>
