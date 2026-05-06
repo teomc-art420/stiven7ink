@@ -76,8 +76,9 @@
     border-color: var(--wine-accent);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
-    .blog-image img {
-      transform: scale(1.05);
+    .blog-media img,
+    .blog-media video {
+      transform: scale(1.02);
     }
 
     .read-more {
@@ -87,17 +88,27 @@
   }
 }
 
-.blog-image {
+.blog-media {
   width: 100%;
   height: 240px;
   overflow: hidden;
   position: relative;
+  background: #080808;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
+  }
+
+  .blog-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #000;
   }
 }
 
@@ -149,16 +160,20 @@
   }
 
   .blog-grid {
-    grid-template-columns: repeat(2, 1fr); // 2 columnas en móvil
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .blog-content {
     padding: 15px; // Menos padding
   }
 
-  .blog-image {
-    height: 150px; // Imagen más pequeña
+  .blog-media {
+    height: 180px;
+
+    .blog-video {
+      object-fit: cover;
+    }
   }
 
   .blog-content h2 {

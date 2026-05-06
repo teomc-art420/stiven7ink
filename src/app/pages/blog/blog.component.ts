@@ -17,6 +17,18 @@ export class BlogComponent implements OnInit {
 
   constructor(private firebaseService: FirebaseService) { }
 
+  getMediaSrc(post: any): string | null {
+    return post.mediaUrl ?? post.imageUrl ?? null;
+  }
+
+  isVideoPost(post: any): boolean {
+    if (post.mediaType === 'video') {
+      return true;
+    }
+    const u = this.getMediaSrc(post);
+    return !!(u && /\.(mp4|webm|mov|mkv)(\?|#|$)/i.test(u));
+  }
+
   ngOnInit(): void {
     this.loadPosts();
   }

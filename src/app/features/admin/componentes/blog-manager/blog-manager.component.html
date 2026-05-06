@@ -23,10 +23,11 @@
             </mat-form-field>
 
             <div class="file-input-container" (click)="fileInput.click()">
-                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*,video/*">
+                <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime">
                 <mat-icon>cloud_upload</mat-icon>
-                <p>Haz clic para subir una imagen o video de portada</p>
-                <p *ngIf="selectedFile" class="selected-file">Archivo seleccionado: {{ selectedFile.name }}</p>
+                <p><strong>Vídeo (recomendado):</strong> entrevistas o clips cortos · máx. ~1 min ({{ maxVideoDurationSec - 2 }} s) · hasta {{ maxVideoBytes / (1024*1024) | number:'1.0-0' }} MB · MP4, WebM o MOV.</p>
+                <p class="file-hint-secondary">Opcional: imagen PNG/JPEG/WebP (máx. 12 MB) si prefieres solo foto.</p>
+                <p *ngIf="selectedFile" class="selected-file">Archivo: {{ selectedFile.name }}</p>
             </div>
 
             <img *ngIf="previewUrl && !isVideo" [src]="previewUrl" class="preview-image" alt="Vista previa">

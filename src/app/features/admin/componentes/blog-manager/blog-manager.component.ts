@@ -28,10 +28,18 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     styleUrls: ['./blog-manager.component.scss']
 })
 export class BlogManagerComponent implements OnInit {
+    /** Vídeo corto (entrevistas): ~1 min editado — límite duro en cliente. */
+    readonly maxVideoBytes = 48 * 1024 * 1024; // ~48 MB (suficiente para ~1 min bien comprimido)
+    readonly maxVideoDurationSec = 62;
+
     posts: any[] = [];
     loading: boolean = false;
     showForm: boolean = false;
     editingId: string | null = null;
+
+    /** Al editar, conservar medio ya subido si no cambias archivo */
+    existingStoragePath: string | null = null;
+    existingMediaType: 'video' | 'image' | null = null;
 
     formData = {
         title: '',
@@ -55,12 +63,6 @@ export class BlogManagerComponent implements OnInit {
         this.loading = true;
         try {
             this.posts = await this.firebaseService.getCollection('blog');
-            console.log('Posts cargados:', this.posts); // Debug
-            this.posts.forEach(post => {
-                if (post.mediaType === 'video') {
-                    console.log('Video post:', post.title, 'URL:', post.mediaUrl);
-                }
-            });
         } catch (error) {
             console.error('Error loading posts:', error);
             this.showSnackBar('Error al cargar los artículos', 'Cerrar');
@@ -82,33 +84,96 @@ export class BlogManagerComponent implements OnInit {
         this.previewUrl = null;
         this.isVideo = false;
         this.editingId = null;
+        this.existingStoragePath = null;
+        this.existingMediaType = null;
     }
 
-    onFileSelected(event: any) {
-        const file = event.target.files[0];
-        if (file) {
-            // Validar tipo de archivo: solo imágenes y videos
-            if (!file.type.match(/image\/*|video\/*/)) {
-                this.showSnackBar('Solo se permiten imágenes y videos', 'Cerrar');
-                return;
-            }
+    private sanitizeStorageFileName(name: string): string {
+        const base = name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        return base.length > 100 ? base.slice(0, 100) : base;
+    }
 
-            // Validar tamaño: máximo 500MB para videos 4K
-            const maxSize = 500 * 1024 * 1024; // 500MB
-            if (file.size > maxSize) {
-                this.showSnackBar('El archivo no debe superar 500MB', 'Cerrar');
-                return;
-            }
-
-            this.selectedFile = file;
-            this.isVideo = file.type.startsWith('video/');
-
-            const reader = new FileReader();
-            reader.onload = () => {
-                this.previewUrl = reader.result as string;
+    /** Comprueba duración del vídeo en el navegador (ideal ≤ 1 min). */
+    private validateVideoDuration(file: File): Promise<boolean> {
+        return new Promise((resolve) => {
+            const url = URL.createObjectURL(file);
+            const v = document.createElement('video');
+            v.muted = true;
+            v.preload = 'metadata';
+            let settled = false;
+            const finalize = (ok: boolean) => {
+                if (settled) {
+                    return;
+                }
+                settled = true;
+                window.clearTimeout(tid);
+                URL.revokeObjectURL(url);
+                resolve(ok);
             };
-            reader.readAsDataURL(file);
+            const tid = window.setTimeout(() => finalize(false), 15000);
+
+            v.onloadedmetadata = () => {
+                const d = v.duration;
+                if (!Number.isFinite(d) || d <= 0) {
+                    finalize(false);
+                    return;
+                }
+                finalize(d <= this.maxVideoDurationSec);
+            };
+            v.onerror = () => finalize(false);
+            v.src = url;
+        });
+    }
+
+    async onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        if (!file) {
+            return;
         }
+
+        if (!/^image\/|video\//.test(file.type)) {
+            this.showSnackBar('Solo imágenes o vídeos (MP4, WebM, MOV…)', 'Cerrar');
+            input.value = '';
+            return;
+        }
+
+        const isVideo = file.type.startsWith('video/');
+
+        if (isVideo) {
+            if (file.size > this.maxVideoBytes) {
+                this.showSnackBar(
+                    `Vídeo muy pesado (máx. ${Math.round(this.maxVideoBytes / (1024 * 1024))} MB). Comprímelo un poco más.`,
+                    'Cerrar'
+                );
+                input.value = '';
+                return;
+            }
+            const durationOk = await this.validateVideoDuration(file);
+            if (!durationOk) {
+                this.showSnackBar(`El vídeo debe durar máximo ${this.maxVideoDurationSec - 2} segundos (~1 minuto).`, 'Cerrar');
+                input.value = '';
+                return;
+            }
+        }
+
+        const maxImg = 12 * 1024 * 1024;
+        if (!isVideo && file.size > maxImg) {
+            this.showSnackBar('Imagen máximo 12 MB', 'Cerrar');
+            input.value = '';
+            return;
+        }
+
+        this.selectedFile = file;
+        this.isVideo = isVideo;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.previewUrl = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+
+        input.value = '';
     }
 
     async onSubmit() {
@@ -116,22 +181,36 @@ export class BlogManagerComponent implements OnInit {
 
         this.loading = true;
         try {
-            let imageUrl = this.previewUrl; // Mantener URL existente si no se cambia imagen
+            let mediaUrl: string | null = null;
+            let storagePath: string | null = null;
+            let mediaType: 'video' | 'image' | null = null;
 
-            // Si hay nueva imagen seleccionada, subirla
             if (this.selectedFile) {
-                const path = `blog/${Date.now()}_${this.selectedFile.name}`;
-                const uploadResult = await this.firebaseService.uploadFile(path, this.selectedFile);
-                if (uploadResult.success) {
-                    imageUrl = uploadResult.url || null;
+                storagePath = `blog/${Date.now()}_${this.sanitizeStorageFileName(this.selectedFile.name)}`;
+                const uploadResult = await this.firebaseService.uploadFile(storagePath, this.selectedFile);
+                if (!uploadResult.success || !uploadResult.url) {
+                    this.showSnackBar('Error al subir el archivo', 'Cerrar');
+                    this.loading = false;
+                    return;
                 }
+                mediaUrl = uploadResult.url;
+                mediaType = this.isVideo ? 'video' : 'image';
+
+                if (this.editingId && this.existingStoragePath && this.existingStoragePath !== storagePath) {
+                    await this.firebaseService.deleteFile(this.existingStoragePath).catch(() => undefined);
+                }
+            } else if (this.editingId) {
+                mediaUrl = this.previewUrl;
+                storagePath = this.existingStoragePath;
+                mediaType = this.existingMediaType;
             }
+            // Alta nueva sin archivo: sin media (solo texto).
 
             const postData = {
                 ...this.formData,
-                mediaUrl: imageUrl,
-                imagePath: this.selectedFile ? `blog/${Date.now()}_${this.selectedFile.name}` : null, // Guardar path para borrar después
-                mediaType: this.selectedFile ? (this.isVideo ? 'video' : 'image') : null
+                mediaUrl,
+                imagePath: storagePath,
+                mediaType
             };
 
             let result;
@@ -162,10 +241,13 @@ export class BlogManagerComponent implements OnInit {
             title: post.title,
             content: post.content
         };
-        this.previewUrl = post.mediaUrl;
-        this.isVideo = post.mediaType === 'video';
+        this.previewUrl = post.mediaUrl || post.imageUrl || null;
+        const looksVideoUrl = !!(this.previewUrl && /\.(mp4|webm|mov|mkv)(\?|$)/i.test(this.previewUrl));
+        this.isVideo = post.mediaType === 'video' || looksVideoUrl;
+        this.existingStoragePath = post.imagePath ?? post.mediaPath ?? null;
+        this.existingMediaType = this.previewUrl ? (this.isVideo ? 'video' : post.mediaType === 'image' ? 'image' : 'image') : null;
+        this.selectedFile = null;
         this.showForm = true;
-        // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -175,8 +257,9 @@ export class BlogManagerComponent implements OnInit {
         this.loading = true;
         try {
             // 1. Eliminar archivo si existe
-            if (post.imagePath) {
-                const deleteResult = await this.firebaseService.deleteFile(post.imagePath);
+            const pathToDelete = post.imagePath ?? post.mediaPath;
+            if (pathToDelete) {
+                const deleteResult = await this.firebaseService.deleteFile(pathToDelete);
                 if (!deleteResult.success) {
                     console.warn('No se pudo eliminar el archivo:', deleteResult.error);
                 }

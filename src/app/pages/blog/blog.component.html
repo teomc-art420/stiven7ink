@@ -2,7 +2,7 @@
   <div class="container">
     <div class="blog-header">
       <h1>Blog</h1>
-      <p class="subtitle">Noticias, consejos y actualizaciones</p>
+      <p class="subtitle">Entrevistas en vídeo, consejos y novedades</p>
     </div>
 
     <div *ngIf="loading" class="loading-container">
@@ -16,8 +16,18 @@
 
     <div *ngIf="!loading && posts.length > 0" class="blog-grid">
       <article class="blog-card" *ngFor="let post of posts">
-        <div class="blog-image">
-          <img [src]="post.imageUrl || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+        <div class="blog-media">
+          <ng-container *ngIf="isVideoPost(post); else blogCoverImage">
+            <video
+              class="blog-video"
+              [src]="getMediaSrc(post)"
+              controls
+              playsinline
+              preload="metadata"></video>
+          </ng-container>
+          <ng-template #blogCoverImage>
+            <img [src]="getMediaSrc(post) || 'assets/placeholder-blog.jpg'" [alt]="post.title">
+          </ng-template>
         </div>
         <div class="blog-content">
           <span class="blog-date">
