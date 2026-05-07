@@ -1,0 +1,78 @@
+<div class="tattoo-tourist-manager">
+    <div class="manager-header">
+        <div>
+            <h1>Gestor Tattoo Tourist</h1>
+            <p>Administra los destinos premium y las imágenes que alimentan la experiencia en la página.</p>
+        </div>
+    </div>
+
+    <section class="manager-form">
+        <h2>{{ isEditing ? 'Editar destino' : 'Agregar nuevo destino' }}</h2>
+
+        <form (ngSubmit)="saveCity()" #cityForm="ngForm">
+            <div class="form-row">
+                <label>
+                    Nombre del destino
+                    <input type="text" name="name" [(ngModel)]="currentCity.name" required />
+                </label>
+
+                <label>
+                    Orden de aparición
+                    <input type="number" name="order" [(ngModel)]="currentCity.order" min="0" />
+                </label>
+            </div>
+
+            <label class="full-width">
+                Descripción
+                <textarea name="description" [(ngModel)]="currentCity.description" rows="4" required></textarea>
+            </label>
+
+            <div class="form-row">
+                <label class="full-width">
+                    Imagen del destino
+                    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+                </label>
+            </div>
+
+            <div class="preview-row" *ngIf="currentCity.imageUrl">
+                <div class="preview-card">
+                    <span>Vista previa actual</span>
+                    <img [src]="currentCity.imageUrl" [alt]="currentCity.name" />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" [disabled]="loading || !currentCity.name || !currentCity.description">
+                    {{ isEditing ? 'Actualizar destino' : 'Guardar destino' }}
+                </button>
+                <button type="button" class="secondary" *ngIf="isEditing" (click)="resetForm()">Cancelar
+                    edición</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="manager-list">
+        <h2>Destinos existentes</h2>
+
+        <div class="loading" *ngIf="loading">Cargando destinos...</div>
+        <div class="empty-state" *ngIf="!loading && cities.length === 0">
+            No hay destinos agregados aún. Empieza creando uno nuevo.
+        </div>
+
+        <div class="cities-grid" *ngIf="!loading && cities.length > 0">
+            <article *ngFor="let city of cities" class="city-card">
+                <div class="city-image" [style.backgroundImage]="'url(' + city.imageUrl + ')'">
+                    <span class="city-order">#{{ city.order }}</span>
+                </div>
+                <div class="city-body">
+                    <h3>{{ city.name }}</h3>
+                    <p>{{ city.description }}</p>
+                    <div class="city-actions">
+                        <button type="button" (click)="editCity(city)">Editar</button>
+                        <button type="button" class="danger" (click)="deleteCity(city.id!)">Eliminar</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>

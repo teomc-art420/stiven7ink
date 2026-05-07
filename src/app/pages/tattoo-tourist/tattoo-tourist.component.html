@@ -14,53 +14,74 @@
   </div>
 </section>
 
-<section class="tourist-promise">
+<section class="flight-quick">
   <div class="container">
-    <div class="section-header">
-      <h2>No es solo venir a tatuarte</h2>
-      <p>
-        Dise�amos una experiencia cuidada de principio a fin, con acompanamiento humano y foco en
-        seguridad, comodidad y calidad artistica.
-      </p>
-    </div>
+    <div class="flight-quick__panel">
+      <div class="flight-quick__intro">
+        <span class="flight-eyebrow">Vuelo + seguridad</span>
+        <h2>Tu vuelo en 3 segundos</h2>
+        <p>Coordinamos ida y vuelta, seguridad y horarios clave para que tu viaje sea tan cómodo como tu sesión de
+          tatuaje.</p>
+      </div>
 
-    <div class="promise-grid">
-      <article class="promise-card">
-        <h3>Ruta segura y guiada</h3>
-        <p>Te orientamos antes y durante el viaje para que vivas Colombia con tranquilidad.</p>
-      </article>
+      <div class="flight-quick__interactive">
+        <div class="flight-quick__badges">
+          <span class="badge">Ida + vuelta</span>
+          <span class="badge">Seguridad</span>
+          <span class="badge">Horarios</span>
+        </div>
 
-      <article class="promise-card">
-        <h3>Tatuaje premium</h3>
-        <p>Sesion personalizada, tecnica profesional y estandares altos de higiene.</p>
-      </article>
-
-      <article class="promise-card">
-        <h3>Experiencia local real</h3>
-        <p>Recomendaciones y actividades que conectan con la energia unica del pais.</p>
-      </article>
+        <div class="flight-quick__detail-row">
+          <article class="detail-card">
+            <div class="detail-card__mark">01</div>
+            <strong>Ruta ida y vuelta</strong>
+            <span>Planificación completa en ambos trayectos con rutas seguras.</span>
+          </article>
+          <article class="detail-card">
+            <div class="detail-card__mark">02</div>
+            <strong>100% seguro</strong>
+            <span>Proveedores confiables y asistencia dedicada en cada paso.</span>
+          </article>
+          <article class="detail-card">
+            <div class="detail-card__mark">03</div>
+            <strong>Horarios premium</strong>
+            <span>Fechas sincronizadas con tu experiencia para máxima comodidad.</span>
+          </article>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="tourist-flow">
+<section class="tourist-destinations">
   <div class="container">
-    <h2>Como funcionaria</h2>
-    <div class="flow-grid">
-      <div class="flow-step">
-        <span>01</span>
-        <h3>Aplicas</h3>
-        <p>Nos cuentas tu idea, fechas y expectativas del viaje.</p>
-      </div>
-      <div class="flow-step">
-        <span>02</span>
-        <h3>Planeamos</h3>
-        <p>Definimos tatuaje, logistica y una propuesta de experiencia en Colombia.</p>
-      </div>
-      <div class="flow-step">
-        <span>03</span>
-        <h3>Vives la experiencia</h3>
-        <p>Arte + destino + acompanamiento experto en un mismo proyecto.</p>
+    <div class="section-header">
+      <h2>Ciudades premium</h2>
+      <p>Descubre rutas exclusivas en los destinos más icónicos de Colombia antes del tatuaje final.</p>
+      <p class="highlight-text">
+        <strong>Hospedajes boutique premium:</strong> Desde lofts urbanos en Bogotá con vistas panorámicas,
+        hasta villas coloniales en Cartagena con piscina privada, y fincas cafeteras en el Eje con jardines infinitos.
+        Cada alojamiento seleccionado por su autenticidad, confort y proximidad a experiencias locales únicas.
+      </p>
+    </div>
+
+    <div class="destinations-carousel">
+      <div class="carousel-track">
+        <article *ngFor="let city of cities" class="destination-card" [style.opacity]="loading ? 0.5 : 1">
+          <div class="destination-card__image" [style.backgroundImage]="'url(' + city.imageUrl + ')'"></div>
+          <div class="destination-card__body">
+            <span class="destination-card__tag">{{ city.name }}</span>
+            <h3>{{ city.name }}</h3>
+            <p>
+              {{ isExpanded(city.id) ? city.description : (city.description.length > descriptionLimit ?
+              (city.description | slice:0:descriptionLimit) + '...' : city.description) }}
+            </p>
+            <button type="button" class="read-more" *ngIf="city.description.length > descriptionLimit"
+              (click)="toggleExpand(city.id)">
+              {{ isExpanded(city.id) ? 'Ver menos' : 'Ver más' }}
+            </button>
+          </div>
+        </article>
       </div>
     </div>
   </div>

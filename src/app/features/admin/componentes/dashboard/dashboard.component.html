@@ -80,5 +80,18 @@
         <p class="count">{{ carouselCount }} imágenes</p>
       </mat-card-content>
     </mat-card>
+
+    <mat-card class="dashboard-card" routerLink="/admin/tatto-tourist-manager">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>flight_takeoff</mat-icon>
+          Tattoo Tourist
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Gestiona los destinos premium y sus imágenes</p>
+        <p class="count">{{ tattooTouristCount }} destino{{ tattooTouristCount !== 1 ? 's' : '' }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

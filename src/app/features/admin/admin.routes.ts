@@ -41,5 +41,10 @@ export const adminRoutes: Routes = [
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
+  },
+  {
+    path: 'tatto-tourist-manager',
+    loadComponent: () => import('./componentes/tatto-tourist-manager/tatto-tourist-manager.component').then(m => m.TattoTouristManagerComponent),
+    canActivate: [adminGuard]
   }
 ];

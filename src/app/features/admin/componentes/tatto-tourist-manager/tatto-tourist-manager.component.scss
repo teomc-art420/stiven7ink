@@ -1,0 +1,185 @@
+.tattoo-tourist-manager {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem;
+    color: #fff;
+}
+
+.manager-header {
+    margin-bottom: 2rem;
+}
+
+.manager-header h1 {
+    font-size: 2.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.manager-header p {
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 780px;
+}
+
+.manager-form,
+.manager-list {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+.manager-form h2,
+.manager-list h2 {
+    margin-top: 0;
+    margin-bottom: 1.4rem;
+}
+
+.form-row {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+input,
+textarea {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 12px;
+    padding: 0.95rem 1rem;
+    font: inherit;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.preview-row {
+    margin: 1rem 0;
+}
+
+.preview-card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.preview-card span {
+    display: inline-block;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.preview-card img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    min-height: 220px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.4rem;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    padding: 0.95rem 1.35rem;
+    border-radius: 999px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ba1f5c, #73284d);
+}
+
+button.secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+button.danger {
+    background: rgba(255, 75, 75, 0.18);
+}
+
+.loading,
+.empty-state {
+    color: rgba(255, 255, 255, 0.72);
+    padding: 1rem 0;
+}
+
+.cities-grid {
+    display: grid;
+    gap: 1.2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.city-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.city-image {
+    min-height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.city-order {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.city-body {
+    padding: 1.4rem;
+}
+
+.city-body h3 {
+    margin: 0 0 0.75rem;
+}
+
+.city-body p {
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0 0 1.2rem;
+    line-height: 1.6;
+}
+
+.city-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+
+    .form-row,
+    .cities-grid {
+        grid-template-columns: 1fr;
+    }
+}

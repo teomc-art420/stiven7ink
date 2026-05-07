@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   leadsCount: number = 0;
   totalLeads: number = 0;
   carouselCount: number = 0;
+  tattooTouristCount: number = 0;
 
   loading: boolean = true;
 
@@ -66,6 +67,10 @@ export class DashboardComponent implements OnInit {
       // Carousel
       const carousel = await this.firebaseService.getHeroCarouselCollection();
       this.carouselCount = carousel.length;
+
+      // Tattoo Tourist cities
+      const touristCities = await this.firebaseService.getCollection('tattooTouristCities');
+      this.tattooTouristCount = touristCities.length;
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {

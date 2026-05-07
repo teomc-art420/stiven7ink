@@ -38,5 +38,10 @@ service firebase.storage {
       allow write: if isImageUpload();
       allow delete: if signedIn();
     }
+
+    match /tattoo-tourist/{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if signedIn() && isImageUpload();
+    }
   }
 }
