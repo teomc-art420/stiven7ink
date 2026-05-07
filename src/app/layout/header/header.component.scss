@@ -6,11 +6,13 @@
 }
 
 mat-toolbar {
-  background: transparent !important;
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.95) 0%, rgba(20, 20, 20, 0.92) 100%) !important;
   color: var(--text) !important;
-  box-shadow: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   padding: 0;
   height: 70px;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .header-container {
