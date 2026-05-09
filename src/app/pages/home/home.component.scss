@@ -248,6 +248,11 @@ $transition-speed: 0.3s;
     max-width: 600px;
     pointer-events: auto; // Hacer interactivo
     
+    // Espaciado adicional en desktop para evitar interferencia con barra de redes sociales fija
+    @media (min-width: 1024px) {
+      margin-left: 6rem; // Espacio para la barra de redes (2rem left + 50px icon + gap)
+    }
+    
     @media (max-width: 900px) {
       align-self: flex-start;
       max-width: 80%; // Para que no llegue hasta la otra punta
