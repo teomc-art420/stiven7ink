@@ -1,123 +1,123 @@
 @import '../../../styles/breakpoints';
 
 .fixed-social-links {
-  position: fixed;
-  left: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  
-  // Ocultar en móviles y tablets
-  @include respond-to(tablet) {
-    display: none;
-  }
+    position: fixed;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+
+    // Ocultar en móviles y tablets
+    @include respond-to(tablet) {
+        display: none;
+    }
 }
 
 .social-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
 .social-item {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  color: rgba(255, 255, 255, 0.6);
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  text-decoration: none;
-  border-radius: 4px;
-  position: relative;
-  
-  svg {
-    width: 24px;
-    height: 24px;
-    transition: transform 0.3s ease;
-  }
-
-  // Hover effect elegante
-  &:hover {
-    color: var(--wine-accent);
-    background: rgba(212, 35, 107, 0.1);
-    backdrop-filter: blur(8px);
-    transform: translateX(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    text-decoration: none;
+    border-radius: 4px;
+    position: relative;
 
     svg {
-      transform: scale(1.15);
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s ease;
     }
-  }
 
-  // Focus visible para accesibilidad
-  &:focus-visible {
-    outline: 3px solid var(--wine-accent);
-    outline-offset: -4px;
-    background: rgba(212, 35, 107, 0.15);
-  }
+    // Hover effect elegante
+    &:hover {
+        color: var(--wine-accent);
+        background: rgba(212, 35, 107, 0.1);
+        backdrop-filter: blur(8px);
+        transform: translateX(8px);
 
-  // Active state
-  &:active {
-    transform: translateX(6px) scale(0.95);
-  }
+        svg {
+            transform: scale(1.15);
+        }
+    }
+
+    // Focus visible para accesibilidad
+    &:focus-visible {
+        outline: 3px solid var(--wine-accent);
+        outline-offset: -4px;
+        background: rgba(212, 35, 107, 0.15);
+    }
+
+    // Active state
+    &:active {
+        transform: translateX(6px) scale(0.95);
+    }
 }
 
 .social-divider {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(180deg, rgba(212, 35, 107, 0.3) 0%, transparent 100%);
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, rgba(212, 35, 107, 0.3) 0%, transparent 100%);
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 // Media queries para diferentes tamaños
 @include respond-to(desktop) {
-  .fixed-social-links {
-    left: 1.5rem;
-  }
-
-  .social-link {
-    width: 45px;
-    height: 45px;
-
-    svg {
-      width: 22px;
-      height: 22px;
+    .fixed-social-links {
+        left: 1.5rem;
     }
-  }
+
+    .social-link {
+        width: 45px;
+        height: 45px;
+
+        svg {
+            width: 22px;
+            height: 22px;
+        }
+    }
 }
 
 // Reducir movimiento para usuarios con preferencias
 @media (prefers-reduced-motion: reduce) {
-  .social-link {
-    transition: color 0.2s ease, background 0.2s ease;
+    .social-link {
+        transition: color 0.2s ease, background 0.2s ease;
 
-    svg {
-      transition: none;
+        svg {
+            transition: none;
+        }
+
+        &:hover {
+            transform: none;
+
+            svg {
+                transform: none;
+            }
+        }
+
+        &:active {
+            transform: none;
+        }
     }
-
-    &:hover {
-      transform: none;
-
-      svg {
-        transform: none;
-      }
-    }
-
-    &:active {
-      transform: none;
-    }
-  }
 }
