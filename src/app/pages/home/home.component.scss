@@ -21,6 +21,13 @@ $transition-speed: 0.3s;
   padding: 0 1rem;
 }
 
+.hero-container {
+  max-width: 1536px; // Ancho extra grande (aprox 90% en la mayoría de pantallas)
+  width: 95%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
 .section-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -110,10 +117,17 @@ $transition-speed: 0.3s;
 // Hero Section
 .hero {
   position: relative;
-  height: 90vh;
-  min-height: 600px;
+  height: 65vh; // Más reducido para ver TT arriba
+  min-height: 520px;
+  max-height: 750px; // Límite máximo para pantallas muy grandes
   overflow: hidden;
   background: $bg-black;
+
+  @media (max-width: 768px) {
+    height: 55vh;
+    min-height: 380px;
+    max-height: none;
+  }
 
   &.loading-hero {
     display: flex;
@@ -168,115 +182,303 @@ $transition-speed: 0.3s;
 .carousel-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  // filter: brightness(0.6); // Removed per user request
+  object-fit: contain; // Usamos contain para que la imagen NUNCA se corte, mostrándose siempre completa
+  background: $bg-black; // Fondo negro detrás por si quedan espacios
   transition: transform 6s ease; // Slow pan effect
 }
 
-// Overlay removed
-
-// Carousel Controls
-.carousel-btn {
+.carousel-image-overlay {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 20;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  backdrop-filter: blur(5px);
-
-  &:hover {
-    background: $primary-color;
-    border-color: $primary-color;
-  }
-
-  &.prev {
-    left: 2rem;
-  }
-
-  &.next {
-    right: 2rem;
-  }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // Gradiente radial para iluminar el centro (donde está el tatuaje) y oscurecer los bordes de manera más natural y suave
+  background: radial-gradient(
+    ellipse at center,
+    rgba($bg-black, 0) 0%,
+    rgba($bg-black, 0.1) 40%,
+    rgba($bg-black, 0.8) 100%
+  );
+  z-index: 1;
 
   @media (max-width: 768px) {
-    display: none; // Hide on mobile for cleaner look
+    // En móvil, dejamos el centro totalmente transparente para que la imagen brille sin verse opaca
+    // y solo aplicamos sombra arriba (para textos) y abajo (para las estadísticas)
+    background: linear-gradient(
+      to bottom,
+      rgba($bg-black, 0.7) 0%,
+      rgba($bg-black, 0) 30%,
+      rgba($bg-black, 0) 75%,
+      rgba($bg-black, 0.8) 100%
+    );
   }
 }
 
-.carousel-dots {
+// Hero Overlay
+.hero-overlay {
   position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none; // Permite arrastrar el carrusel detrás si fuera necesario
 
-  .dot {
-    width: 60px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-    padding: 0;
-
-    &.active {
-      background: $primary-color;
-      height: 4px;
-    }
-  }
-}
-
-// Stats Section
-.stats-section {
-  background: $bg-dark;
-  padding: 2rem 0; // Menos padding vertical
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-  .container {
+  .hero-content {
     display: flex;
-    justify-content: space-between; // Distribuir en fila
-    flex-wrap: nowrap; // No permitir que bajen
-    gap: 0.5rem; // Espacio mínimo
-  }
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
 
-  .stat-item {
-    text-align: center;
-    flex: 1; // Ocupar espacio igual
-  }
-
-  .stat-number {
-    display: block;
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: $primary-color;
-    margin-bottom: 0.5rem;
-
-    @media (max-width: 768px) {
-      font-size: 1.8rem; // Reducir drásticamente en móvil
+    @media (max-width: 900px) {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      height: 100%;
+      padding: 1.5rem 0.75rem; // Se reduce el espacio superior drásticamente en móvil para acercarlo al nav
     }
   }
 
-  .stat-label {
-    display: block;
-    color: $text-gray;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  .hero-text-area {
+    max-width: 600px;
+    pointer-events: auto; // Hacer interactivo
+    
+    @media (max-width: 900px) {
+      align-self: flex-start;
+      max-width: 80%; // Para que no llegue hasta la otra punta
+    }
+    
+    .hero-subtitle {
+      color: $primary-color;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+      display: block;
+
+      @media (max-width: 768px) {
+        font-size: 0.45rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.3rem;
+      }
+    }
+
+    .hero-title {
+      font-size: 4.5rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      font-family: 'Times New Roman', serif; // O una fuente serif que tengas
+      
+      .italic-serif {
+        font-size: 2.2rem;
+        font-style: italic;
+        text-transform: none;
+        display: block;
+        margin-top: -0.5rem;
+        color: #e0e0e0;
+      }
+      
+      @media (max-width: 768px) {
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+        .italic-serif { font-size: 0.75rem; margin-top: -0.1rem; }
+      }
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #cccccc;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+
+      @media (max-width: 768px) {
+        font-size: 0.55rem;
+        margin-bottom: 0.6rem;
+        line-height: 1.2;
+        max-width: 95%;
+      }
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      @media (max-width: 768px) {
+        flex-direction: row; // Volvemos a colocarlos en fila para ahorrar espacio vertical
+        align-items: center;
+        width: fit-content;
+        gap: 0.5rem;
+      }
+
+      .btn-arrow {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        padding: 0.8rem 1.5rem;
+
+        @media (max-width: 768px) {
+          width: auto;
+          flex: none;
+          justify-content: center;
+          padding: 0.25rem 0.6rem;
+          font-size: 0.45rem;
+          border-width: 1px !important; // Borde más fino para el botón miniatura
+        }
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          transition: transform 0.3s ease;
+
+          @media (max-width: 768px) {
+            font-size: 10px;
+            width: 10px;
+            height: 10px;
+          }
+        }
+
+        &:hover mat-icon {
+          transform: translateX(4px);
+        }
+      }
+    }
+  }
+
+  .hero-stats-card {
+    pointer-events: auto;
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 250px;
+
+    @media (max-width: 900px) {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-end; // A la derecha
+      padding: 0;
+      padding-right: 1.5rem; // Empujar específicamente las estadísticas a la izquierda
+      gap: 0.4rem;
+      min-width: unset;
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      margin-top: 0;
+      align-self: flex-end; // Colocar a la esquina inferior derecha
+      text-align: right;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      @media (max-width: 900px) {
+        align-items: flex-end; // Alinear texto a la derecha
+        flex: 1;
+        min-width: 0;
+      }
+    }
+
+    .stat-value {
+      color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: 'Times New Roman', serif;
+
+      @media (max-width: 900px) {
+        font-size: 0.9rem;
+      }
+    }
+
+    .stat-label {
+      color: #999;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      font-weight: 500;
+
+      @media (max-width: 900px) {
+        font-size: 0.45rem;
+        text-align: center;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .stat-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+
+      @media (max-width: 900px) {
+        display: none; // Ocultar en móvil porque ahora están en horizontal
+      }
+    }
+  }
+
+  .nav-container {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    pointer-events: auto;
 
     @media (max-width: 768px) {
-      font-size: 0.7rem; // Texto pequeño
-      letter-spacing: 0;
+      bottom: 0.5rem; // Moverlo más abajo en móvil para que no choque con las estadísticas
+    }
+  }
+
+  .carousel-number-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-end;
+    font-family: 'Times New Roman', serif;
+    color: #888;
+    font-size: 1.1rem;
+
+    .nav-current {
+      color: $primary-color;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    .nav-lines {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .nav-line-btn {
+        width: 30px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &.active {
+          background: $primary-color;
+        }
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.5);
+        }
+      }
     }
   }
 }
@@ -681,6 +883,160 @@ $transition-speed: 0.3s;
         max-width: 100%;
         flex: none;
         padding: 0.75rem 1rem;
+      }
+    }
+  }
+}
+
+// Tattoo Tourist Preview Section
+.tourist-preview-section {
+  background-color: $bg-black;
+  padding: 2.5rem 0; // Reducido para que sea más compacto
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  .tourist-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; 
+    gap: 2rem;
+    
+    @media (max-width: 900px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+  }
+
+  .tourist-text {
+    flex: 1;
+    max-width: 400px;
+
+    .subtitle {
+      color: $primary-color;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-family: 'Times New Roman', serif;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      color: $text-white;
+      @media (max-width: 768px) { font-size: 1.25rem; margin-bottom: 0.8rem; }
+    }
+
+    .tourist-desc-desktop {
+      @media (max-width: 900px) { display: none; }
+      
+      p {
+        color: #999;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-link {
+        color: $primary-color;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.3s;
+        text-transform: uppercase;
+
+        mat-icon { font-size: 16px; width: 16px; height: 16px; }
+        &:hover { opacity: 0.8; }
+      }
+    }
+  }
+
+  .tourist-desc-mobile {
+    display: none;
+    @media (max-width: 900px) {
+      display: block;
+      margin-top: 1rem;
+      p { color: #999; font-size: 0.9rem; margin-bottom: 1rem; }
+      .btn-link { 
+        color: $primary-color; text-decoration: none; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;
+        mat-icon { font-size: 16px; width: 16px; height: 16px; }
+      }
+    }
+  }
+
+  .tourist-cards {
+    display: flex;
+    gap: 1rem;
+    flex: 2;
+    justify-content: flex-end;
+
+    @media (max-width: 900px) {
+      width: 100%;
+      overflow-x: auto;
+      justify-content: flex-start;
+      padding-bottom: 1rem; 
+      &::-webkit-scrollbar { display: none; }
+      -ms-overflow-style: none;  
+      scrollbar-width: none;  
+    }
+    
+    .destination-card {
+      width: 170px;
+      height: 240px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 3rem 1rem 1rem 1rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%);
+        display: flex;
+        flex-direction: column;
+        
+        h4 {
+          font-family: 'Times New Roman', serif;
+          font-size: 1.2rem;
+          margin-bottom: 0.2rem;
+          color: $text-white;
+        }
+
+        p {
+          font-size: 0.75rem;
+          color: #ccc;
+          margin-bottom: 0.8rem;
+        }
+
+        .link-text {
+          color: $text-white;
+          font-size: 0.65rem;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+
+          mat-icon { font-size: 12px; width: 12px; height: 12px; }
+        }
       }
     }
   }

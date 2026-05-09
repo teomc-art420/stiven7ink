@@ -13,6 +13,15 @@ interface CarouselImage {
   order?: number;
 }
 
+interface TouristCityPreview {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  images?: string[];
+  order: number;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -24,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   carouselImages: CarouselImage[] = [];
   currentIndex = 0;
   loading = true;
+  previewCities: TouristCityPreview[] = [];
   private autoPlaySub?: Subscription;
 
   // Small preview data to avoid template runtime errors.
@@ -35,11 +45,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   portfolioPreview: any[] = [];
-
   constructor(private router: Router, private firebaseService: FirebaseService) { }
 
   ngOnInit() {
     this.loadCarouselImages();
+    this.loadPreviewCities();
   }
 
   ngOnDestroy() {
@@ -101,6 +111,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
+  }
+
+  async loadPreviewCities() {
+    try {
+      const data = await this.firebaseService.getCollection('tattooTouristCities');
+      this.previewCities = data
+        .map((city: any) => ({
+          id: city.id,
+          name: city.name,
+          description: city.description,
+          imageUrl: city.imageUrl || (city.images && city.images[0]) || '',
+          images: city.images,
+          order: city.order ?? 0
+        }))
+        .sort((a: TouristCityPreview, b: TouristCityPreview) => a.order - b.order)
+        .slice(0, 3); // Tomar solo los 3 primeros
+    } catch (error) {
+      console.error('Error loading tourist cities:', error);
+    }
   }
 
   startAutoPlay() {

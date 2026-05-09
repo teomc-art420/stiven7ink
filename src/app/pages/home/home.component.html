@@ -7,30 +7,65 @@
         <div *ngFor="let img of carouselImages; let i = index" class="carousel-item"
           [class.active]="i === currentIndex">
           <img [src]="img.imageUrl" [alt]="img.title" class="carousel-image" loading="lazy" />
-          <div class="carousel-caption">
-            <h2>{{ img.title }}</h2>
+          <div class="carousel-image-overlay"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Overlay (Static on top of carousel) -->
+    <div class="hero-overlay">
+      <div class="hero-container hero-content">
+        <!-- Izquierda: Textos y Botones -->
+        <div class="hero-text-area">
+          <span class="hero-subtitle">ARTE &bull; PASIÓN &bull; LEGADO</span>
+          <h1 class="hero-title">
+            TATUAJES<br>
+            <span class="italic-serif">QUE CUENTAN HISTORIAS</span>
+          </h1>
+          <p class="hero-description">
+            Cada tatuaje es una obra única.<br>
+            Diseños exclusivos, realismo y detalles<br>
+            que dejan huella.
+          </p>
+
+          <div class="hero-buttons">
+            <a routerLink="/portfolio" class="btn primary btn-arrow">VER PORTAFOLIO <mat-icon>arrow_forward</mat-icon></a>
+            <a routerLink="/appointments" class="btn outline btn-arrow">AGENDAR CITA <mat-icon>arrow_forward</mat-icon></a>
+          </div>
+        </div>
+
+        <!-- Derecha: Stats Card -->
+        <div class="hero-stats-card">
+          <div class="stat-item">
+            <span class="stat-value">+5 AÑOS</span>
+            <span class="stat-label">DE EXPERIENCIA</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">100%</span>
+            <span class="stat-label">DISEÑOS EXCLUSIVOS</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">PREMIUM</span>
+            <span class="stat-label">CALIDAD GARANTIZADA</span>
           </div>
         </div>
       </div>
 
-      <!-- Controls -->
-      <button class="carousel-btn prev" (click)="prev()" aria-label="Anterior">
-        <mat-icon>chevron_left</mat-icon>
-      </button>
-      <button class="carousel-btn next" (click)="next()" aria-label="Siguiente">
-        <mat-icon>chevron_right</mat-icon>
-      </button>
-
-      <!-- Dots Navigation -->
-      <div class="carousel-dots">
-        <button *ngFor="let img of carouselImages; let i = index" class="dot" [class.active]="i === currentIndex"
-          (click)="goToSlide(i)" [attr.aria-label]="'Ir a diapositiva ' + (i + 1)">
-        </button>
+      <!-- Navegación Numerada -->
+      <div class="hero-container nav-container">
+        <div class="carousel-number-nav">
+          <span class="nav-current">{{ (currentIndex + 1).toString().padStart(2, '0') }}</span>
+          <div class="nav-lines">
+            <button *ngFor="let img of carouselImages; let i = index" class="nav-line-btn" [class.active]="i === currentIndex"
+              (click)="goToSlide(i)" [attr.aria-label]="'Ir a diapositiva ' + (i + 1)">
+            </button>
+          </div>
+          <span class="nav-total">{{ carouselImages.length.toString().padStart(2, '0') }}</span>
+        </div>
       </div>
     </div>
-
-    <!-- CTA Overlay -->
-
   </div>
 </section>
 
@@ -42,20 +77,43 @@
   </section>
 </ng-template>
 
-<!-- Stats Section (Social Proof) -->
-<section class="stats-section">
-  <div class="container">
-    <div class="stat-item">
-      <span class="stat-number">500+</span>
-      <span class="stat-label">Tatuajes Realizados</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">8+</span>
-      <span class="stat-label">Años de Experiencia</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">100%</span>
-      <span class="stat-label">Clientes Satisfechos</span>
+<!-- Tattoo Tourist Preview Section -->
+<section class="tourist-preview-section">
+  <div class="hero-container">
+    <div class="tourist-grid">
+      <!-- Izquierda: Textos -->
+      <div class="tourist-text">
+        <span class="subtitle">DESTINOS TATTOO TOURIST</span>
+        <h2>Vive una Experiencia<br>Única</h2>
+        <div class="tourist-desc-desktop">
+          <p>Rutas exclusivas en los destinos más icónicos de Colombia antes del tatuaje final.</p>
+          <a routerLink="/tattoo-tourist" class="btn-link">EXPLORAR DESTINOS <mat-icon>arrow_forward</mat-icon></a>
+        </div>
+      </div>
+      
+      <!-- Derecha: Tarjetas -->
+      <div class="tourist-cards" *ngIf="previewCities.length > 0; else noTouristDestinations">
+        <div class="destination-card" *ngFor="let dest of previewCities" 
+             [style.background-image]="'url(' + dest.imageUrl + ')'"
+             routerLink="/tattoo-tourist">
+          <div class="card-overlay">
+            <h4>{{ dest.name | uppercase }}</h4>
+            <p>{{ dest.description ? (dest.description.length > 30 ? (dest.description | slice:0:30) + '...' : dest.description) : '' }}</p>
+            <span class="link-text">VER MÁS <mat-icon>arrow_forward</mat-icon></span>
+          </div>
+        </div>
+      </div>
+      <ng-template #noTouristDestinations>
+        <div class="tourist-cards loading-cards">
+          <mat-spinner diameter="30"></mat-spinner>
+        </div>
+      </ng-template>
+      
+      <!-- Descripción móvil (abajo de las tarjetas) -->
+      <div class="tourist-desc-mobile">
+        <p>Rutas exclusivas en los destinos más icónicos de Colombia antes del tatuaje final.</p>
+        <a routerLink="/tattoo-tourist" class="btn-link">EXPLORAR DESTINOS <mat-icon>arrow_forward</mat-icon></a>
+      </div>
     </div>
   </div>
 </section>
@@ -122,29 +180,4 @@
     </div>
   </div>
 </section>
-
-<!-- Portfolio Preview -->
-<section class="portfolio-preview">
-  <div class="container">
-    <div class="section-header">
-      <span class="subtitle">TRABAJOS RECIENTES</span>
-      <h2>Inspiración para tu Próxima Pieza</h2>
-    </div>
-
-    <div class="cta-center">
-      <a routerLink="/portfolio" class="btn primary">Ver Todo el Portafolio</a>
-    </div>
-  </div>
-</section>
-
-<!-- CTA Final -->
-<section class="final-cta">
-  <div class="container">
-    <h2>¿Listo para tu próximo tatuaje?</h2>
-    <p>Hablemos de tu idea y hagamos realidad esa pieza que tienes en mente.</p>
-    <div class="cta-buttons">
-      <a routerLink="/appointments" class="btn primary-inverse">Solicitar Cita</a>
-      <a routerLink="/contact" class="btn outline-inverse">Contactar</a>
-    </div>
-  </div>
-</section>
+
