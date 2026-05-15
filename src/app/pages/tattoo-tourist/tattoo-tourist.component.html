@@ -51,6 +51,40 @@
   </div>
 </section>
 
+<section class="tourist-destinations">
+  <div class="container">
+    <div class="section-header">
+      <h2>Ciudades premium</h2>
+      <p>Descubre rutas exclusivas en los destinos más icónicos de Colombia antes del tatuaje final.</p>
+      <p class="highlight-text">
+        <strong>Hospedajes boutique premium:</strong> Desde lofts urbanos en Bogotá con vistas panorámicas,
+        hasta villas coloniales en Cartagena con piscina privada, y fincas cafeteras en el Eje con jardines infinitos.
+        Cada alojamiento seleccionado por su autenticidad, confort y proximidad a experiencias locales únicas.
+      </p>
+    </div>
+
+    <div class="destinations-carousel">
+      <div class="carousel-track">
+        <article *ngFor="let city of cities" class="destination-card" [style.opacity]="loading ? 0.5 : 1">
+          <div class="destination-card__image" [style.backgroundImage]="'url(' + city.imageUrl + ')'"></div>
+          <div class="destination-card__body">
+            <span class="destination-card__tag">{{ city.name }}</span>
+            <h3>{{ city.name }}</h3>
+            <p>
+              {{ isExpanded(city.id) ? city.description : (city.description.length > descriptionLimit ?
+              (city.description | slice:0:descriptionLimit) + '...' : city.description) }}
+            </p>
+            <button type="button" class="read-more" *ngIf="city.description.length > descriptionLimit"
+              (click)="toggleExpand(city.id)">
+              {{ isExpanded(city.id) ? 'Ver menos' : 'Ver más' }}
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="security-logistics">
   <div class="container">
     <div class="security-logistics__panel">
@@ -103,36 +137,133 @@
   </div>
 </section>
 
-<section class="tourist-destinations">
+<section class="artist-sedation">
   <div class="container">
-    <div class="section-header">
-      <h2>Ciudades premium</h2>
-      <p>Descubre rutas exclusivas en los destinos más icónicos de Colombia antes del tatuaje final.</p>
-      <p class="highlight-text">
-        <strong>Hospedajes boutique premium:</strong> Desde lofts urbanos en Bogotá con vistas panorámicas,
-        hasta villas coloniales en Cartagena con piscina privada, y fincas cafeteras en el Eje con jardines infinitos.
-        Cada alojamiento seleccionado por su autenticidad, confort y proximidad a experiencias locales únicas.
-      </p>
+    <div class="artist-sedation__header">
+      <span class="sedation-eyebrow">Experiencia Premium</span>
+      <h2>Piezas Magistrales con los Mejores Artistas</h2>
+      <p>Tatuajes de gran formato realizados por los artistas más destacados de Colombia, con equipos especializados y tecnología médica de punta.</p>
     </div>
 
-    <div class="destinations-carousel">
-      <div class="carousel-track">
-        <article *ngFor="let city of cities" class="destination-card" [style.opacity]="loading ? 0.5 : 1">
-          <div class="destination-card__image" [style.backgroundImage]="'url(' + city.imageUrl + ')'"></div>
-          <div class="destination-card__body">
-            <span class="destination-card__tag">{{ city.name }}</span>
-            <h3>{{ city.name }}</h3>
-            <p>
-              {{ isExpanded(city.id) ? city.description : (city.description.length > descriptionLimit ?
-              (city.description | slice:0:descriptionLimit) + '...' : city.description) }}
-            </p>
-            <button type="button" class="read-more" *ngIf="city.description.length > descriptionLimit"
-              (click)="toggleExpand(city.id)">
-              {{ isExpanded(city.id) ? 'Ver menos' : 'Ver más' }}
-            </button>
+    <div class="artist-sedation__grid">
+      <!-- Artistas Section -->
+      <div class="artists-panel">
+        <div class="artists-panel__header">
+          <h3>Equipo de Artistas Elite</h3>
+          <p>Desde 2 hasta 5 profesionales especializados en tu pieza.</p>
+        </div>
+
+        <div class="artists-showcase">
+          <div class="artist-tier">
+            <div class="tier-badge">Dúo Premium</div>
+            <strong>2 Artistas</strong>
+            <p>Colaboración de maestros para diseños complejos de alto impacto visual.</p>
+            <ul class="tier-benefits">
+              <li>Sincronización perfecta</li>
+              <li>Simetría garantizada</li>
+              <li>Tiempo optimizado</li>
+            </ul>
           </div>
-        </article>
+
+          <div class="artist-tier">
+            <div class="tier-badge">Equipo Avanzado</div>
+            <strong>3-4 Artistas</strong>
+            <p>Equipo especializado para piezas de gran envergadura con múltiples técnicas.</p>
+            <ul class="tier-benefits">
+              <li>Múltiples estilos integrados</li>
+              <li>Rotación de especialistas</li>
+              <li>Control de calidad en vivo</li>
+            </ul>
+          </div>
+
+          <div class="artist-tier">
+            <div class="tier-badge">Elite Absoluto</div>
+            <strong>5 Artistas</strong>
+            <p>Equipo máximo para masterpieces que requieren precisión quirúrgica absoluta.</p>
+            <ul class="tier-benefits">
+              <li>Maestría incomparable</li>
+              <li>Supervisión constante</li>
+              <li>Garantía de perfección</li>
+            </ul>
+          </div>
+        </div>
       </div>
+
+      <!-- Sedation Services Section -->
+      <div class="sedation-panel">
+        <div class="sedation-panel__header">
+          <h3>Servicios de Sedación Médica</h3>
+          <p>Comodidad total respaldada por profesionales clínicos especializados.</p>
+        </div>
+
+        <div class="sedation-services">
+          <article class="sedation-card pain-relief">
+            <div class="sedation-card__icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 7V12M12 12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h4>Bomba del Dolor</h4>
+            <p>Anestesia local avanzada con difusión controlada. Olvida el malestar y enfócate en la experiencia.</p>
+            <div class="sedation-specs">
+              <span class="spec-tag">Efectividad inmediata</span>
+              <span class="spec-tag">Comodidad prolongada</span>
+            </div>
+          </article>
+
+          <article class="sedation-card full-sedation">
+            <div class="sedation-card__icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 10C21 14.9706 16.9706 19 12 19C7.02944 19 3 14.9706 3 10C3 5.02944 7.02944 1 12 1C16.9706 1 21 5.02944 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="8" cy="10" r="1.5" fill="currentColor"/>
+                <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+              </svg>
+            </div>
+            <h4>Sedación Total</h4>
+            <p>Sueño profundo controlado en ambiente clínico. Despierta cuando tu obra maestra esté lista.</p>
+            <div class="sedation-specs">
+              <span class="spec-tag">Monitoreo 24/7</span>
+              <span class="spec-tag">Seguridad garantizada</span>
+            </div>
+          </article>
+
+          <article class="sedation-card clinical">
+            <div class="sedation-card__icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h4>Clínica Especializada</h4>
+            <p>Instalaciones quirúrgicas con protocolos de esterilidad hospital-grade.</p>
+            <div class="sedation-specs">
+              <span class="spec-tag">Certificación médica</span>
+              <span class="spec-tag">Equipamiento de punta</span>
+            </div>
+          </article>
+
+          <article class="sedation-card vital-care">
+            <div class="sedation-card__icon">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h4>Equipo Vital</h4>
+            <p>Personal médico especializado monitoreando signos vitales en tiempo real.</p>
+            <div class="sedation-specs">
+              <span class="spec-tag">Profesionales certificados</span>
+              <span class="spec-tag">Vigilancia constante</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-sedation__cta">
+      <p>Vive la experiencia completa: arte magistral, comodidad total, seguridad absoluta.</p>
+      <a routerLink="/appointments" class="btn primary">Reservar Mi Experiencia</a>
     </div>
   </div>
 </section>

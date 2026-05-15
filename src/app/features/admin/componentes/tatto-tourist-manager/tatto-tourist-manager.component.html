@@ -1,78 +1,108 @@
-<div class="tattoo-tourist-manager">
+<div class="manager-container">
     <div class="manager-header">
         <div>
             <h1>Gestor Tattoo Tourist</h1>
-            <p>Administra los destinos premium y las imágenes que alimentan la experiencia en la página.</p>
+            <p>Administra los destinos premium y las experiencias que ofreces a clientes internacionales</p>
         </div>
     </div>
 
-    <section class="manager-form">
-        <h2>{{ isEditing ? 'Editar destino' : 'Agregar nuevo destino' }}</h2>
-
-        <form (ngSubmit)="saveCity()" #cityForm="ngForm">
-            <div class="form-row">
-                <label>
-                    Nombre del destino
-                    <input type="text" name="name" [(ngModel)]="currentCity.name" required />
-                </label>
-
-                <label>
-                    Orden de aparición
-                    <input type="number" name="order" [(ngModel)]="currentCity.order" min="0" />
-                </label>
-            </div>
-
-            <label class="full-width">
-                Descripción
-                <textarea name="description" [(ngModel)]="currentCity.description" rows="4" required></textarea>
-            </label>
-
-            <div class="form-row">
-                <label class="full-width">
-                    Imagen del destino
-                    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-                </label>
-            </div>
-
-            <div class="preview-row" *ngIf="currentCity.imageUrl">
-                <div class="preview-card">
-                    <span>Vista previa actual</span>
-                    <img [src]="currentCity.imageUrl" [alt]="currentCity.name" />
+    <mat-card class="manager-card">
+        <mat-card-header>
+            <mat-card-title>{{ isEditing ? 'Editar destino' : 'Agregar nuevo destino' }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form (ngSubmit)="saveCity()" #cityForm="ngForm" class="city-form">
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Nombre del destino</mat-label>
+                        <input matInput name="name" [(ngModel)]="currentCity.name" required />
+                    </mat-form-field>
                 </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Orden de aparición</mat-label>
+                        <input matInput type="number" name="order" [(ngModel)]="currentCity.order" min="0" />
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Descripción</mat-label>
+                        <textarea matInput name="description" [(ngModel)]="currentCity.description" rows="4"
+                            required></textarea>
+                        <mat-hint align="end">{{ currentCity.description.length }} / 500</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row file-input-row">
+                    <label class="file-input-label">
+                        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+                        <span class="file-label-text">
+                            <mat-icon>image</mat-icon>
+                            Seleccionar imagen del destino
+                        </span>
+                    </label>
+                    <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+                </div>
+
+                <div class="preview-section" *ngIf="imagePreview || currentCity.imageUrl">
+                    <h3>Vista previa</h3>
+                    <img [src]="imagePreview || currentCity.imageUrl" [alt]="currentCity.name"
+                        class="preview-image" />
+                </div>
+
+                <div class="form-actions">
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="loading || !currentCity.name || !currentCity.description">
+                        <mat-icon>{{ isEditing ? 'edit' : 'add' }}</mat-icon>
+                        {{ isEditing ? 'Actualizar destino' : 'Guardar destino' }}
+                    </button>
+                    <button mat-stroked-button type="button" *ngIf="isEditing" (click)="resetForm()">
+                        Cancelar edición
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="manager-card">
+        <mat-card-header>
+            <mat-card-title>Destinos existentes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="loading-state" *ngIf="loading">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>Cargando destinos...</p>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" [disabled]="loading || !currentCity.name || !currentCity.description">
-                    {{ isEditing ? 'Actualizar destino' : 'Guardar destino' }}
-                </button>
-                <button type="button" class="secondary" *ngIf="isEditing" (click)="resetForm()">Cancelar
-                    edición</button>
+            <div class="empty-state" *ngIf="!loading && cities.length === 0">
+                <mat-icon>location_off</mat-icon>
+                <p>No hay destinos agregados aún. Empieza creando uno nuevo.</p>
             </div>
-        </form>
-    </section>
 
-    <section class="manager-list">
-        <h2>Destinos existentes</h2>
-
-        <div class="loading" *ngIf="loading">Cargando destinos...</div>
-        <div class="empty-state" *ngIf="!loading && cities.length === 0">
-            No hay destinos agregados aún. Empieza creando uno nuevo.
-        </div>
-
-        <div class="cities-grid" *ngIf="!loading && cities.length > 0">
-            <article *ngFor="let city of cities" class="city-card">
-                <div class="city-image" [style.backgroundImage]="'url(' + city.imageUrl + ')'">
-                    <span class="city-order">#{{ city.order }}</span>
-                </div>
-                <div class="city-body">
-                    <h3>{{ city.name }}</h3>
-                    <p>{{ city.description }}</p>
-                    <div class="city-actions">
-                        <button type="button" (click)="editCity(city)">Editar</button>
-                        <button type="button" class="danger" (click)="deleteCity(city.id!)">Eliminar</button>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
+            <div class="cities-grid" *ngIf="!loading && cities.length > 0">
+                <mat-card *ngFor="let city of cities" class="city-card">
+                    <img matCardImage [src]="city.imageUrl" [alt]="city.name" />
+                    <mat-card-header>
+                        <span class="order-badge">#{{ city.order }}</span>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <h3>{{ city.name }}</h3>
+                        <p>{{ city.description.substring(0, 100) }}...</p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button color="primary" (click)="editCity(city)">
+                            <mat-icon>edit</mat-icon>
+                            Editar
+                        </button>
+                        <button mat-button color="warn" (click)="deleteCity(city.id)">
+                            <mat-icon>delete</mat-icon>
+                            Eliminar
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

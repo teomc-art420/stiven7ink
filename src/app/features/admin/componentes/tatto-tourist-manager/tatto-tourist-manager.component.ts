@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FirebaseService } from '../../../../core/services/firebase.service';
 
 interface TattooTouristCity {
@@ -14,7 +20,16 @@ interface TattooTouristCity {
 @Component({
     selector: 'app-tatto-tourist-manager',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatProgressSpinnerModule
+    ],
     templateUrl: './tatto-tourist-manager.component.html',
     styleUrls: ['./tatto-tourist-manager.component.scss']
 })
@@ -22,6 +37,7 @@ export class TattoTouristManagerComponent implements OnInit {
     cities: TattooTouristCity[] = [];
     loading = false;
     selectedFile: File | null = null;
+    imagePreview: string | null = null;
     currentCity: TattooTouristCity = {
         name: '',
         description: '',
@@ -58,7 +74,23 @@ export class TattoTouristManagerComponent implements OnInit {
     }
 
     onFileSelected(event: any) {
-        this.selectedFile = event.target.files[0];
+        const file: File = event.target.files[0];
+        if (file) {
+            if (!file.type.match(/image\/*/) ) {
+                alert('Solo se permiten imágenes');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert('La imagen no debe superar 5MB');
+                return;
+            }
+            this.selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.imagePreview = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     async uploadImage(): Promise<string | null> {
@@ -75,12 +107,24 @@ export class TattoTouristManagerComponent implements OnInit {
     }
 
     async saveCity() {
+        if (!this.currentCity.name.trim() || !this.currentCity.description.trim()) {
+            alert('Nombre y descripción son requeridos');
+            return;
+        }
+
         this.loading = true;
         try {
             let imageUrl = this.currentCity.imageUrl;
 
             if (this.selectedFile) {
-                imageUrl = await this.uploadImage() || imageUrl;
+                const uploadedUrl = await this.uploadImage();
+                if (uploadedUrl) {
+                    imageUrl = uploadedUrl;
+                } else {
+                    alert('Error subiendo imagen');
+                    this.loading = false;
+                    return;
+                }
             }
 
             const cityData = {
@@ -88,18 +132,18 @@ export class TattoTouristManagerComponent implements OnInit {
                 imageUrl
             };
 
-            if (this.isEditing) {
-                // Actualizar ciudad existente
-                await this.firebaseService.updateDocument('tattooTouristCities', this.currentCity.id!, cityData);
+            if (this.isEditing && this.currentCity.id) {
+                await this.firebaseService.updateDocument('tattooTouristCities', this.currentCity.id, cityData);
             } else {
-                // Crear nueva ciudad
                 await this.firebaseService.addDocument('tattooTouristCities', cityData);
             }
 
             this.resetForm();
-            this.loadCities();
+            await this.loadCities();
+            alert(this.isEditing ? 'Destino actualizado' : 'Destino creado exitosamente');
         } catch (error) {
             console.error('Error saving city:', error);
+            alert('Error al guardar el destino');
         } finally {
             this.loading = false;
         }
@@ -107,17 +151,21 @@ export class TattoTouristManagerComponent implements OnInit {
 
     editCity(city: TattooTouristCity) {
         this.currentCity = { ...city };
+        this.imagePreview = city.imageUrl;
         this.isEditing = true;
     }
 
-    async deleteCity(cityId: string) {
+    async deleteCity(cityId: string | undefined) {
+        if (!cityId) return;
         if (confirm('¿Estás seguro de eliminar esta ciudad?')) {
             this.loading = true;
             try {
                 await this.firebaseService.deleteDocument('tattooTouristCities', cityId);
-                this.loadCities();
+                await this.loadCities();
+                alert('Destino eliminado');
             } catch (error) {
                 console.error('Error deleting city:', error);
+                alert('Error al eliminar el destino');
             } finally {
                 this.loading = false;
             }
@@ -132,6 +180,7 @@ export class TattoTouristManagerComponent implements OnInit {
             order: 0
         };
         this.selectedFile = null;
+        this.imagePreview = null;
         this.isEditing = false;
     }
 }

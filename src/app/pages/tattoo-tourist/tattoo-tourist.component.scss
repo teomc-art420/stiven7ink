@@ -632,3 +632,390 @@
     grid-auto-columns: minmax(80%, 1fr);
   }
 }
+
+// ===== ARTIST & SEDATION SECTION =====
+
+.artist-sedation {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, rgba(212, 35, 107, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(34, 197, 94, 0.05) 100%),
+    linear-gradient(180deg, #0f0816 0%, #0a0710 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 35, 107, 0.12), transparent);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.1), transparent);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.artist-sedation__header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+
+  .sedation-eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--wine-accent);
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    margin: 0 0 1rem;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.8;
+    font-size: 1.05rem;
+  }
+}
+
+.artist-sedation__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+// ===== ARTISTS PANEL =====
+
+.artists-panel,
+.sedation-panel {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.artists-panel__header,
+.sedation-panel__header {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.6rem;
+    margin: 0 0 0.5rem;
+    color: #fff;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.artists-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.artist-tier {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 1.8rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #d4236b, #7f123f);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(212, 35, 107, 0.3);
+    transform: translateX(8px);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  .tier-badge {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    padding: 0.45rem 0.95rem;
+    background: rgba(212, 35, 107, 0.2);
+    border: 1px solid rgba(212, 35, 107, 0.35);
+    border-radius: 999px;
+    color: #f7d2e2;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    display: block;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+  }
+}
+
+.tier-benefits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.95rem;
+
+    &::before {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(212, 35, 107, 0.2);
+      color: #f7d2e2;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+// ===== SEDATION SERVICES =====
+
+.sedation-services {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.sedation-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 1.8rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-6px);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: rgba(212, 35, 107, 0.15);
+    color: #f7d2e2;
+    transition: all 0.3s ease;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &:hover &__icon {
+    background: rgba(212, 35, 107, 0.25);
+    transform: scale(1.1);
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #fff;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+.sedation-specs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.spec-tag {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: rgba(212, 35, 107, 0.15);
+  border: 1px solid rgba(212, 35, 107, 0.25);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+// ===== CTA SECTION =====
+
+.artist-sedation__cta {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(212, 35, 107, 0.15), rgba(127, 18, 63, 0.1));
+  border: 1px solid rgba(212, 35, 107, 0.25);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+
+  p {
+    margin: 0 0 1.5rem;
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .artist-sedation__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .sedation-services {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .artist-sedation {
+    padding: 3rem 0;
+
+    &::before {
+      width: 300px;
+      height: 300px;
+      top: -50%;
+      right: -30%;
+    }
+
+    &::after {
+      width: 250px;
+      height: 250px;
+      bottom: -40%;
+    }
+  }
+
+  .artist-sedation__header h2 {
+    font-size: 1.8rem;
+  }
+
+  .artists-panel,
+  .sedation-panel {
+    padding: 1.5rem;
+  }
+
+  .sedation-card {
+    padding: 1.2rem;
+
+    &__icon {
+      width: 64px;
+      height: 64px;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
