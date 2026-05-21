@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'styles/breakpoints.scss'; // Sistema de breakpoints y variables
+@import 'styles/accessibility.scss'; // Utilidades de accesibilidad WCAG 2.1
 
 :root {
     --wine: #d6083b94;
@@ -164,7 +166,8 @@ body {
 
 .portfolio-preview img {
     width: 100%;
-    height: 220px;
+    height: auto;
+    aspect-ratio: 3 / 2; // Previene layout shift, carga con espacio reservado
     object-fit: cover;
     display: block;
 }
@@ -179,7 +182,8 @@ body {
     color: white;
 }
 
-@media (max-width: 900px) {
+// Responsive design usando sistema de breakpoints
+@include respond-to(desktop) {
     .hero h1 {
         font-size: 2.1rem;
     }
@@ -189,7 +193,7 @@ body {
     }
 }
 
-@media (max-width: 540px) {
+@include respond-to(tablet) {
     .portfolio-preview .grid {
         grid-template-columns: 1fr;
     }

@@ -1,0 +1,177 @@
+// ================================================
+// ACCESSIBILITY & A11Y UTILITIES
+// ================================================
+// WCAG 2.1 AA compliance helpers
+
+// Focus visible - for keyboard navigation
+.focus-visible,
+*:focus-visible {
+    outline: 3px solid var(--wine-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+// Skip to main content link (hidden by default)
+.skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--wine-accent);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: $z-notification;
+}
+
+.skip-to-main:focus {
+    top: 0;
+    outline: 3px solid #000;
+    outline-offset: -2px;
+}
+
+// Screen reader only text
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+// Color contrast checker - Verify minimum 4.5:1 ratio for normal text
+// This is a reference - verify in actual components
+
+// Mixin for ensuring accessible buttons
+@mixin accessible-button {
+    cursor: pointer;
+    transition: all $transition-normal;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:focus {
+        outline: 3px solid var(--wine-accent);
+        outline-offset: 2px;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+// Mixin for high contrast mode support
+@mixin high-contrast-support {
+    @media (prefers-contrast: more) {
+        border-width: 2px;
+        font-weight: 600;
+    }
+}
+
+// Interactive element minimum size (WCAG mobile)
+@mixin min-touch-target {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// Label and input spacing for readability
+@mixin form-group-spacing {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg;
+
+    label {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    input,
+    textarea,
+    select {
+        padding: $spacing-md;
+        border: 2px solid var(--wine);
+        border-radius: $radius-md;
+        background: var(--bg);
+        color: var(--text);
+        font-family: inherit;
+
+        &:focus {
+            outline: none;
+            border-color: var(--wine-accent);
+            box-shadow: 0 0 0 3px rgba(212, 35, 107, 0.2);
+        }
+    }
+}
+
+// Loading indicator (prevents layout shift during load)
+@mixin loading-placeholder {
+    background: linear-gradient(90deg,
+            var(--bg-light) 0%,
+            rgba(107, 22, 56, 0.2) 50%,
+            var(--bg-light) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// Empty state styling
+@mixin empty-state {
+    text-align: center;
+    padding: $spacing-3xl $spacing-xl;
+    color: var(--text-muted);
+
+    svg {
+        margin-bottom: $spacing-lg;
+        opacity: 0.5;
+    }
+
+    p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+}
+
+// Success / Error message styling
+@mixin feedback-message($color: var(--wine-accent)) {
+    padding: $spacing-md;
+    border-left: 4px solid $color;
+    background: rgba($color, 0.1);
+    color: var(--text);
+    border-radius: $radius-md;
+    margin-bottom: $spacing-lg;
+
+    strong {
+        font-weight: 600;
+    }
+}
