@@ -1,104 +1,68 @@
-<section class="tourist-hero">
+<section class="tourist-hero tourist-hero--banner">
+  <div class="tourist-hero__bg" style="background-image: url('/assets/images/HeroTT.png')"></div>
   <div class="tourist-hero__overlay"></div>
   <div class="tourist-hero__bg-gradient"></div>
 
   <div class="container tourist-hero__content">
-    <div class="tourist-hero__left">
-      <div class="hero-decoration hero-decoration--left">
-        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" class="tribal-accent">
-          <path d="M50,100 Q100,150 50,200" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6" />
-          <path d="M70,80 L80,120" stroke="currentColor" stroke-width="2" opacity="0.5" />
-          <path d="M40,150 L60,180" stroke="currentColor" stroke-width="2" opacity="0.5" />
-          <circle cx="50" cy="200" r="15" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4" />
-        </svg>
-      </div>
-
-      <div class="hero-content-box">
-        <span class="tourist-eyebrow">Premium Experience</span>
-        <h1 class="hero-title">Tattoo Tourist</h1>
-        <p class="hero-description">
-          Una propuesta para clientes nacionales e internacionales que quieren una experiencia completa:
-          tatuaje, cultura, seguridad y una ruta autentica por Colombia.
-        </p>
-        <div class="tourist-hero__actions">
-          <a routerLink="/appointments" class="btn primary">Quiero mi experiencia</a>
-          <a routerLink="/contact" class="btn outline">Hablar con el equipo</a>
-        </div>
+    <div class="hero-content-box">
+      <span class="tourist-eyebrow">Premium Experience</span>
+      <h1 class="hero-title">Tattoo Tourist</h1>
+      <p class="hero-description">
+        Una propuesta para clientes nacionales e internacionales que quieren una experiencia completa:
+        tatuaje, cultura, seguridad y una ruta autentica por Colombia.
+      </p>
+      <div class="tourist-hero__actions">
+        <a routerLink="/appointments" class="btn primary">Quiero mi experiencia</a>
+        <a routerLink="/contact" class="btn outline">Hablar con el equipo</a>
       </div>
     </div>
-
-    <div class="tourist-hero__right">
-      <div class="hero-decoration hero-decoration--right">
-        <div class="accent-circle accent-circle--1"></div>
-        <div class="accent-circle accent-circle--2"></div>
-      </div>
-
-      <div class="tattoo-machine-showcase">
-        <div class="machine-glow"></div>
-        <div class="machine-frame">
-          <img src="/assets/images/diseño_para_hero.png" alt="Máquina de tatuaje profesional" class="machine-image" />
-          <div class="machine-accent-top"></div>
-          <div class="machine-accent-bottom"></div>
-        </div>
-      </div>
-
-      <div class="hero-numbers">
-        <div class="number-item">
-          <span class="number">01</span>
-          <span class="label">Artistas Elite</span>
-        </div>
-        <div class="number-item">
-          <span class="number">02</span>
-          <span class="label">Experiencia Premium</span>
-        </div>
-        <div class="number-item">
-          <span class="number">03</span>
-          <span class="label">Seguridad Garantizada</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-scroll-indicator">
-    <span>Desplaza hacia abajo</span>
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 15L3 8M10 15L17 8M10 15V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-    </svg>
   </div>
 </section>
 
 <section class="flight-quick">
+  <!-- Capas de fondo que se activan con el hover: Ahora cubren toda la sección -->
+  <div class="split-reveal__bg-layers">
+    <div class="bg-layer layer-1" [class.active]="currentLayer === 1"></div>
+    <div class="bg-layer layer-2" [class.active]="currentLayer === 2"></div>
+    <div class="bg-layer layer-3" [class.active]="currentLayer === 3"></div>
+  </div>
+
   <div class="container">
-    <div class="flight-quick__panel">
-      <div class="flight-quick__intro">
-        <span class="flight-eyebrow">Vuelo + seguridad</span>
-        <h2>Tu vuelo en 3 segundos</h2>
-        <p>Coordinamos ida y vuelta, seguridad y horarios clave para que tu viaje sea tan cómodo como tu sesión de
-          tatuaje.</p>
-      </div>
+    <div class="split-reveal">
+      <div class="split-reveal__content">
+        <header class="split-reveal__header">
+          <span class="flight-eyebrow">Vuelo + seguridad</span>
+          <h2 class="section-title-premium">En Stiven7ink nos encargamos de todo</h2>
+        </header>
 
-      <div class="flight-quick__badges">
-        <span class="badge">Ida + vuelta</span>
-        <span class="badge">Seguridad</span>
-        <span class="badge">Horarios</span>
-      </div>
+        <div class="split-reveal__list">
+          <div class="reveal-item" (mouseenter)="currentLayer = 1">
+            <span class="reveal-item__num">01</span>
+            <div class="reveal-item__text">
+              <h3>Gestión de Vuelo</h3>
+              <p>En <strong>Stiven7ink</strong> gestionamos tus trayectos internacionales con aerolíneas globales,
+                asegurando que tu llegada sea tan impecable como nuestro arte.</p>
+            </div>
+          </div>
 
-      <div class="flight-quick__detail-row">
-        <article class="detail-card">
-          <div class="detail-card__mark">01</div>
-          <strong>Ruta ida y vuelta</strong>
-          <span>Planificación completa en ambos trayectos con rutas seguras.</span>
-        </article>
-        <article class="detail-card">
-          <div class="detail-card__mark">02</div>
-          <strong>100% seguro</strong>
-          <span>Proveedores confiables y asistencia dedicada en cada paso.</span>
-        </article>
-        <article class="detail-card">
-          <div class="detail-card__mark">03</div>
-          <strong>Horarios premium</strong>
-          <span>Fechas sincronizadas con tu experiencia para máxima comodidad.</span>
-        </article>
+          <div class="reveal-item" (mouseenter)="currentLayer = 2">
+            <span class="reveal-item__num">02</span>
+            <div class="reveal-item__text">
+              <h3>Seguridad y Respaldo</h3>
+              <p>Nos encargamos de tu protección y respaldo legal. Tu tranquilidad está garantizada por la formalidad y
+                seriedad de nuestra marca en cada paso.</p>
+            </div>
+          </div>
+
+          <div class="reveal-item" (mouseenter)="currentLayer = 3">
+            <span class="reveal-item__num">03</span>
+            <div class="reveal-item__text">
+              <h3>Itinerario y Concierge</h3>
+              <p>Sincronizamos tu tiempo con precisión VIP. Desde traslados hasta sesiones, <strong>Stiven7ink</strong>
+                mantiene el control total de tu agenda.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -107,84 +71,86 @@
 <section class="tourist-destinations">
   <div class="container">
     <div class="section-header">
+      <span class="tourist-eyebrow">Destinos Exclusivos</span>
       <h2>Ciudades premium</h2>
-      <p>Descubre rutas exclusivas en los destinos más icónicos de Colombia antes del tatuaje final.</p>
-      <p class="highlight-text">
-        <strong>Hospedajes boutique premium:</strong> Desde lofts urbanos en Bogotá con vistas panorámicas,
-        hasta villas coloniales en Cartagena con piscina privada, y fincas cafeteras en el Eje con jardines infinitos.
-        Cada alojamiento seleccionado por su autenticidad, confort y proximidad a experiencias locales únicas.
-      </p>
     </div>
+  </div>
 
-    <div class="destinations-carousel">
-      <div class="carousel-track">
-        <article *ngFor="let city of cities" class="destination-card" [style.opacity]="loading ? 0.5 : 1">
-          <div class="destination-card__image" [style.backgroundImage]="'url(' + city.imageUrl + ')'"></div>
-          <div class="destination-card__body">
-            <span class="destination-card__tag">{{ city.name }}</span>
-            <h3>{{ city.name }}</h3>
-            <p>
-              {{ isExpanded(city.id) ? city.description : (city.description.length > descriptionLimit ?
-              (city.description | slice:0:descriptionLimit) + '...' : city.description) }}
-            </p>
-            <button type="button" class="read-more" *ngIf="city.description.length > descriptionLimit"
-              (click)="toggleExpand(city.id)">
-              {{ isExpanded(city.id) ? 'Ver menos' : 'Ver más' }}
-            </button>
-          </div>
-        </article>
+  <div class="destinations-slices" [class.loading]="loading">
+    <div *ngFor="let city of cities; let i = index" class="city-slice" [class.active]="activeCityId === city.id"
+      (mouseenter)="activeCityId = city.id" [style.backgroundImage]="'url(' + city.imageUrl + ')'">
+
+      <div class="city-slice__overlay"></div>
+
+      <div class="city-slice__content">
+        <div class="city-slice__vertical-title">
+          <span class="city-slice__number">0{{ i + 1 }}</span>
+          <h3>{{ city.name }}</h3>
+        </div>
+
+        <div class="city-slice__expanded-info">
+          <span class="city-slice__tag">Destino Premium</span>
+          <h3>{{ city.name }}</h3>
+          <p>{{ city.description }}</p>
+          <a routerLink="/appointments" class="btn outline-white">Agendar en {{ city.name }}</a>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="container">
+    <p class="highlight-text">
+      En <strong>Stiven7ink</strong> nos encargamos de que cada segundo de tu viaje sea excepcional. Entendemos que
+      vienes por el arte, pero nos apasiona brindarte una experiencia integral de lujo absoluto. Por ello, hemos
+      seleccionado personalmente los <strong>hospedajes boutique más exclusivos de Colombia</strong>: desde lofts
+      vanguardistas en Bogotá con vistas panorámicas, hasta villas coloniales en Cartagena y fincas cafeteras de
+      ensueño.
+      Cada detalle ha sido curado bajo nuestros estándares para garantizar que tu estancia sea tan impecable, cómoda y
+      única como la obra maestra que diseñaremos para tu piel.
+    </p>
+  </div>
 </section>
 
-<section class="security-logistics">
+<section class="security-plans">
   <div class="container">
-    <div class="security-logistics__panel">
-      <div class="security-logistics__intro">
-        <span class="security-eyebrow">Seguridad + logística</span>
-        <h2>Viaje protegido de principio a fin</h2>
-        <p>Tu tranquilidad es nuestra prioridad. Contamos con protocolos de seguridad y logística especializada para que
-          te enfoques únicamente en disfrutar tu experiencia.</p>
+    <div class="section-header">
+      <span class="tourist-eyebrow">Protección & Confort</span>
+      <h2>Tu tranquilidad, nuestra prioridad</h2>
+      <p>Entendemos el entorno. Por eso, en <strong>Stiven7ink</strong> convertimos la seguridad en una experiencia de
+        guante blanco. Elige el respaldo que tú y tu familia necesitan.</p>
+    </div>
+
+    <div class="security-benefits-grid">
+      <div class="benefit-item">
+        <span class="benefit-number">01</span>
+        <div class="benefit-icon"><mat-icon>verified_user</mat-icon></div>
+        <h3>Anfitrión Dedicado</h3>
+        <p>Un miembro de nuestro equipo te recibirá y te acompañará en los momentos clave de tu estancia, brindándote
+          consejos locales y soporte constante.</p>
       </div>
 
-      <div class="security-logistics__options">
-        <article class="option-card security-option">
-          <div class="option-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="currentColor" />
-              <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="currentColor"
-                opacity="0.3" />
-            </svg>
-          </div>
-          <h3>Equipo de Seguridad</h3>
-          <p>Profesionales capacitados que te acompañan durante todo el viaje, previniendo cualquier situación de riesgo
-            y garantizando tu bienestar en cada momento.</p>
-          <ul>
-            <li>Escolta personalizada</li>
-            <li>Monitoreo 24/7</li>
-            <li>Protocolos de emergencia</li>
-          </ul>
-        </article>
+      <div class="benefit-item">
+        <span class="benefit-number">02</span>
+        <div class="benefit-icon"><mat-icon>local_taxi</mat-icon></div>
+        <h3>Transporte Privado</h3>
+        <p>Gestionamos traslados en vehículos de gama alta con conductores de absoluta confianza para tus
+          desplazamientos entre aeropuerto, hotel y estudio.</p>
+      </div>
 
-        <article class="option-card logistics-option">
-          <div class="option-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M3 7V5C3 3.9 3.9 3 5 3H19C20.1 3 21 3.9 21 5V7H3ZM3 9H21V19C21 20.1 20.1 21 19 21H17V15H7V21H5C3.9 21 3 20.1 3 19V9Z"
-                fill="currentColor" />
-              <path d="M7 15H17V21H15V17H9V21H7V15Z" fill="currentColor" opacity="0.3" />
-            </svg>
-          </div>
-          <h3>Logística Especializada</h3>
-          <p>Coordinación completa de traslados, hospedaje y actividades. Nuestro equipo se encarga de todos los
-            detalles para que tengas una experiencia fluida y sin preocupaciones.</p>
-          <ul>
-            <li>Traslados privados</li>
-            <li>Coordinación de hospedaje</li>
-            <li>Agenda personalizada</li>
-          </ul>
-        </article>
+      <div class="benefit-item">
+        <span class="benefit-number">03</span>
+        <div class="benefit-icon"><mat-icon>location_city</mat-icon></div>
+        <h3>Entorno Seguro</h3>
+        <p>Tanto nuestro estudio como los hospedajes sugeridos se encuentran en los sectores más exclusivos y vigilados
+          de la ciudad, garantizando tu paz mental.</p>
+      </div>
+
+      <div class="benefit-item">
+        <span class="benefit-number">04</span>
+        <div class="benefit-icon"><mat-icon>support_agent</mat-icon></div>
+        <h3>Soporte 24/7</h3>
+        <p>Acceso directo a una línea de asistencia para resolver cualquier necesidad logística o de seguridad inmediata
+          durante toda tu visita a Colombia.</p>
       </div>
     </div>
   </div>
@@ -199,121 +165,44 @@
         tecnología médica de punta.</p>
     </div>
 
-    <div class="artist-sedation__grid">
-      <!-- Artistas Section -->
-      <div class="artists-panel">
-        <div class="artists-panel__header">
+    <div class="dual-expansion">
+      <!-- Panel Artistas -->
+      <div class="expansion-panel" (mouseenter)="activeHotspot = 'artists'"
+        [class.active]="activeHotspot === 'artists'">
+        <div class="expansion-panel__bg" style="background-image: url('/assets/images/artists-revelation.jpg')"></div>
+        <div class="expansion-panel__content">
+          <span class="panel-num">01</span>
           <h3>Equipo de Artistas Elite</h3>
-          <p>Desde 2 hasta 5 profesionales especializados en tu pieza.</p>
-        </div>
-
-        <div class="artists-showcase">
-          <div class="artist-tier">
-            <div class="tier-badge">Dúo Premium</div>
-            <strong>2 Artistas</strong>
-            <p>Colaboración de maestros para diseños complejos de alto impacto visual.</p>
-            <ul class="tier-benefits">
-              <li>Sincronización perfecta</li>
-              <li>Simetría garantizada</li>
-              <li>Tiempo optimizado</li>
-            </ul>
-          </div>
-
-          <div class="artist-tier">
-            <div class="tier-badge">Equipo Avanzado</div>
-            <strong>3-4 Artistas</strong>
-            <p>Equipo especializado para piezas de gran envergadura con múltiples técnicas.</p>
-            <ul class="tier-benefits">
-              <li>Múltiples estilos integrados</li>
-              <li>Rotación de especialistas</li>
-              <li>Control de calidad en vivo</li>
-            </ul>
-          </div>
-
-          <div class="artist-tier">
-            <div class="tier-badge">Elite Absoluto</div>
-            <strong>5 Artistas</strong>
-            <p>Equipo máximo para masterpieces que requieren precisión quirúrgica absoluta.</p>
-            <ul class="tier-benefits">
-              <li>Maestría incomparable</li>
-              <li>Supervisión constante</li>
-              <li>Garantía de perfección</li>
-            </ul>
+          <div class="panel-details">
+            <div class="detail-item">
+              <strong>Dúo Premium</strong>
+              <p>2 maestros coordinados para diseños de alto impacto.</p>
+            </div>
+            <div class="detail-item">
+              <strong>Elite Absoluto</strong>
+              <p>Hasta 5 artistas en sincronía para piezas maestras.</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Sedation Services Section -->
-      <div class="sedation-panel">
-        <div class="sedation-panel__header">
-          <h3>Servicios de Sedación Médica</h3>
-          <p>Comodidad total respaldada por profesionales clínicos especializados.</p>
-        </div>
-
-        <div class="sedation-services">
-          <article class="sedation-card pain-relief">
-            <div class="sedation-card__icon">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-                <path d="M12 7V12M12 12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              </svg>
+      <!-- Panel Sedación -->
+      <div class="expansion-panel" (mouseenter)="activeHotspot = 'sedation'"
+        [class.active]="activeHotspot === 'sedation'">
+        <div class="expansion-panel__bg" style="background-image: url('/assets/images/sedation-revelation.jpg')"></div>
+        <div class="expansion-panel__content">
+          <span class="panel-num">02</span>
+          <h3>Confort Médico Superior</h3>
+          <div class="panel-details">
+            <div class="detail-item">
+              <strong>Sedación Total</strong>
+              <p>Sueño profundo monitoreado en ambiente clínico.</p>
             </div>
-            <h4>Bomba del Dolor</h4>
-            <p>Anestesia local avanzada con difusión controlada. Olvida el malestar y enfócate en la experiencia.</p>
-            <div class="sedation-specs">
-              <span class="spec-tag">Efectividad inmediata</span>
-              <span class="spec-tag">Comodidad prolongada</span>
+            <div class="detail-item">
+              <strong>Bomba del Dolor</strong>
+              <p>Anestesia local avanzada con difusión controlada.</p>
             </div>
-          </article>
-
-          <article class="sedation-card full-sedation">
-            <div class="sedation-card__icon">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M21 10C21 14.9706 16.9706 19 12 19C7.02944 19 3 14.9706 3 10C3 5.02944 7.02944 1 12 1C16.9706 1 21 5.02944 21 10Z"
-                  stroke="currentColor" stroke-width="2" />
-                <circle cx="8" cy="10" r="1.5" fill="currentColor" />
-                <circle cx="16" cy="10" r="1.5" fill="currentColor" />
-              </svg>
-            </div>
-            <h4>Sedación Total</h4>
-            <p>Sueño profundo controlado en ambiente clínico. Despierta cuando tu obra maestra esté lista.</p>
-            <div class="sedation-specs">
-              <span class="spec-tag">Monitoreo 24/7</span>
-              <span class="spec-tag">Seguridad garantizada</span>
-            </div>
-          </article>
-
-          <article class="sedation-card clinical">
-            <div class="sedation-card__icon">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2" />
-                <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              </svg>
-            </div>
-            <h4>Clínica Especializada</h4>
-            <p>Instalaciones quirúrgicas con protocolos de esterilidad hospital-grade.</p>
-            <div class="sedation-specs">
-              <span class="spec-tag">Certificación médica</span>
-              <span class="spec-tag">Equipamiento de punta</span>
-            </div>
-          </article>
-
-          <article class="sedation-card vital-care">
-            <div class="sedation-card__icon">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"
-                  stroke="currentColor" stroke-width="2" />
-                <path d="M12 6V12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              </svg>
-            </div>
-            <h4>Equipo Vital</h4>
-            <p>Personal médico especializado monitoreando signos vitales en tiempo real.</p>
-            <div class="sedation-specs">
-              <span class="spec-tag">Profesionales certificados</span>
-              <span class="spec-tag">Vigilancia constante</span>
-            </div>
-          </article>
+          </div>
         </div>
       </div>
     </div>

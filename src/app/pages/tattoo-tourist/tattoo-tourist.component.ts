@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FirebaseService } from '../../core/services/firebase.service';
+import { MatIconModule } from '@angular/material/icon';
 
 interface City {
   id: string;
   name: string;
   description: string;
   imageUrl: string;
-  images: string[];
   order: number;
 }
 
 @Component({
   selector: 'app-tattoo-tourist',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MatIconModule],
   templateUrl: './tattoo-tourist.component.html',
   styleUrls: ['./tattoo-tourist.component.scss']
 })
@@ -23,7 +23,9 @@ export class TattooTouristComponent implements OnInit {
   cities: City[] = [];
   loading = true;
   expandedCityIds: string[] = [];
-  selectedImageByCity: Record<string, string> = {};
+  currentLayer: number = 1; // Mostramos la primera imagen por defecto
+  activeCityId: string = '';
+  activeHotspot: string | null = null;
   readonly descriptionLimit = 120;
 
   constructor(private firebaseService: FirebaseService) { }
@@ -42,28 +44,17 @@ export class TattooTouristComponent implements OnInit {
           name: city.name,
           description: city.description,
           imageUrl: city.imageUrl,
-          images: city.images?.length ? city.images : [city.imageUrl],
           order: city.order ?? 0
         }))
         .sort((a: City, b: City) => a.order - b.order);
-
-      this.selectedImageByCity = this.cities.reduce((result, city) => {
-        result[city.id] = city.images[0] || city.imageUrl;
-        return result;
-      }, {} as Record<string, string>);
+      if (this.cities.length > 0) {
+        this.activeCityId = this.cities[0].id;
+      }
     } catch (error) {
       console.error('Error loading cities:', error);
     } finally {
       this.loading = false;
     }
-  }
-
-  getFeaturedImage(city: City): string {
-    return this.selectedImageByCity[city.id] || city.images[0] || city.imageUrl;
-  }
-
-  setFeaturedImage(cityId: string, imageUrl: string) {
-    this.selectedImageByCity[cityId] = imageUrl;
   }
 
   isExpanded(cityId: string): boolean {
@@ -77,5 +68,12 @@ export class TattooTouristComponent implements OnInit {
     } else {
       this.expandedCityIds.push(cityId);
     }
+  }
+
+  // Método opcional para resetear a la primera imagen al salir de la lista
+  resetLayer() {
+    // Si prefieres que siempre haya una imagen de fondo, dejamos el 1.
+    // Si prefieres que vuelva a negro, usa 0.
+    this.currentLayer = 1;
   }
 }
