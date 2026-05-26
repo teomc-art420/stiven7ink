@@ -40,7 +40,9 @@
     <div class="split-reveal">
       <div class="split-reveal__content">
         <div class="split-reveal__list">
-          <div class="reveal-item" (mouseenter)="currentLayer = 1">
+          <div class="reveal-item" [class.is-active]="currentLayer === 1" (mouseenter)="selectFlightLayer(1)"
+            (click)="selectFlightLayer(1)" role="button" tabindex="0"
+            (keydown.enter)="selectFlightLayer(1)" (keydown.space)="$event.preventDefault(); selectFlightLayer(1)">
             <span class="reveal-item__num">01</span>
             <div class="reveal-item__text">
               <h3>Gestión de Vuelo</h3>
@@ -49,7 +51,9 @@
             </div>
           </div>
 
-          <div class="reveal-item" (mouseenter)="currentLayer = 2">
+          <div class="reveal-item" [class.is-active]="currentLayer === 2" (mouseenter)="selectFlightLayer(2)"
+            (click)="selectFlightLayer(2)" role="button" tabindex="0"
+            (keydown.enter)="selectFlightLayer(2)" (keydown.space)="$event.preventDefault(); selectFlightLayer(2)">
             <span class="reveal-item__num">02</span>
             <div class="reveal-item__text">
               <h3>Seguridad y Respaldo</h3>
@@ -58,7 +62,9 @@
             </div>
           </div>
 
-          <div class="reveal-item" (mouseenter)="currentLayer = 3">
+          <div class="reveal-item" [class.is-active]="currentLayer === 3" (mouseenter)="selectFlightLayer(3)"
+            (click)="selectFlightLayer(3)" role="button" tabindex="0"
+            (keydown.enter)="selectFlightLayer(3)" (keydown.space)="$event.preventDefault(); selectFlightLayer(3)">
             <span class="reveal-item__num">03</span>
             <div class="reveal-item__text">
               <h3>Itinerario y Concierge</h3>
@@ -82,7 +88,9 @@
 
   <div class="destinations-slices" [class.loading]="loading">
     <div *ngFor="let city of cities; let i = index" class="city-slice" [class.active]="activeCityId === city.id"
-      (mouseenter)="activeCityId = city.id" [style.backgroundImage]="'url(' + city.imageUrl + ')'">
+      (mouseenter)="selectCity(city.id)" (click)="selectCity(city.id)" role="button" tabindex="0"
+      (keydown.enter)="selectCity(city.id)" (keydown.space)="$event.preventDefault(); selectCity(city.id)"
+      [style.backgroundImage]="'url(' + city.imageUrl + ')'">
 
       <div class="city-slice__overlay"></div>
 
@@ -96,7 +104,8 @@
           <span class="city-slice__tag">Destino Premium</span>
           <h3>{{ city.name }}</h3>
           <p>{{ city.description }}</p>
-          <a routerLink="/appointments" class="btn outline-white">Agendar en {{ city.name }}</a>
+          <a routerLink="/appointments" class="btn outline-white" (click)="$event.stopPropagation()">Agendar en {{
+            city.name }}</a>
         </div>
       </div>
     </div>
@@ -171,12 +180,17 @@
 
     <div class="dual-expansion">
       <!-- Panel Artistas -->
-      <div class="expansion-panel" (mouseenter)="activeHotspot = 'artists'"
-        [class.active]="activeHotspot === 'artists'">
+      <div class="expansion-panel expansion-panel--artists" (mouseenter)="selectHotspot('artists')"
+        (click)="selectHotspot('artists')" [class.active]="activeHotspot === 'artists'" role="button" tabindex="0"
+        (keydown.enter)="selectHotspot('artists')" (keydown.space)="$event.preventDefault(); selectHotspot('artists')">
         <div class="expansion-panel__bg" style="background-image: url('/assets/images/dosartistas.png')"></div>
+        <div class="expansion-panel__overlay" aria-hidden="true"></div>
         <div class="expansion-panel__content">
-          <span class="panel-num">01</span>
-          <h3>Equipo de Artistas Elite</h3>
+          <div class="expansion-panel__head">
+            <span class="panel-num">01</span>
+            <h3>Equipo de Artistas Elite</h3>
+            <p class="panel-teaser">Dúo premium y hasta 5 artistas para piezas de gran formato.</p>
+          </div>
           <div class="panel-details">
             <div class="detail-item">
               <strong>Dúo Premium</strong>
@@ -191,12 +205,18 @@
       </div>
 
       <!-- Panel Sedación -->
-      <div class="expansion-panel" (mouseenter)="activeHotspot = 'sedation'"
-        [class.active]="activeHotspot === 'sedation'">
+      <div class="expansion-panel expansion-panel--sedation" (mouseenter)="selectHotspot('sedation')"
+        (click)="selectHotspot('sedation')" [class.active]="activeHotspot === 'sedation'" role="button" tabindex="0"
+        (keydown.enter)="selectHotspot('sedation')"
+        (keydown.space)="$event.preventDefault(); selectHotspot('sedation')">
         <div class="expansion-panel__bg" style="background-image: url('/assets/images/Bombadeldolor.png')"></div>
+        <div class="expansion-panel__overlay" aria-hidden="true"></div>
         <div class="expansion-panel__content">
-          <span class="panel-num">02</span>
-          <h3>Confort Médico Superior</h3>
+          <div class="expansion-panel__head">
+            <span class="panel-num">02</span>
+            <h3>Confort Médico Superior</h3>
+            <p class="panel-teaser">Sedación monitoreada y bomba del dolor para máximo confort.</p>
+          </div>
           <div class="panel-details">
             <div class="detail-item">
               <strong>Sedación Total</strong>

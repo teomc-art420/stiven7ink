@@ -40,10 +40,14 @@ Actualizar **los tres** sitios con el mismo valor exacto (Firebase distingue may
 Desde la carpeta `stiven7ink/`:
 
 ```bash
+npm install
+npx firebase login
 npm run build:prod
 npm run deploy:rules
 npm run deploy:hosting
 ```
+
+(`firebase-tools` va en devDependencies; los scripts usan `npx firebase`.)
 
 O todo junto:
 

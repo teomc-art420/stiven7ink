@@ -22,12 +22,9 @@ interface City {
 export class TattooTouristComponent implements OnInit {
   cities: City[] = [];
   loading = true;
-  expandedCityIds: string[] = [];
   currentLayer: number = 1; // Mostramos la primera imagen por defecto
   activeCityId: string = '';
-  activeHotspot: string | null = null;
-  readonly descriptionLimit = 120;
-
+  activeHotspot: 'artists' | 'sedation' = 'artists';
   private firebaseService = inject(FirebaseService);
 
   ngOnInit() {
@@ -57,20 +54,18 @@ export class TattooTouristComponent implements OnInit {
     }
   }
 
-  isExpanded(cityId: string): boolean {
-    return this.expandedCityIds.includes(cityId);
+  selectCity(cityId: string): void {
+    this.activeCityId = cityId;
   }
 
-  toggleExpand(cityId: string) {
-    const index = this.expandedCityIds.indexOf(cityId);
-    if (index >= 0) {
-      this.expandedCityIds.splice(index, 1);
-    } else {
-      this.expandedCityIds.push(cityId);
-    }
+  selectFlightLayer(layer: number): void {
+    this.currentLayer = layer;
   }
 
-  // Método opcional para resetear a la primera imagen al salir de la lista
+  selectHotspot(hotspot: 'artists' | 'sedation'): void {
+    this.activeHotspot = hotspot;
+  }
+
   resetLayer() {
     // Si prefieres que siempre haya una imagen de fondo, dejamos el 1.
     // Si prefieres que vuelva a negro, usa 0.
