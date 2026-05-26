@@ -114,31 +114,48 @@
 .tourist-eyebrow {
   display: inline-block;
   margin-bottom: 1rem;
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
+  font-size: 0.9rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--wine-accent);
-  font-weight: 700;
-  padding: 0.5rem 1.2rem;
-  background: rgba(212, 35, 107, 0.15);
-  border: 1px solid rgba(212, 35, 107, 0.3);
+  font-weight: 800;
+  padding: 0.6rem 1.8rem;
+  background: linear-gradient(90deg, rgba(212, 35, 107, 0.2), rgba(212, 35, 107, 0.05));
+  border: 1px solid rgba(212, 35, 107, 0.4);
   border-radius: 999px;
   width: fit-content;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
+
+  // Estilo especial para el símbolo '#' si lo envuelves en un <span> en el HTML
+  span,
+  &.has-hash::before {
+    content: '#';
+    opacity: 0.5;
+    font-weight: 300;
+    margin-right: 2px;
+    font-family: sans-serif; // Un toque más moderno para el símbolo
+  }
+
+  &:hover {
+    background: rgba(212, 35, 107, 0.25);
+    transform: translateY(-2px);
+  }
 }
 
 .hero-title {
-  font-size: clamp(3rem, 7vw, 5rem);
+  font-size: clamp(3.5rem, 8vw, 5.5rem); // Aumentamos ligeramente para el nuevo nombre
   font-family: 'Cinzel', serif;
-  /* Fuente premium como en el Home */
   font-weight: 400;
-  /* Más fino para un look premium */
   margin: 1rem 0;
   line-height: 1.05;
   background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -2px;
+  letter-spacing: -3px; // Más track ajustado para un look más editorial
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
 }
 
 .hero-description {
@@ -467,7 +484,7 @@
 }
 
 .security-plans {
-  padding: 10rem 0;
+  padding: 6rem 0;
   background: radial-gradient(circle at 50% 50%, rgba(212, 35, 107, 0.08) 0%, #000 80%);
   animation: backgroundPulse 10s ease-in-out infinite;
   position: relative;
@@ -667,6 +684,36 @@
   position: relative;
   z-index: 2;
   width: 100%;
+}
+
+// ===== NUEVA SECCIÓN: TITLE SECTION SEPARADA =====
+.flight-quick__title-section {
+  margin-bottom: 5rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  background: linear-gradient(135deg, rgba(212, 35, 107, 0.05), rgba(212, 35, 107, 0.02));
+  border-radius: 24px;
+  border: 1px solid rgba(212, 35, 107, 0.1);
+  max-width: 900px;
+  margin: 0 auto 5rem;
+
+  .flight-eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wine-accent);
+    font-weight: 800;
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, rgba(212, 35, 107, 0.2), rgba(212, 35, 107, 0.05));
+    border: 1px solid var(--wine-accent);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(212, 35, 107, 0.15);
+    animation: floatSubtle 3s ease-in-out infinite;
+  }
 }
 
 .split-reveal__header {
@@ -1063,6 +1110,68 @@
   padding: 6rem 0;
   background: #000;
 
+  .artist-sedation__header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 5rem;
+    position: relative;
+
+    .sedation-eyebrow {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wine-accent);
+      font-weight: 800;
+      padding: 0.6rem 1.5rem;
+      background: linear-gradient(135deg, rgba(212, 35, 107, 0.2), rgba(212, 35, 107, 0.05));
+      border: 1px solid var(--wine-accent);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(212, 35, 107, 0.15);
+      animation: floatSubtle 3s ease-in-out infinite;
+    }
+
+    h2 {
+      margin: 1.5rem 0;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: -1px;
+      line-height: 1.15;
+
+      // Gradiente de texto con brillo premium
+      background: linear-gradient(135deg,
+          #fff 0%,
+          #f0f0f0 25%,
+          rgba(255, 255, 255, 0.95) 50%,
+          #f0f0f0 75%,
+          #fff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      // Animación de glow
+      animation: titleGlow 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(212, 35, 107, 0.15));
+    }
+
+    p {
+      margin: 2rem auto 0;
+      max-width: 700px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.75);
+      letter-spacing: 0.3px;
+
+      // Efecto de luz sutil
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+
   .dual-expansion {
     display: flex;
     height: 520px;
@@ -1104,7 +1213,7 @@
         padding: 4rem;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: space-between;
         z-index: 2;
       }
 
@@ -1122,25 +1231,98 @@
       }
 
       .panel-details {
-        opacity: 0;
-        transform: translateY(30px);
+        opacity: 1;
+        transform: translateY(0);
         transition: 0.6s 0.2s;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
+        padding: 2rem 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(212, 35, 107, 0.2));
+        border-radius: 12px;
+        padding: 1.5rem;
 
         .detail-item {
           strong {
             display: block;
             margin-bottom: 0.5rem;
             color: var(--wine-accent);
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
           }
 
           p {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+            margin: 0;
           }
         }
+      }
+    }
+  }
+
+  // ===== CTA SECTION =====
+  .artist-sedation__cta {
+    margin-top: 5rem;
+    padding: 4rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(212, 35, 107, 0.08), rgba(212, 35, 107, 0.03));
+    border: 1px solid rgba(212, 35, 107, 0.3);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+
+    // Efecto de fondo animado sutil
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(212, 35, 107, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    p {
+      margin: 0 0 2.5rem 0;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+
+      // Subrayado decorativo con wine accent
+      &::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--wine-accent), transparent);
+        margin: 1.5rem auto 0;
+      }
+    }
+
+    .btn {
+      position: relative;
+      z-index: 1;
+      padding: 1.2rem 3rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 20px 40px rgba(212, 35, 107, 0.3);
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 30px 60px rgba(212, 35, 107, 0.5);
+      }
+
+      &:active {
+        transform: translateY(-1px);
       }
     }
   }

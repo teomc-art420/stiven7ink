@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FirebaseService } from '../../core/services/firebase.service';
@@ -28,10 +28,10 @@ export class TattooTouristComponent implements OnInit {
   activeHotspot: string | null = null;
   readonly descriptionLimit = 120;
 
-  constructor(private firebaseService: FirebaseService) { }
+  private firebaseService = inject(FirebaseService);
 
-  async ngOnInit() {
-    await this.loadCities();
+  ngOnInit() {
+    this.loadCities();
   }
 
   async loadCities() {

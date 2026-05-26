@@ -5,8 +5,8 @@
 
   <div class="container tourist-hero__content">
     <div class="hero-content-box">
-      <span class="tourist-eyebrow">Premium Experience</span>
-      <h1 class="hero-title">Tattoo Tourist</h1>
+      <span class="tourist-eyebrow"><span>#</span>Tattourism</span>
+      <h1 class="hero-title">Tattourism</h1>
       <p class="hero-description">
         Una propuesta para clientes nacionales e internacionales que quieren una experiencia completa:
         tatuaje, cultura, seguridad y una ruta autentica por Colombia.
@@ -27,14 +27,18 @@
     <div class="bg-layer layer-3" [class.active]="currentLayer === 3"></div>
   </div>
 
+  <!-- TÍTULO SECTION -->
+  <div class="container">
+    <div class="flight-quick__title-section">
+      <span class="flight-eyebrow">Vuelo + seguridad</span>
+      <h2 class="section-title-premium">En Stiven7ink nos encargamos de todo</h2>
+    </div>
+  </div>
+
+  <!-- OPCIONES SECTION -->
   <div class="container">
     <div class="split-reveal">
       <div class="split-reveal__content">
-        <header class="split-reveal__header">
-          <span class="flight-eyebrow">Vuelo + seguridad</span>
-          <h2 class="section-title-premium">En Stiven7ink nos encargamos de todo</h2>
-        </header>
-
         <div class="split-reveal__list">
           <div class="reveal-item" (mouseenter)="currentLayer = 1">
             <span class="reveal-item__num">01</span>
@@ -169,7 +173,7 @@
       <!-- Panel Artistas -->
       <div class="expansion-panel" (mouseenter)="activeHotspot = 'artists'"
         [class.active]="activeHotspot === 'artists'">
-        <div class="expansion-panel__bg" style="background-image: url('/assets/images/artists-revelation.jpg')"></div>
+        <div class="expansion-panel__bg" style="background-image: url('/assets/images/dosartistas.png')"></div>
         <div class="expansion-panel__content">
           <span class="panel-num">01</span>
           <h3>Equipo de Artistas Elite</h3>
@@ -189,7 +193,7 @@
       <!-- Panel Sedación -->
       <div class="expansion-panel" (mouseenter)="activeHotspot = 'sedation'"
         [class.active]="activeHotspot === 'sedation'">
-        <div class="expansion-panel__bg" style="background-image: url('/assets/images/sedation-revelation.jpg')"></div>
+        <div class="expansion-panel__bg" style="background-image: url('/assets/images/Bombadeldolor.png')"></div>
         <div class="expansion-panel__content">
           <span class="panel-num">02</span>
           <h3>Confort Médico Superior</h3>
