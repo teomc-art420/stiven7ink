@@ -19,21 +19,23 @@
     <nav class="desktop-nav">
       <a mat-button routerLink="/" routerLinkActive="active" (click)="isMenuOpen = false">Inicio</a>
       <a mat-button routerLink="/portfolio" routerLinkActive="active" (click)="isMenuOpen = false">Portafolio</a>
-      <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre Mi</a>
+      <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre Mí</a>
       <a mat-button routerLink="/blog" routerLinkActive="active" (click)="isMenuOpen = false">Blog</a>
       <a mat-button routerLink="/appointments" routerLinkActive="active" (click)="isMenuOpen = false">Citas</a>
       <a mat-button routerLink="/contact" routerLinkActive="active" (click)="isMenuOpen = false">Contacto</a>
 
-      @if (!isLoggedIn) {
-      <a mat-button routerLink="/admin/login" class="login-btn" (click)="isMenuOpen = false">
-        <mat-icon>login</mat-icon>
-        Login
-      </a>
-      } @else {
-      <a mat-button routerLink="/admin/dashboard" class="admin-btn" (click)="isMenuOpen = false">
-        <mat-icon>dashboard</mat-icon>
-        Admin
-      </a>
+      @if (showAdminNav) {
+        @if (!isLoggedIn) {
+        <a mat-button routerLink="/admin/login" class="login-btn" (click)="isMenuOpen = false">
+          <mat-icon>login</mat-icon>
+          Login
+        </a>
+        } @else {
+        <a mat-button routerLink="/admin/dashboard" class="admin-btn" (click)="isMenuOpen = false">
+          <mat-icon>dashboard</mat-icon>
+          Admin
+        </a>
+        }
       }
     </nav>
   </div>
@@ -53,20 +55,22 @@
 <ng-template #navLinks>
   <a mat-button routerLink="/" routerLinkActive="active" (click)="isMenuOpen = false">Inicio</a>
   <a mat-button routerLink="/portfolio" routerLinkActive="active" (click)="isMenuOpen = false">Portafolio</a>
-  <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre M?</a>
+  <a mat-button routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">Sobre Mí</a>
   <a mat-button routerLink="/blog" routerLinkActive="active" (click)="isMenuOpen = false">Blog</a>
   <a mat-button routerLink="/appointments" routerLinkActive="active" (click)="isMenuOpen = false">Citas</a>
   <a mat-button routerLink="/contact" routerLinkActive="active" (click)="isMenuOpen = false">Contacto</a>
 
-  @if (!isLoggedIn) {
-  <a mat-button routerLink="/admin/login" class="login-btn" (click)="isMenuOpen = false">
-    <mat-icon>login</mat-icon>
-    Login
-  </a>
-  } @else {
-  <a mat-button routerLink="/admin/dashboard" class="admin-btn" (click)="isMenuOpen = false">
-    <mat-icon>dashboard</mat-icon>
-    Admin
-  </a>
+  @if (showAdminNav) {
+    @if (!isLoggedIn) {
+    <a mat-button routerLink="/admin/login" class="login-btn" (click)="isMenuOpen = false">
+      <mat-icon>login</mat-icon>
+      Login
+    </a>
+    } @else {
+    <a mat-button routerLink="/admin/dashboard" class="admin-btn" (click)="isMenuOpen = false">
+      <mat-icon>dashboard</mat-icon>
+      Admin
+    </a>
+    }
   }
 </ng-template>

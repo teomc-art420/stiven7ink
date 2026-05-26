@@ -1,15 +1,21 @@
 rules_version = '2';
 
-// Despliegue: firebase deploy --only storage
+// Despliegue: firebase deploy --only firestore:rules,storage
 //
-// portfolio / heroCarousel / blog: público lectura; escritura solo admin.
+// portfolio / heroCarousel / blog / tattoo-tourist: lectura pública; escritura solo admin.
 // appointments: referencias de imagen desde el formulario público (imagen ≤ 5MB, solo image/*).
+// Riesgo residual de abuso de almacenamiento → CAPTCHA post-lanzamiento.
 
 service firebase.storage {
   match /b/{bucket}/o {
 
     function signedIn() {
       return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == 'Harolstiven110@gmail.com';
     }
 
     function isImageUpload() {
@@ -20,28 +26,28 @@ service firebase.storage {
 
     match /portfolio/{allPaths=**} {
       allow read: if true;
-      allow write, delete: if signedIn();
+      allow write, delete: if isAdmin();
     }
 
     match /heroCarousel/{allPaths=**} {
       allow read: if true;
-      allow write, delete: if signedIn();
+      allow write, delete: if isAdmin();
     }
 
     match /blog/{allPaths=**} {
       allow read: if true;
-      allow write, delete: if signedIn();
+      allow write, delete: if isAdmin();
     }
 
     match /appointments/{allPaths=**} {
-      allow read: if signedIn();
+      allow read: if isAdmin();
       allow write: if isImageUpload();
-      allow delete: if signedIn();
+      allow delete: if isAdmin();
     }
 
     match /tattoo-tourist/{allPaths=**} {
       allow read: if true;
-      allow write, delete: if signedIn() && isImageUpload();
+      allow write, delete: if isAdmin() && isImageUpload();
     }
   }
 }

@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../core/services/firebase.service';
+import { isAdminUser } from '../../core/auth/admin-auth';
+import { environment } from '../../../environments/environment';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,13 +19,15 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   isMenuOpen: boolean = false;
+  /** En producción no se promociona el panel admin en el header. */
+  showAdminNav = !environment.production;
   private authSubscription: Subscription | null = null;
 
   constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
     this.authSubscription = this.firebaseService.getAuthState().subscribe(user => {
-      this.isLoggedIn = !!user;
+      this.isLoggedIn = isAdminUser(user);
     });
   }
 

@@ -5,8 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy": "npm run build:prod && firebase deploy"
   },
   "private": true,
   "dependencies": {

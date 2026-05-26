@@ -2,19 +2,25 @@ rules_version = '2';
 
 // Seguridad Stiven7ink:
 // - Contenido público (portfolio, blog, hero carousel, ocupación de agenda) solo lectura para todos.
-// - Datos sensibles (citas completas, mensajes de contacto) solo usuarios autenticados (admin).
-// - Escrituras públicas limitadas: nuevas solicitudes de cita (batch con busySlots), mensajes de contacto, subida de imágenes vía Storage.
+// - Datos sensibles (citas completas, mensajes de contacto) solo admin (email en isAdmin).
+// - Escrituras públicas limitadas: nuevas solicitudes de cita (batch con busySlots), mensajes de contacto.
 //
-// Despliegue: firebase deploy --only firestore:rules
+// busySlots: create público acotado (necesario para batch anónimo de citas). Riesgo residual:
+// bloqueo de franjas sin cita → mitigar con CAPTCHA post-lanzamiento (ver PRE_LANZAMIENTO.md).
 //
-// Si tenías citas antes de busySlots: crea documentos en busySlots con id "{fecha}_{timeSlot}" (ej. 2025-04-01_manana)
-// y campos date + timeSlot para que el calendario marque esos huecos como ocupados.
+// Despliegue: firebase deploy --only firestore:rules,storage
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function signedIn() {
       return request.auth != null;
+    }
+
+    // Debe coincidir con environment.adminEmails (mismo correo que en Firebase Auth).
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == 'Harolstiven110@gmail.com';
     }
 
     function isValidYmd(d) {
@@ -25,20 +31,22 @@ service cloud.firestore {
       return ts is string && ts in ['manana', 'tarde', 'noche'];
     }
 
-    // Solo fecha + franja: lectura pública para armar el calendario sin exponer datos personales.
-    match /busySlots/{slotId} {
-      allow read: if true;
-      allow create: if request.resource.data.keys().hasOnly(['date', 'timeSlot'])
+    function isValidBusySlotData() {
+      return request.resource.data.keys().hasOnly(['date', 'timeSlot'])
         && isValidYmd(request.resource.data.date)
-        && isAllowedTimeSlot(request.resource.data.timeSlot)
-        && slotId == request.resource.data.date + '_' + request.resource.data.timeSlot;
-      allow update: if false;
-      allow delete: if signedIn();
+        && isAllowedTimeSlot(request.resource.data.timeSlot);
     }
 
-    // Solicitudes de cita: crear solo estado pendiente; lectura y gestión solo admin.
+    match /busySlots/{slotId} {
+      allow read: if true;
+      allow create: if isValidBusySlotData()
+        && slotId == request.resource.data.date + '_' + request.resource.data.timeSlot;
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
     match /appointments/{docId} {
-      allow read: if signedIn();
+      allow read: if isAdmin();
       allow create: if request.resource.data.keys().hasOnly([
           'name', 'email', 'phone', 'date', 'timeSlot', 'style', 'size', 'description',
           'referenceImageUrl', 'status', 'createdAt'
@@ -62,27 +70,26 @@ service cloud.firestore {
           || (request.resource.data.referenceImageUrl is string
               && request.resource.data.referenceImageUrl.size() <= 2000)
         );
-      allow update, delete: if signedIn();
+      allow update, delete: if isAdmin();
     }
 
     match /portfolio/{docId} {
       allow read: if true;
-      allow create, update, delete: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
 
     match /blog/{docId} {
       allow read: if true;
-      allow create, update, delete: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
 
     match /heroCarousel/{docId} {
       allow read: if true;
-      allow create, update, delete: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
 
-    // Mensajes de contacto: envío público controlado; lectura/gestión solo admin.
     match /contacts/{docId} {
-      allow read: if signedIn();
+      allow read: if isAdmin();
       allow create: if request.resource.data.keys().hasOnly([
           'name', 'email', 'subject', 'message', 'read', 'createdAt'
         ])
@@ -96,23 +103,12 @@ service cloud.firestore {
         && request.resource.data.message is string
         && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 8000
         && request.resource.data.createdAt is timestamp;
-      allow update, delete: if signedIn();
+      allow update, delete: if isAdmin();
     }
 
     match /tattooTouristCities/{docId} {
       allow read: if true;
-      allow create: if request.resource.data.keys().hasOnly([
-          'name', 'description', 'imageUrl', 'order', 'createdAt'
-        ])
-        && request.resource.data.name is string
-        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 120
-        && request.resource.data.description is string
-        && request.resource.data.description.size() <= 8000
-        && request.resource.data.imageUrl is string
-        && request.resource.data.imageUrl.size() <= 2000
-        && request.resource.data.order is int
-        && request.resource.data.createdAt is timestamp;
-      allow update, delete: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
   }
 }

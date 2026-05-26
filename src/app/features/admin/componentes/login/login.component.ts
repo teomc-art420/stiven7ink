@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FirebaseService } from '../../../../core/services/firebase.service';
+import { isAdminUser } from '../../../../core/auth/admin-auth';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -43,8 +44,13 @@ export class LoginComponent {
 
     const result = await this.firebaseService.login(this.email, this.password);
 
-    if (result.success) {
-      // Login exitoso, redirigir al dashboard
+    if (result.success && result.user) {
+      if (!isAdminUser(result.user)) {
+        await this.firebaseService.logout();
+        this.error = 'Esta cuenta no tiene permisos de administrador.';
+        this.loading = false;
+        return;
+      }
       this.router.navigate(['/admin/dashboard']);
     } else {
       // Error en el login
