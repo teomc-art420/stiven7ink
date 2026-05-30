@@ -19,8 +19,41 @@ Documento operativo para publicar de forma **segura y publicable** (no requiere 
 Actualizar **los tres** sitios con el mismo valor exacto (Firebase distingue mayúsculas en el token):
 
 1. `src/environments/environment.ts` y `environment.prod.ts` → `adminEmails`
-2. `firestore.rules` → función `isAdmin()`
-3. `storage.rules` → función `isAdmin()`
+2. `firestore.rules` → función `isAdmin()` (en **minúsculas**: la regla usa `.lower()`)
+3. `storage.rules` → función `isAdmin()` (en **minúsculas**)
+
+> Nota: las reglas comparan el email en minúsculas (`.lower()`), así que el valor en `isAdmin()` debe escribirse siempre en minúsculas aunque la cuenta se haya creado con mayúsculas.
+
+### M2 — Email verificado (OBLIGATORIO antes de desplegar)
+
+`isAdmin()` ahora exige `email_verified == true`. **Si el email admin no está verificado, el admin no podrá leer/gestionar datos.**
+
+Cómo verificar el email de la cuenta admin:
+
+1. Firebase Console → **Authentication → Users**.
+2. En la fila de `Harolstiven110@gmail.com`, menú (⋮) → **Reset password** (envía un correo de restablecimiento).
+3. Abre el enlace del correo y completa el cambio de contraseña. **Al completar el restablecimiento, Firebase marca el email como verificado.**
+4. Vuelve a `/admin/login`, inicia sesión y confirma que ves las citas.
+
+Si por algún motivo el admin queda bloqueado, **rollback**: quitar la línea `&& request.auth.token.email_verified == true` en `firestore.rules` y `storage.rules` y redeployar (`npm run deploy:rules`).
+
+### M3 — App Check (anti-abuso de escritura pública)
+
+El código ya está integrado y **desactivado por defecto** (`recaptchaSiteKey: ''` → no rompe nada). Para activarlo:
+
+1. Firebase Console → **App Check** → registra la app web con **reCAPTCHA v3** y copia la *site key*.
+2. Pega la clave en `recaptchaSiteKey` de `environment.ts` y `environment.prod.ts`.
+3. `npm run build:prod && npm run deploy:hosting`.
+4. Verifica en App Check que llegan tokens (estado "verified") antes de **forzar** (Enforce) Firestore y Storage.
+5. Activa **Enforce** en App Check para Firestore y Storage. A partir de ahí, solo las peticiones desde la app real (con token reCAPTCHA) podrán escribir.
+
+> No actives "Enforce" hasta confirmar tráfico verificado, o bloquearás las escrituras legítimas (citas/contacto).
+
+### Otros endurecimientos (post-lanzamiento)
+
+- **Restringir API key** por referrer HTTP en Google Cloud Console.
+- **CSP** (`Content-Security-Policy`) en `firebase.json`.
+- **2FA** en la cuenta Google del proyecto.
 
 ---
 

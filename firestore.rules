@@ -18,9 +18,12 @@ service cloud.firestore {
     }
 
     // Debe coincidir con environment.adminEmails (mismo correo que en Firebase Auth).
+    // Comparación en minúsculas + email verificado (cuenta única del estudio).
     function isAdmin() {
       return signedIn()
-        && request.auth.token.email == 'Harolstiven110@gmail.com';
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() == 'harolstiven110@gmail.com'
+        && request.auth.token.email_verified == true;
     }
 
     function isValidYmd(d) {
