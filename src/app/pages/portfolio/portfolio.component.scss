@@ -4,9 +4,27 @@
 // So var(--bg) should work.
 
 .portfolio-section {
+  position: relative;
   padding: 60px 20px;
-  background-color: transparent; // It sits on body's black bg, but explicit is fine
   min-height: 80vh;
+  // Resplandor magenta sutil arriba: misma atmósfera "de estudio" que Tattourism.
+  background:
+    radial-gradient(ellipse 70% 38% at 50% 0%, rgba(212, 35, 107, 0.12), transparent 70%),
+    transparent;
+
+  // Capa para la estela de "tinta" del cursor: detrás del contenido, nunca interfiere.
+  .ink-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .portfolio-header {
@@ -14,17 +32,40 @@
   margin-bottom: 50px;
   margin-top: 20px;
 
+  .kicker {
+    display: inline-block;
+    color: var(--wine-accent);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 14px;
+  }
+
   h1 {
+    font-family: 'Cinzel', serif; // Coherencia con los títulos de Tattourism
     font-size: 3.5rem;
-    color: #ffffff;
-    margin-bottom: 10px;
-    font-weight: 900;
-    letter-spacing: -1px;
+    margin-bottom: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    // Degradado de luz como los títulos de Tattourism.
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.65) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #ffffff; // fallback
+  }
+
+  .header-divider {
+    width: 90px;
+    height: 2px;
+    margin: 0 auto 18px;
+    background: linear-gradient(90deg, transparent, var(--wine-accent), transparent);
   }
 
   .subtitle {
     font-size: 1.2rem;
-    color: #666;
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 300;
   }
 }
@@ -32,110 +73,364 @@
 .filters {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 12px;
   margin-bottom: 50px;
   flex-wrap: wrap;
 
-  // Rely on global .filter-btn for button styles
-}
+  // Acabado premium: píldora translúcida, texto en mayúsculas, acento magenta de la marca.
+  .filter-btn {
+    padding: 9px 22px;
+    border: 1px solid rgba(212, 35, 107, 0.45);
+    border-radius: 999px;
+    background: rgba(212, 35, 107, 0.06);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: color 220ms ease, background 220ms ease, border-color 220ms ease,
+      transform 220ms ease, box-shadow 220ms ease;
+  }
 
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  // Una tarjeta por fila cuando no caben cómodamente dos columnas de 300px
-  grid-auto-flow: row;
-}
-
-.portfolio-item {
-  background: #0e0e0e;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  position: relative;
-
-  &:hover {
-    transform: translateY(-5px);
+  .filter-btn:hover {
     border-color: var(--wine-accent);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    background: rgba(212, 35, 107, 0.18);
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    border-color: transparent;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--wine-accent), #ba1f5c);
+    box-shadow: 0 6px 18px rgba(212, 35, 107, 0.4);
   }
 }
 
-// Imagen completa (sin recorte). Antes: altura fija + object-fit: cover cortaba arriba/abajo.
-.portfolio-image {
+// Galería tipo masonry: las imágenes conservan su proporción real (sin recortes).
+.portfolio-grid {
+  column-count: 3;
+  column-gap: 20px;
+}
+
+.portfolio-item {
+  // Reset de botón (ahora cada tarjeta es clickeable para abrir el lightbox).
+  appearance: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 20px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  display: block;
   width: 100%;
-  background: #080808;
-  line-height: 0;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #0e0e0e;
+  // Borde sutil para que los tatuajes oscuros no se fundan con el fondo.
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  // Entrada escalonada (delay por tarjeta vía style.animation-delay en el template).
+  opacity: 0;
+  animation: card-enter 600ms ease forwards;
 
   img {
     width: 100%;
     height: auto;
     display: block;
-    object-fit: contain;
+    transition: transform 450ms ease, filter 450ms ease;
+  }
+
+  .portfolio-overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 28px 16px 14px;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.85));
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 300ms ease, transform 300ms ease;
+
+    h3 {
+      font-family: 'Cinzel', serif;
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .style {
+      color: var(--wine-accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  .zoom-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    font-size: 1.5rem;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 300ms ease, background 200ms ease;
+  }
+
+  // Marca de agua sutil con la "S" de la marca (esquina inferior derecha).
+  &::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 44px;
+    height: 44px;
+    background: url('/assets/images/logo.png') center / contain no-repeat;
+    opacity: 0.4;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &:hover,
+  &:focus-visible {
+    img {
+      transform: scale(1.05);
+      filter: brightness(0.65);
+    }
+
+    .portfolio-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .zoom-icon {
+      opacity: 1;
+      background: var(--wine-accent);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--wine-accent);
+    outline-offset: 3px;
   }
 }
 
-.portfolio-info {
-  padding: 24px;
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-item {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+// ---- CTA de cierre: el portafolio convence, aquí se agenda. ----
+.portfolio-cta {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  .cta-text {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 22px;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 14px 38px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--wine-accent), #ba1f5c);
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(212, 35, 107, 0.35);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(212, 35, 107, 0.5);
+    }
+  }
+}
+
+// ---- Lightbox (visor a pantalla completa) ----
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.93);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  animation: lb-fade 200ms ease;
+}
+
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.lightbox-content {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 88vh;
+}
+
+.lightbox-image {
+  position: relative;
+  flex: 1 1 60%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    max-width: 100%;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  // Marca de agua también en el visor grande.
+  &::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 60px;
+    height: 60px;
+    background: url('/assets/images/logo.png') center / contain no-repeat;
+    opacity: 0.38;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+    pointer-events: none;
+  }
+}
+
+.lightbox-info {
+  flex: 1 1 40%;
+  max-width: 360px;
+  color: #ffffff;
 
   h3 {
-    font-size: 1.4rem;
-    color: #ffffff;
-    margin-bottom: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
     font-weight: 700;
+    margin: 0 0 10px;
   }
 
   .style {
     color: var(--wine-accent);
+    font-size: 0.85rem;
     font-weight: 600;
-    margin: 0 0 12px 0;
-    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    display: inline-block;
-  }
-
-  .description-block {
-    margin-top: 4px;
-
-    &:not(.expanded) .description {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4;
-      line-clamp: 4;
-      overflow: hidden;
-    }
+    margin: 0 0 16px;
   }
 
   .description {
-    color: #b0b0b0;
-    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.7;
     font-size: 0.95rem;
-    margin: 0 0 6px 0;
+    margin: 0 0 20px;
   }
 
-  .description-block.expanded .description {
-    display: block;
-    -webkit-line-clamp: unset;
-    overflow: visible;
+  .counter {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
   }
+}
 
-  .read-more-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
+.lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 2.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 200ms ease, transform 200ms ease;
+
+  &:hover {
     color: var(--wine-accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    transform: scale(1.1);
+  }
+}
 
-    &:hover {
-      color: #ffffff;
-    }
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 200ms ease, transform 200ms ease;
+
+  &:hover {
+    background: var(--wine-accent);
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  &.prev {
+    left: 18px;
+  }
+
+  &.next {
+    right: 18px;
   }
 }
 
@@ -166,48 +461,150 @@
     }
   }
 
+  // Filtros compactos: las imágenes son las protagonistas, no los botones.
   .filters {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    margin-bottom: 28px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
   }
 
   .filters .filter-btn {
-    width: 100%;
-    text-align: center;
+    width: auto;
+    padding: 7px 15px;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
   }
 
   .portfolio-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-    width: 100%;
-    max-width: none;
-    margin-inline: 0;
+    column-count: 2;
+    column-gap: 14px;
   }
 
   .portfolio-item {
-    display: flex;
+    margin-bottom: 14px;
+
+    // En táctil no hay hover: mostramos el título de forma sutil y siempre visible.
+    .portfolio-overlay {
+      opacity: 1;
+      transform: translateY(0);
+      padding: 22px 12px 10px;
+
+      h3 {
+        font-size: 0.9rem;
+      }
+    }
+
+    // Sin zoom ni oscurecido en táctil (la imagen se ve completa).
+    &:hover img,
+    &:focus-visible img {
+      transform: none;
+      filter: none;
+    }
+
+    .zoom-icon {
+      display: none;
+    }
+  }
+
+  // Lightbox apilado en vertical para pantallas medianas/pequeñas.
+  .lightbox {
+    padding: 16px;
+  }
+
+  .lightbox-content {
     flex-direction: column;
-    min-width: 0;
-    width: 100%;
+    gap: 16px;
+    max-height: 92vh;
+    overflow-y: auto;
   }
 
-  .portfolio-item:hover {
-    transform: none;
+  .lightbox-image img {
+    max-height: 62vh;
   }
 
-  .portfolio-image {
-    flex-shrink: 0;
+  .lightbox-info {
+    flex: none;
+    max-width: 100%;
+    text-align: center;
+
+    h3 {
+      font-size: 1.4rem;
+    }
   }
 
-  .portfolio-info {
-    padding: 20px;
-    flex: 1;
-    min-width: 0;
+  .lightbox-nav {
+    width: 42px;
+    height: 42px;
+    font-size: 1.6rem;
+
+    &.prev {
+      left: 8px;
+    }
+
+    &.next {
+      right: 8px;
+    }
+  }
+}
+
+// Teléfonos pequeños: título y filtros aún más compactos.
+@media (max-width: 480px) {
+  .portfolio-header {
+    margin-top: 8px;
+    margin-bottom: 20px;
+
+    .kicker {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .header-divider {
+      width: 64px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+    }
+  }
+
+  .portfolio-cta {
+    margin-top: 36px;
+    padding-top: 28px;
+
+    .cta-text {
+      font-size: 1.1rem;
+    }
+
+    .cta-btn {
+      padding: 12px 30px;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+    }
+  }
+
+  .filters {
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .filters .filter-btn {
+    padding: 6px 13px;
+    font-size: 0.68rem;
+    letter-spacing: 0.8px;
+  }
+
+  .portfolio-grid {
+    column-count: 1;
   }
 }

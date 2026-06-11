@@ -1,59 +1,100 @@
-<section class="portfolio-section">
-    <div class="container">
-      <div class="portfolio-header">
-        <h1>Portafolio</h1>
-        <p class="subtitle">Explora algunos de mis trabajos</p>
+<section class="portfolio-section" (mousemove)="spawnInk($event)">
+  <div class="ink-layer" #inkLayer aria-hidden="true"></div>
+  <div class="container">
+    <div class="portfolio-header">
+      <span class="kicker">Stiven7ink &middot; Galer&iacute;a</span>
+      <h1>Portafolio</h1>
+      <div class="header-divider" aria-hidden="true"></div>
+      <p class="subtitle">Explora algunos de mis trabajos</p>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+      @for (style of styles; track style) {
+        <button
+          class="filter-btn"
+          [class.active]="selectedFilter === style"
+          (click)="filterByStyle(style)">
+          {{ style }}
+        </button>
+      }
+    </div>
+
+    <!-- Galería -->
+    @if (loading) {
+      <div class="loading-message">
+        <p>Cargando trabajos...</p>
       </div>
-  
-      <!-- Filtros -->
-      <div class="filters">
-        @for (style of styles; track style) {
-          <button 
-            class="filter-btn" 
-            [class.active]="selectedFilter === style"
-            (click)="filterByStyle(style)">
-            {{ style }}
+    } @else if (filteredWorks.length === 0) {
+      <div class="empty-message">
+        <p>No hay trabajos disponibles en este momento.</p>
+      </div>
+    } @else {
+      <div class="portfolio-grid">
+        @for (work of filteredWorks; track work.id; let i = $index) {
+          <button
+            type="button"
+            class="portfolio-item"
+            (click)="openLightbox(i)"
+            [style.animation-delay]="(i < 12 ? i * 70 : 840) + 'ms'"
+            [attr.aria-label]="'Ver ' + work.title">
+            <img [src]="work.imageUrl" [alt]="work.title" loading="lazy">
+            <div class="portfolio-overlay">
+              <h3>{{ work.title }}</h3>
+              @if (work.style) {
+                <span class="style">{{ work.style }}</span>
+              }
+            </div>
+            <span class="zoom-icon" aria-hidden="true">+</span>
           </button>
         }
       </div>
-  
-      <!-- Galería de trabajos -->
-      @if (loading) {
-        <div class="loading-message">
-          <p>Cargando trabajos...</p>
-        </div>
-      } @else if (filteredWorks.length === 0) {
-        <div class="empty-message">
-          <p>No hay trabajos disponibles en este momento.</p>
-        </div>
-      } @else {
-        <div class="portfolio-grid">
-          @for (work of filteredWorks; track work.id) {
-            <div class="portfolio-item">
-              <div class="portfolio-image">
-                <img [src]="work.imageUrl" [alt]="work.title" loading="lazy">
-              </div>
-              <div class="portfolio-info">
-                <h3>{{ work.title }}</h3>
-                <p class="style">Estilo: {{ work.style }}</p>
-                @if (work.description) {
-                  <div
-                    class="description-block"
-                    [class.expanded]="isDescriptionExpanded(work.id)">
-                    <p class="description">{{ work.description }}</p>
-                    <button
-                      type="button"
-                      class="read-more-btn"
-                      [attr.aria-expanded]="isDescriptionExpanded(work.id)"
-                      (click)="toggleDescriptionExpand(work.id)">
-                      {{ isDescriptionExpanded(work.id) ? 'Ver menos' : 'Ver más' }}
-                    </button>
-                  </div>
-                }
-              </div>
-            </div>
-          }
-        </div>
-      }
+
+      <!-- Cierre con llamado a la acción -->
+      <div class="portfolio-cta">
+        <p class="cta-text">&iquest;Te gust&oacute; alguno de estos trabajos?</p>
+        <a routerLink="/appointments" class="cta-btn">Agenda tu cita</a>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Lightbox -->
+@if (currentWork) {
+  <div class="lightbox" (click)="closeLightbox()">
+    <button
+      type="button"
+      class="lightbox-close"
+      (click)="closeLightbox()"
+      aria-label="Cerrar">&times;</button>
+
+    @if (filteredWorks.length > 1) {
+      <button
+        type="button"
+        class="lightbox-nav prev"
+        (click)="$event.stopPropagation(); prevWork()"
+        aria-label="Anterior">&#8249;</button>
+      <button
+        type="button"
+        class="lightbox-nav next"
+        (click)="$event.stopPropagation(); nextWork()"
+        aria-label="Siguiente">&#8250;</button>
+    }
+
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <div class="lightbox-image">
+        <img [src]="currentWork.imageUrl" [alt]="currentWork.title">
+      </div>
+      <div class="lightbox-info">
+        <h3>{{ currentWork.title }}</h3>
+        @if (currentWork.style) {
+          <p class="style">{{ currentWork.style }}</p>
+        }
+        @if (currentWork.description) {
+          <p class="description">{{ currentWork.description }}</p>
+        }
+        <span class="counter">{{ lightboxIndex! + 1 }} / {{ filteredWorks.length }}</span>
+      </div>
     </div>
-  </section>
+  </div>
+}
