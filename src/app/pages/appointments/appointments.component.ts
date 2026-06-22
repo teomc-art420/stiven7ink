@@ -1,10 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { FirebaseService } from '../../core/services/firebase.service';
-
 import { CommonModule } from '@angular/common';
+
+/** Mismos estilos que portafolio, sobre mí y admin. */
+export const TATTOO_STYLES = [
+  'Realismo',
+  'Tradicional',
+  'Minimalista',
+  'Geométrico',
+  'Full Color',
+  'Black and Gray',
+  'Blackwork',
+  'Cover Up',
+] as const;
+
+export type TattooStyle = (typeof TATTOO_STYLES)[number];
 
 interface CalendarDay {
   date: Date;
@@ -28,11 +42,13 @@ interface TimeSlot {
 @Component({
   selector: 'app-appointments',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './appointments.component.html',
   styleUrl: './appointments.component.scss'
 })
 export class AppointmentsComponent implements OnInit {
+  readonly tattooStyles = TATTOO_STYLES;
+
   formData = {
     name: '',
     email: '',
@@ -53,9 +69,9 @@ export class AppointmentsComponent implements OnInit {
 
   // Time Slots
   timeSlots: TimeSlot[] = [
-    { id: 'manana', label: 'Mañana', icon: '☀️', time: '9:00 AM - 1:00 PM', isAvailable: true },
-    { id: 'tarde', label: 'Tarde', icon: '🌤️', time: '2:00 PM - 6:00 PM', isAvailable: true },
-    { id: 'noche', label: 'Noche', icon: '🌙', time: '6:00 PM - 10:00 PM', note: 'Sujeto a aprobación', isAvailable: true }
+    { id: 'manana', label: 'Mañana', icon: 'wb_sunny', time: '9:00 AM - 1:00 PM', isAvailable: true },
+    { id: 'tarde', label: 'Tarde', icon: 'wb_cloudy', time: '2:00 PM - 6:00 PM', isAvailable: true },
+    { id: 'noche', label: 'Noche', icon: 'dark_mode', time: '6:00 PM - 10:00 PM', note: 'Sujeto a aprobación', isAvailable: true }
   ];
   selectedTimeSlot: string | null = null;
   checkingAvailability: boolean = false;
@@ -64,10 +80,28 @@ export class AppointmentsComponent implements OnInit {
   selectedFile: File | null = null;
   fileName: string = '';
 
-  constructor(private firebaseService: FirebaseService) { }
+  /** Paneles informativos colapsables (cerrados por defecto = menos scroll). */
+  expandedPanel: 'pagos' | 'horarios' | 'consejos' | null = null;
+
+  readonly processSteps = [
+    { label: 'Tus datos' },
+    { label: 'Fecha y hora' },
+    { label: 'Tu idea' },
+    { label: 'Confirmación' },
+  ];
+
+  constructor(
+    private firebaseService: FirebaseService,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
     this.generateCalendarDays();
+    // Pre-seleccionar estilo si llega desde otra sección: /appointments?estilo=Realismo
+    const estilo = this.route.snapshot.queryParamMap.get('estilo');
+    if (estilo && (TATTOO_STYLES as readonly string[]).includes(estilo)) {
+      this.formData.style = estilo;
+    }
   }
 
   // ========== CALENDAR METHODS ==========
@@ -200,6 +234,10 @@ export class AppointmentsComponent implements OnInit {
 
     this.selectedTimeSlot = slot.id;
     this.formData.timeSlot = slot.id;
+  }
+
+  togglePanel(panel: 'pagos' | 'horarios' | 'consejos'): void {
+    this.expandedPanel = this.expandedPanel === panel ? null : panel;
   }
 
   // ========== FILE UPLOAD ==========

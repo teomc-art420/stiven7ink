@@ -21,6 +21,11 @@
     z-index: 0;
   }
 
+  // La gota del click va POR ENCIMA del contenido (si no, quedaría oculta tras las fotos).
+  .ink-layer--top {
+    z-index: 5;
+  }
+
   .container {
     position: relative;
     z-index: 1;
@@ -461,21 +466,31 @@
     }
   }
 
-  // Filtros compactos: las imágenes son las protagonistas, no los botones.
+  // Filtros en una sola línea deslizable (tipo categorías de Instagram):
+  // ocupan mínimo espacio y las fotos suben a primer plano.
   .filters {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     align-items: center;
     gap: 8px;
     margin-bottom: 24px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 10px;
+    scrollbar-width: none; // Firefox
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome/Safari
+    }
   }
 
   .filters .filter-btn {
+    flex: 0 0 auto;
     width: auto;
     padding: 7px 15px;
     font-size: 0.72rem;
     letter-spacing: 1px;
+    white-space: nowrap;
   }
 
   .portfolio-grid {
@@ -486,15 +501,32 @@
   .portfolio-item {
     margin-bottom: 14px;
 
-    // En táctil no hay hover: mostramos el título de forma sutil y siempre visible.
+    // En táctil no hay hover: título visible pero discreto, que tape lo mínimo del tatuaje.
     .portfolio-overlay {
       opacity: 1;
       transform: translateY(0);
-      padding: 22px 12px 10px;
+      padding: 14px 10px 7px;
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
 
       h3 {
-        font-size: 0.9rem;
+        font-size: 0.78rem;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+
+      .style {
+        font-size: 0.58rem;
+      }
+    }
+
+    // Marca de agua más pequeña en miniaturas de móvil.
+    &::after {
+      width: 30px;
+      height: 30px;
+      right: 8px;
+      bottom: 8px;
     }
 
     // Sin zoom ni oscurecido en táctil (la imagen se ve completa).
@@ -596,15 +628,33 @@
   .filters {
     gap: 6px;
     margin-bottom: 18px;
+    // Indica que hay más filtros a los lados al deslizar.
+    mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent);
   }
 
   .filters .filter-btn {
-    padding: 6px 13px;
-    font-size: 0.68rem;
-    letter-spacing: 0.8px;
+    padding: 6px 12px;
+    font-size: 0.65rem;
+    letter-spacing: 0.6px;
   }
 
+  // Dos columnas tipo Instagram: se aprecia más trabajo de un vistazo;
+  // la foto se ve grande al abrir el visor.
   .portfolio-grid {
-    column-count: 1;
+    column-count: 2;
+    column-gap: 10px;
+  }
+
+  .portfolio-item {
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+}
+
+// En pantallas táctiles el visor se navega con swipe; las flechas solo estorban.
+@media (hover: none) and (pointer: coarse) {
+  .lightbox-nav {
+    display: none;
   }
 }

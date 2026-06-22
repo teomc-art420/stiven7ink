@@ -1,5 +1,6 @@
-<section class="portfolio-section" (mousemove)="spawnInk($event)">
+<section class="portfolio-section" (mousemove)="spawnInk($event)" (click)="spawnInkDrop($event)">
   <div class="ink-layer" #inkLayer aria-hidden="true"></div>
+  <div class="ink-layer ink-layer--top" #inkTopLayer aria-hidden="true"></div>
   <div class="container">
     <div class="portfolio-header">
       <span class="kicker">Stiven7ink &middot; Galer&iacute;a</span>
@@ -61,7 +62,11 @@
 
 <!-- Lightbox -->
 @if (currentWork) {
-  <div class="lightbox" (click)="closeLightbox()">
+  <div
+    class="lightbox"
+    (click)="closeLightbox()"
+    (touchstart)="onLightboxTouchStart($event)"
+    (touchend)="onLightboxTouchEnd($event)">
     <button
       type="button"
       class="lightbox-close"

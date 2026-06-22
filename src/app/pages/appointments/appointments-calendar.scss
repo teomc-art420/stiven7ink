@@ -1,8 +1,8 @@
 // ========== CALENDAR CAROUSEL STYLES ==========
 
 .calendar-section {
-    margin-bottom: 2rem;
-    padding: clamp(12px, 3vw, 20px);
+    margin-bottom: 1rem;
+    padding: clamp(10px, 2.5vw, 16px);
     background: #0e0e0e;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
@@ -17,11 +17,13 @@
         margin-bottom: 1.2rem;
 
         h3 {
+            font-family: 'Cinzel', serif;
             color: #fff;
             font-size: 1.1rem;
             font-weight: 600;
             text-transform: capitalize;
             margin: 0;
+            letter-spacing: 0.5px;
         }
 
         .nav-btn {
@@ -46,8 +48,8 @@
             }
 
             &:hover:not(:disabled) {
-                background: linear-gradient(135deg, var(--wine-accent, #8b1538) 0%, #6b1028 100%);
-                border-color: var(--wine-accent, #8b1538);
+                background: linear-gradient(135deg, var(--wine-accent), #ba1f5c);
+                border-color: var(--wine-accent);
                 transform: scale(1.05);
             }
 
@@ -67,6 +69,9 @@
         min-width: 0;
 
         .calendar-day {
+            appearance: none;
+            font: inherit;
+            width: 100%;
             background: #1a1a1a;
             border: 2px solid #333;
             border-radius: 8px;
@@ -76,6 +81,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            color: inherit;
 
             .day-name {
                 display: block;
@@ -95,17 +101,17 @@
             }
 
             &.today {
-                border-color: #ffc107;
+                border-color: var(--wine-accent);
 
                 .day-name {
-                    color: #ffc107;
+                    color: var(--wine-accent);
                 }
             }
 
             &.selected {
-                background: linear-gradient(135deg, var(--wine-accent, #8b1538) 0%, #6b1028 100%);
-                border-color: var(--wine-accent, #8b1538);
-                box-shadow: 0 3px 15px rgba(139, 21, 56, 0.5);
+                background: linear-gradient(135deg, var(--wine-accent), #ba1f5c);
+                border-color: var(--wine-accent);
+                box-shadow: 0 3px 15px rgba(212, 35, 107, 0.45);
                 transform: translateY(-2px);
 
                 .day-name,
@@ -130,9 +136,9 @@
             }
 
             &:not(.past):not(.selected):not(.disabled):hover {
-                border-color: var(--wine-accent, #8b1538);
+                border-color: var(--wine-accent);
                 transform: translateY(-2px);
-                box-shadow: 0 3px 12px rgba(139, 21, 56, 0.3);
+                box-shadow: 0 3px 12px rgba(212, 35, 107, 0.3);
             }
         }
     }
@@ -143,14 +149,14 @@
         justify-content: center;
         gap: 8px;
         padding: 12px;
-        background: rgba(139, 21, 56, 0.1);
-        border: 1px solid rgba(139, 21, 56, 0.3);
+        background: rgba(212, 35, 107, 0.08);
+        border: 1px solid rgba(212, 35, 107, 0.25);
         border-radius: 8px;
-        color: #999;
+        color: rgba(255, 255, 255, 0.55);
         font-size: 0.85rem;
 
         .calendar-hint-icon {
-            color: var(--wine-accent, #8b1538);
+            color: var(--wine-accent);
             width: 20px;
             height: 20px;
             flex-shrink: 0;
@@ -161,8 +167,8 @@
 // ========== TIME SLOTS CARDS STYLES (HORIZONTAL) ==========
 
 .time-slots-section {
-    margin-bottom: 2rem;
-    padding: clamp(12px, 3vw, 20px);
+    margin-bottom: 1rem;
+    padding: clamp(10px, 2.5vw, 16px);
     background: #0e0e0e;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
@@ -170,11 +176,13 @@
     box-sizing: border-box;
 
     h3 {
+        font-family: 'Cinzel', serif;
         color: #fff;
         font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 1.2rem;
         margin-top: 0;
+        letter-spacing: 0.5px;
     }
 
     .loading-slots {
@@ -193,80 +201,87 @@
     }
 
     .time-slots-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
 
         .time-slot-card {
+            appearance: none;
+            font: inherit;
+            width: 100%;
+            text-align: left;
             background: #1a1a1a;
             border: 2px solid #333;
             border-radius: 10px;
-            padding: 16px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             display: flex;
-            align-items: center;
-            gap: 15px;
+            color: inherit;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 14px 12px;
+            gap: 8px;
 
             .slot-icon {
-                font-size: 1.85rem;
+                font-size: 22px;
+                width: 22px;
+                height: 22px;
                 line-height: 1;
-                width: 2rem;
-                height: 2rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
-                transition: all 0.3s ease;
+                color: var(--wine-accent);
+                transition: color 0.3s ease;
             }
 
             .slot-content {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
-                gap: 4px;
+                gap: 2px;
             }
 
             .slot-label {
-                font-size: 1rem;
+                font-size: 0.9rem;
                 color: #fff;
                 font-weight: 600;
             }
 
             .slot-time {
-                font-size: 0.85rem;
+                font-size: 0.75rem;
                 color: #999;
             }
 
             .slot-note {
-                font-size: 0.75rem;
-                color: #ffc107;
+                font-size: 0.7rem;
+                color: rgba(255, 193, 7, 0.9);
                 font-style: italic;
                 margin-top: 2px;
             }
 
             .slot-status {
-                position: absolute;
-                top: 50%;
-                right: 20px;
-                transform: translateY(-50%);
+                position: static;
+                transform: none;
+                margin-top: 4px;
+                align-self: flex-start;
                 background: rgba(220, 53, 69, 0.2);
                 color: #dc3545;
-                padding: 4px 12px;
+                padding: 3px 8px;
                 border-radius: 12px;
-                font-size: 0.75rem;
+                font-size: 0.68rem;
                 font-weight: 600;
                 border: 1px solid #dc3545;
             }
 
             &.selected {
-                background: linear-gradient(135deg, var(--wine-accent, #8b1538) 0%, #6b1028 100%);
-                border-color: var(--wine-accent, #8b1538);
-                box-shadow: 0 4px 20px rgba(139, 21, 56, 0.5);
+                background: linear-gradient(135deg, var(--wine-accent), #ba1f5c);
+                border-color: var(--wine-accent);
+                box-shadow: 0 4px 20px rgba(212, 35, 107, 0.45);
 
                 .slot-icon {
-                    transform: scale(1.08);
+                    color: #ffffff;
                 }
 
                 .slot-time {
@@ -289,13 +304,9 @@
             }
 
             &:not(.unavailable):not(.selected):hover {
-                border-color: var(--wine-accent, #8b1538);
-                transform: translateX(5px);
-                box-shadow: 0 4px 15px rgba(139, 21, 56, 0.3);
-
-                .slot-icon {
-                    transform: scale(1.05);
-                }
+                border-color: var(--wine-accent);
+                transform: translateY(-3px);
+                box-shadow: 0 4px 15px rgba(212, 35, 107, 0.3);
             }
         }
     }
@@ -357,12 +368,12 @@
             }
 
             &::-webkit-scrollbar-thumb {
-                background: var(--wine-accent, #8b1538);
+                background: var(--wine-accent);
                 border-radius: 10px;
             }
 
             .calendar-day {
-                min-width: 70px;
+                min-width: 68px;
                 flex-shrink: 0;
             }
         }
@@ -376,10 +387,14 @@
         }
 
         .time-slots-grid {
-            gap: 10px;
+            grid-template-columns: 1fr;
+            gap: 8px;
 
             .time-slot-card {
-                padding: 14px 16px;
+                flex-direction: row;
+                align-items: center;
+                padding: 12px 14px;
+                gap: 12px;
 
                 .slot-icon {
                     font-size: 1.65rem;

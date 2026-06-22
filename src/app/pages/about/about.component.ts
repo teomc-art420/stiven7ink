@@ -9,5 +9,6 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent {
-
+  /** Mismos estilos que filtra el portafolio: cada etiqueta lleva a la galería filtrada. */
+  styles = ['Realismo', 'Tradicional', 'Minimalista', 'Geométrico', 'Full Color', 'Black and Gray', 'Blackwork', 'Cover Up'];
 }

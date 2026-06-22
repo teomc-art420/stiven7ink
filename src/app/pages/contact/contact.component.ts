@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FirebaseService } from '../../core/services/firebase.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [FormsModule, CommonModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']
 })
@@ -19,13 +17,31 @@ export class ContactComponent {
     subject: '',
     message: ''
   };
-  loading: boolean = false;
-  submitted: boolean = false;
+  loading = false;
+  submitted = false;
 
   constructor(private firebaseService: FirebaseService) { }
 
-  async onSubmit() {
-    // La validación se maneja en el HTML
+  validateNumber(event: KeyboardEvent): boolean {
+    const char = event.key;
+    if (!/^[0-9]$/.test(char)) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  resetForm(): void {
+    this.submitted = false;
+    this.formData = {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    };
+  }
+
+  async onSubmit(): Promise<void> {
     this.loading = true;
 
     try {
@@ -45,7 +61,6 @@ export class ContactComponent {
           subject: '',
           message: ''
         };
-        alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
       } else {
         alert('Error al enviar el mensaje. Por favor intenta nuevamente.');
       }

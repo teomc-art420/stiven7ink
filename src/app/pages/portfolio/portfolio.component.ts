@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FirebaseService } from '../../core/services/firebase.service';
 
 @Component({
@@ -20,20 +20,32 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   lightboxIndex: number | null = null;
 
   @ViewChild('inkLayer') inkLayer?: ElementRef<HTMLDivElement>;
+  @ViewChild('inkTopLayer') inkTopLayer?: ElementRef<HTMLDivElement>;
   private lastInkX = 0;
   private lastInkY = 0;
-  /** Solo en dispositivos con mouse y sin preferencia de movimiento reducido. */
-  private readonly inkEnabled =
+  private readonly motionOk =
     typeof window !== 'undefined' &&
-    window.matchMedia('(hover: hover)').matches &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /** Estela: solo en dispositivos con mouse. */
+  private readonly inkEnabled =
+    this.motionOk && typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 
-  styles = ['Todos', 'Realismo', 'Tradicional', 'Minimalista', 'Geométrico', 'Acuarela', 'Blackwork'];
+  styles = ['Todos', 'Realismo', 'Tradicional', 'Minimalista', 'Geométrico', 'Full Color', 'Black and Gray', 'Blackwork', 'Cover Up'];
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(
+    private firebaseService: FirebaseService,
+    private route: ActivatedRoute
+  ) { }
 
   async ngOnInit() {
     await this.loadWorks();
+    // Permite llegar filtrado desde otras secciones: /portfolio?estilo=Realismo
+    const estilo = this.route.snapshot.queryParamMap.get('estilo');
+    if (estilo === 'Acuarela') {
+      this.filterByStyle('Full Color');
+    } else if (estilo && this.styles.includes(estilo)) {
+      this.filterByStyle(estilo);
+    }
   }
 
   ngOnDestroy(): void {
@@ -53,8 +65,16 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     if (style === 'Todos') {
       this.filteredWorks = this.works;
     } else {
-      this.filteredWorks = this.works.filter(work => work.style === style);
+      this.filteredWorks = this.works.filter(work => this.workMatchesStyle(work.style, style));
     }
+  }
+
+  /** Incluye trabajos guardados como "Acuarela" antes del rename a Full Color. */
+  private workMatchesStyle(workStyle: string, filterStyle: string): boolean {
+    if (workStyle === filterStyle) {
+      return true;
+    }
+    return filterStyle === 'Full Color' && workStyle === 'Acuarela';
   }
 
   // ---- Lightbox ----
@@ -108,6 +128,28 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     }
   }
 
+  // ---- Swipe táctil en el lightbox ----
+  private touchStartX = 0;
+  private touchStartY = 0;
+
+  onLightboxTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+  }
+
+  onLightboxTouchEnd(event: TouchEvent): void {
+    const dx = event.changedTouches[0].clientX - this.touchStartX;
+    const dy = event.changedTouches[0].clientY - this.touchStartY;
+    // Solo gestos claramente horizontales (no confundir con scroll vertical).
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) {
+        this.nextWork();
+      } else {
+        this.prevWork();
+      }
+    }
+  }
+
   // ---- Estela de "tinta" que sigue al cursor (solo decorativa, en el fondo) ----
   spawnInk(event: MouseEvent): void {
     const layer = this.inkLayer?.nativeElement;
@@ -130,25 +172,77 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     }
 
     const rect = layer.getBoundingClientRect();
-    const size = 8 + Math.random() * 16;
+    const driftX = (Math.random() - 0.5) * 80;
+    const driftY = (Math.random() - 0.5) * 80 - 26; // tendencia a subir, como tinta en agua
+    this.createInkBlob(
+      layer,
+      event.clientX - rect.left,
+      event.clientY - rect.top,
+      8 + Math.random() * 16,
+      driftX,
+      driftY,
+      850 + Math.random() * 450,
+      0.55
+    );
+  }
+
+  /** Gota de tinta al hacer click/tap: mancha central + salpicaduras. */
+  spawnInkDrop(event: MouseEvent): void {
+    const layer = this.inkTopLayer?.nativeElement;
+    if (!this.motionOk || !layer) {
+      return;
+    }
+
+    const rect = layer.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Mancha central que se expande.
+    this.createInkBlob(layer, x, y, 46 + Math.random() * 22, 0, 0, 620, 0.4);
+
+    // Salpicaduras pequeñas hacia afuera.
+    const droplets = 5;
+    for (let i = 0; i < droplets; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 26 + Math.random() * 44;
+      this.createInkBlob(
+        layer,
+        x,
+        y,
+        6 + Math.random() * 10,
+        Math.cos(angle) * dist,
+        Math.sin(angle) * dist,
+        500 + Math.random() * 300,
+        0.6
+      );
+    }
+  }
+
+  private createInkBlob(
+    layer: HTMLElement,
+    x: number,
+    y: number,
+    size: number,
+    driftX: number,
+    driftY: number,
+    duration: number,
+    peakOpacity: number
+  ): void {
     const dot = document.createElement('span');
     dot.style.cssText =
       `position:absolute;` +
-      `left:${event.clientX - rect.left - size / 2}px;` +
-      `top:${event.clientY - rect.top - size / 2}px;` +
+      `left:${x - size / 2}px;top:${y - size / 2}px;` +
       `width:${size}px;height:${size}px;border-radius:50%;pointer-events:none;` +
-      `background:radial-gradient(circle, rgba(212,35,107,0.55) 0%, rgba(212,35,107,0) 70%);` +
+      `background:radial-gradient(circle, rgba(212,35,107,${peakOpacity}) 0%, rgba(212,35,107,0) 70%);` +
       `will-change:transform,opacity;`;
     layer.appendChild(dot);
 
-    const driftX = (Math.random() - 0.5) * 80;
-    const driftY = (Math.random() - 0.5) * 80 - 26; // tendencia a subir, como tinta en agua
     const animation = dot.animate(
       [
-        { opacity: 0.9, transform: 'translate(0, 0) scale(0.5)' },
-        { opacity: 0, transform: `translate(${driftX}px, ${driftY}px) scale(1.9)` }
+        { opacity: 1, transform: 'translate(0, 0) scale(0.4)' },
+        { opacity: 0, transform: `translate(${driftX}px, ${driftY}px) scale(1.8)` }
       ],
-      { duration: 850 + Math.random() * 450, easing: 'ease-out' }
+      { duration, easing: 'ease-out' }
     );
     animation.onfinish = () => dot.remove();
   }

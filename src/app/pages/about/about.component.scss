@@ -1,46 +1,95 @@
 // About Me Premium Dark Theme
 
-// Hero Section
+// Hero Section: atmósfera propia de la marca (sin fotos de stock externas).
 .about-hero {
   position: relative;
-  height: 40vh;
-  min-height: 300px;
-  background-color: var(--bg); // Fallback
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, var(--bg) 100%),
-    url('https://images.unsplash.com/photo-1598371839696-5c5bbce65c59?q=80&w=2070&auto=format&fit=crop'); // Generic tattoo workspace bg
-  background-size: cover;
-  background-position: center;
+  padding: 90px 20px 40px;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(212, 35, 107, 0.15), transparent 70%),
+    var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 
   .hero-content {
+    animation: fade-up 700ms ease both;
+
+    .kicker {
+      display: inline-block;
+      color: var(--wine-accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 14px;
+    }
+
     h1 {
-      font-size: 4rem;
-      font-weight: 900;
-      letter-spacing: -2px;
-      margin: 0;
-      color: white;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      font-family: 'Cinzel', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin: 0 0 18px;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.65) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #ffffff; // fallback
+    }
+
+    .header-divider {
+      width: 90px;
+      height: 2px;
+      margin: 0 auto 18px;
+      background: linear-gradient(90deg, transparent, var(--wine-accent), transparent);
     }
 
     .subtitle {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.65);
       font-weight: 300;
-      margin-top: 10px;
+      margin: 0;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
   }
 }
 
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // Content Section
 .about-content {
-  padding: 80px 0;
+  padding: 60px 0 80px;
   background: var(--bg);
   color: white;
+
+  .image-column {
+    animation: fade-up 700ms ease 120ms both;
+  }
+
+  .text-column {
+    animation: fade-up 700ms ease 240ms both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .about-hero .hero-content,
+  .about-content .image-column,
+  .about-content .text-column {
+    animation: none;
+  }
 }
 
 .grid-layout {
@@ -123,10 +172,12 @@
     margin-bottom: 3rem;
 
     h2 {
-      font-size: 2rem;
+      font-family: 'Cinzel', serif;
+      font-size: 1.9rem;
       color: white;
       margin-bottom: 1.5rem;
       font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     p {
@@ -146,9 +197,10 @@
     margin-bottom: 3rem;
 
     h3 {
-      font-size: 1.2rem;
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       color: rgba(255, 255, 255, 0.6);
       margin-bottom: 1.5rem;
     }
@@ -158,30 +210,84 @@
       flex-wrap: wrap;
       gap: 12px;
 
+      // Ahora son enlaces al portafolio filtrado por estilo.
       .style-tag {
         padding: 8px 20px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(212, 35, 107, 0.06);
+        border: 1px solid rgba(212, 35, 107, 0.35);
         border-radius: 50px;
-        font-size: 0.9rem;
-        color: white;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
         transition: all 0.3s ease;
 
         &:hover {
           background: var(--wine-accent);
           border-color: var(--wine-accent);
+          color: #ffffff;
           transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(212, 35, 107, 0.35);
         }
       }
+    }
+
+    .styles-hint {
+      margin: 12px 0 0;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-style: italic;
     }
   }
 
   .cta-block {
     p {
-      font-size: 1.2rem;
-      color: white;
-      margin-bottom: 1rem;
-      font-style: italic;
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 1.2rem;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 13px 32px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease,
+        border-color 220ms ease;
+
+      &.primary {
+        background: linear-gradient(135deg, var(--wine-accent), #ba1f5c);
+        color: #ffffff;
+        box-shadow: 0 8px 24px rgba(212, 35, 107, 0.35);
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 32px rgba(212, 35, 107, 0.5);
+        }
+      }
+
+      &.ghost {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+
+        &:hover {
+          transform: translateY(-3px);
+          border-color: var(--wine-accent);
+          background: rgba(212, 35, 107, 0.1);
+        }
+      }
     }
   }
 }
@@ -189,10 +295,140 @@
 // Responsive
 @media (max-width: 768px) {
   .about-hero {
-    height: 30vh;
+    padding: 56px 16px 24px;
 
-    .hero-content h1 {
-      font-size: 2.5rem;
+    .hero-content {
+      .kicker {
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        font-size: 2.1rem;
+        margin-bottom: 12px;
+      }
+
+      .header-divider {
+        width: 64px;
+        margin-bottom: 12px;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
+      }
     }
+  }
+
+  .about-content {
+    padding: 36px 0 56px;
+
+    .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  .grid-layout {
+    gap: 2rem;
+  }
+
+  .image-column {
+    max-width: 300px;
+    margin: 0 auto;
+
+    .artist-frame {
+      aspect-ratio: 4 / 5;
+      border-radius: 16px;
+
+      .artist-image,
+      .frame-accent {
+        border-radius: 16px;
+      }
+
+      .frame-accent {
+        top: 12px;
+        left: 12px;
+      }
+    }
+  }
+
+  .text-column {
+    .text-block {
+      margin-bottom: 2rem;
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+        line-height: 1.75;
+      }
+    }
+
+    .skills-block {
+      margin-bottom: 2rem;
+
+      h3 {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+
+      // Misma lógica que portafolio: una fila deslizable para los 8 estilos.
+      .styles-list {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 8px;
+        margin: 0 -16px;
+        padding: 2px 16px 10px;
+        mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 10px), transparent);
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 10px), transparent);
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        .style-tag {
+          flex: 0 0 auto;
+          padding: 7px 16px;
+          font-size: 0.75rem;
+          white-space: nowrap;
+        }
+      }
+
+      .styles-hint {
+        font-size: 0.75rem;
+        margin-top: 8px;
+      }
+    }
+
+    .cta-block {
+      p {
+        font-size: 1.15rem;
+      }
+
+      .cta-actions {
+        flex-direction: column;
+
+        .cta-btn {
+          width: 100%;
+          box-sizing: border-box;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+// Sin efecto hover del marco en pantallas táctiles.
+@media (hover: none) and (pointer: coarse) {
+  .image-column .artist-frame:hover .frame-accent {
+    transform: none;
+    opacity: 0.5;
   }
 }

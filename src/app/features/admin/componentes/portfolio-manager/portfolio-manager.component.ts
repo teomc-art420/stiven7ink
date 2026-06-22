@@ -40,7 +40,7 @@ export class PortfolioManagerComponent implements OnInit {
   };
   imagePreview: string | null = null;
 
-  styles = ['Realismo', 'Tradicional', 'Minimalista', 'Geométrico', 'Acuarela', 'Blackwork'];
+  styles = ['Realismo', 'Tradicional', 'Minimalista', 'Geométrico', 'Full Color', 'Black and Gray', 'Blackwork', 'Cover Up'];
 
   constructor(private firebaseService: FirebaseService) { }
 

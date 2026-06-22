@@ -1,70 +1,80 @@
 <section class="appointments-section">
+  <div class="appointments-section__ambient" aria-hidden="true"></div>
   <div class="container">
-    <div class="appointments-header">
+    <header class="appointments-header">
+      <span class="kicker">Stiven7ink &middot; Reservas</span>
       <h1>Agendar Cita</h1>
-      <p class="subtitle">Reserva tu sesión de tatuaje</p>
-    </div>
-
-    <!-- Mensaje de éxito -->
+      <div class="header-divider" aria-hidden="true"></div>
+      <p class="subtitle">Reserva tu sesi&oacute;n de tatuaje</p>
+    </header>
     @if (submitted) {
     <div class="success-message">
-      <h2>¡Solicitud enviada correctamente!</h2>
+      <div class="success-message__icon" aria-hidden="true">
+        <mat-icon>check</mat-icon>
+      </div>
+      <h2>&iexcl;Solicitud enviada correctamente!</h2>
       <p>Hemos recibido tu solicitud de cita. Te contactaremos pronto para confirmar la fecha y hora.</p>
-      <button mat-raised-button color="primary" (click)="submitted = false">
+      <button type="button" class="success-message__btn" (click)="submitted = false">
         Enviar otra solicitud
       </button>
     </div>
     }
-
     @if (!submitted) {
     <div class="appointments-content">
-      <!-- Proceso y pagos al inicio (mismo ancho que el resto) -->
-      <div class="appointment-info-top">
-        <div class="info-card">
-          <h3>📋 Proceso de Cita</h3>
-          <ol>
-            <li>Completa el formulario con tus datos</li>
-            <li>Recibirás una confirmación por email</li>
-            <li>Revisaremos tu solicitud y te contactaremos</li>
-            <li>Confirmaremos la fecha y hora de tu cita</li>
-          </ol>
-        </div>
 
-        <div class="info-card payment-card">
-          <h3>💳 Facilidades de Pago</h3>
-
-          <div class="payment-section">
-            <h4>Sin Reporte en Centrales</h4>
-            <ul>
-              <li><strong>Sistecrédito:</strong> Aprobación en 5 min.</li>
-              <li>Todas las tarjetas (Codensa, Falabella, Éxito, Visa, MC).</li>
-              <li>Nequi, DaviPlata y Bancolombia.</li>
-            </ul>
+      <!-- Pasos compactos: orientación sin bloques enormes -->
+      <div class="process-strip" aria-label="Pasos para agendar">
+        @for (step of processSteps; track step.label; let i = $index) {
+          <div class="process-step">
+            <span class="process-step__num">{{ i + 1 }}</span>
+            <span class="process-step__label">{{ step.label }}</span>
           </div>
-
-          <div class="payment-section reported-section">
-            <h4>¿Reportado? ¡Hay solución!</h4>
-            <p class="intro-text">Plan de confianza progresivo:</p>
-            <ul class="step-list">
-              <li>
-                <span class="step-num">1</span>
-                <span><strong>1er Tatuaje:</strong> Abonas todas las cuotas antes de la sesión.</span>
-              </li>
-              <li>
-                <span class="step-num">2</span>
-                <span><strong>2do Tatuaje:</strong> Pagas el 50%, te tatuamos y financias el resto.</span>
-              </li>
-              <li>
-                <span class="step-num">3</span>
-                <span><strong>3er Tatuaje:</strong> Inicial del 20% y el resto a cuotas.</span>
-              </li>
-            </ul>
-            <p class="trust-note">Llevamos agenda de control de pagos para tu tranquilidad.</p>
-          </div>
-        </div>
+        }
       </div>
 
-      <!-- Formulario centrado, mismo ancho máximo que las tarjetas -->
+      <div class="quick-actions" aria-label="Contacto rapido">
+        <a
+          class="quick-action quick-action--whatsapp"
+          href="https://wa.me/573124194089"
+          target="_blank"
+          rel="noopener noreferrer">
+          <svg class="icon-svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path fill="currentColor" d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span>WhatsApp directo</span>
+        </a>
+        <a
+          class="quick-action quick-action--social"
+          href="https://www.facebook.com/Stevencardenass/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Facebook">
+          <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+        <a
+          class="quick-action quick-action--social"
+          href="https://www.instagram.com/stiven7ink/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram">
+          <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+        <a
+          class="quick-action quick-action--social"
+          href="https://www.tiktok.com/@stiven7ink"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="TikTok">
+          <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
+        </a>
+      </div>
+
       <div class="appointment-form-container">
         <form class="appointment-form" (ngSubmit)="appointmentForm.valid && onSubmit()" #appointmentForm="ngForm">
           <div class="form-row">
@@ -120,83 +130,104 @@
             </div>
 
             <div class="calendar-carousel">
-              <div *ngFor="let day of calendarDays" class="calendar-day" [class.selected]="day.isSelected"
-                [class.today]="day.isToday" [class.past]="day.isPast" [class.disabled]="checkingAvailability"
-                (click)="selectDate(day)">
-                <span class="day-name">{{ day.dayName }}</span>
-                <span class="day-number">{{ day.dayNumber }}</span>
-              </div>
+              @for (day of calendarDays; track day.date.getTime()) {
+                <button
+                  type="button"
+                  class="calendar-day"
+                  [class.selected]="day.isSelected"
+                  [class.today]="day.isToday"
+                  [class.past]="day.isPast"
+                  [class.disabled]="checkingAvailability"
+                  [disabled]="day.isPast || checkingAvailability"
+                  (click)="selectDate(day)">
+                  <span class="day-name">{{ day.dayName }}</span>
+                  <span class="day-number">{{ day.dayNumber }}</span>
+                </button>
+              }
             </div>
 
-            <div class="calendar-hint" *ngIf="!selectedDate">
+            @if (!selectedDate) {
+            <div class="calendar-hint">
               <svg class="calendar-hint-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path fill="currentColor"
                   d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
               </svg>
               <span>Selecciona una fecha para ver los horarios disponibles</span>
             </div>
+            }
           </div>
 
-          <!-- Time Slots Cards -->
-          <div class="time-slots-section" *ngIf="selectedDate">
+          @if (selectedDate) {
+          <div class="time-slots-section">
             <h3>Selecciona tu horario</h3>
 
-            <div class="loading-slots" *ngIf="checkingAvailability">
+            @if (checkingAvailability) {
+            <div class="loading-slots">
               <mat-spinner diameter="40"></mat-spinner>
               <p>Verificando disponibilidad...</p>
             </div>
+            } @else {
+            <div class="time-slots-grid">
+              @for (slot of timeSlots; track slot.id) {
+                <button
+                  type="button"
+                  class="time-slot-card"
+                  [class.selected]="selectedTimeSlot === slot.id"
+                  [class.unavailable]="!slot.isAvailable"
+                  [disabled]="!slot.isAvailable"
+                  (click)="selectTimeSlot(slot)">
+                  <mat-icon class="slot-icon" aria-hidden="true">{{ slot.icon }}</mat-icon>
+                  <div class="slot-content">
+                    <div class="slot-label">{{ slot.label }}</div>
+                    <div class="slot-time">{{ slot.time }}</div>
+                    @if (slot.note) {
+                      <div class="slot-note">{{ slot.note }}</div>
+                    }
+                  </div>
+                  @if (!slot.isAvailable) {
+                    <div class="slot-status">No disponible</div>
+                  }
+                </button>
+              }
+            </div>
+            }
+          </div>
+          }
 
-            <div class="time-slots-grid" *ngIf="!checkingAvailability">
-              <div *ngFor="let slot of timeSlots" class="time-slot-card" [class.selected]="selectedTimeSlot === slot.id"
-                [class.unavailable]="!slot.isAvailable" (click)="selectTimeSlot(slot)">
-                <span class="slot-icon" aria-hidden="true">{{ slot.icon }}</span>
-                <div class="slot-content">
-                  <div class="slot-label">{{ slot.label }}</div>
-                  <div class="slot-time">{{ slot.time }}</div>
-                  <div class="slot-note" *ngIf="slot.note">{{ slot.note }}</div>
-                </div>
-                <div class="slot-status" *ngIf="!slot.isAvailable">No disponible</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="style">Estilo de Tatuaje <span class="required">*</span></label>
+              <select id="style" name="style" [(ngModel)]="formData.style" required #style="ngModel">
+                <option value="">Selecciona un estilo</option>
+                @for (style of tattooStyles; track style) {
+                  <option [value]="style">{{ style }}</option>
+                }
+              </select>
+              <div class="error-msg" *ngIf="style.invalid && (style.dirty || style.touched)">
+                <span *ngIf="style.errors?.['required']">Selecciona un estilo.</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="size">Tama&ntilde;o Aproximado <span class="required">*</span></label>
+              <select id="size" name="size" [(ngModel)]="formData.size" required #size="ngModel">
+                <option value="">Selecciona un tamaño</option>
+                <option value="pequeno">Pequeño (5-10 cm)</option>
+                <option value="mediano">Mediano (10-20 cm)</option>
+                <option value="grande">Grande (20-30 cm)</option>
+                <option value="muy-grande">Muy Grande (+30 cm)</option>
+              </select>
+              <div class="error-msg" *ngIf="size.invalid && (size.dirty || size.touched)">
+                <span *ngIf="size.errors?.['required']">Selecciona un tamaño.</span>
               </div>
             </div>
           </div>
 
-
           <div class="form-group">
-            <label for="style">Estilo de Tatuaje <span class="required">*</span></label>
-            <select id="style" name="style" [(ngModel)]="formData.style" required #style="ngModel">
-              <option value="">Selecciona un estilo</option>
-              <option value="Realismo">Realismo</option>
-              <option value="Tradicional">Tradicional</option>
-              <option value="Minimalista">Minimalista</option>
-              <option value="Geométrico">Geométrico</option>
-              <option value="Acuarela">Acuarela</option>
-              <option value="Blackwork">Blackwork</option>
-            </select>
-            <div class="error-msg" *ngIf="style.invalid && (style.dirty || style.touched)">
-              <span *ngIf="style.errors?.['required']">Selecciona un estilo.</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="size">Tamaño Aproximado <span class="required">*</span></label>
-            <select id="size" name="size" [(ngModel)]="formData.size" required #size="ngModel">
-              <option value="">Selecciona un tamaño</option>
-              <option value="pequeno">Pequeño (5-10 cm)</option>
-              <option value="mediano">Mediano (10-20 cm)</option>
-              <option value="grande">Grande (20-30 cm)</option>
-              <option value="muy-grande">Muy Grande (+30 cm)</option>
-            </select>
-            <div class="error-msg" *ngIf="size.invalid && (size.dirty || size.touched)">
-              <span *ngIf="size.errors?.['required']">Selecciona un tamaño.</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="description">Descripción del Tatuaje <span class="required">*</span></label>
-            <textarea id="description" name="description" [(ngModel)]="formData.description" rows="5" required
-              placeholder="Describe tu idea, ubicación del tatuaje, referencias, etc..."
-              #description="ngModel"></textarea>
-            <div class="error-msg" *ngIf="description.invalid && (description.dirty || description.touched)">
+            <label for="description">Descripci&oacute;n del Tatuaje <span class="required">*</span></label>
+            <textarea id="description" name="description" [(ngModel)]="formData.description" rows="3" required
+              placeholder="Describe tu idea, ubicación del tatuaje, referencias..."
+              #description="ngModel"></textarea>            <div class="error-msg" *ngIf="description.invalid && (description.dirty || description.touched)">
               <span *ngIf="description.errors?.['required']">La descripción es obligatoria.</span>
             </div>
           </div>
@@ -207,44 +238,201 @@
               <input type="file" id="referenceImage" (change)="onFileSelected($event)" accept="image/*"
                 class="file-input">
               <label for="referenceImage" class="file-label">
-                <span *ngIf="!fileName">📷 Subir Imagen de Referencia</span>
-                <span *ngIf="fileName" class="file-name">✅ {{ fileName }}</span>
+                @if (!fileName) {
+                  <span class="file-label__content">
+                    <mat-icon aria-hidden="true">add_photo_alternate</mat-icon>
+                    Subir imagen de referencia
+                  </span>
+                } @else {
+                  <span class="file-name file-label__content">
+                    <mat-icon aria-hidden="true">check_circle</mat-icon>
+                    {{ fileName }}
+                  </span>
+                }
               </label>
             </div>
-            <p class="hint">Formatos: JPG, PNG. Máx 5MB.</p>
+            <p class="hint">JPG o PNG, m&aacute;x 5MB.</p>
           </div>
 
-          <div class="pricing-notice">
-            <p><strong>⚠️ Nota sobre el precio:</strong> El valor final del tatuaje se definirá mediante negociación
-              directa. Te contactaremos en un plazo máximo de 24 horas para ajustar detalles y confirmar el precio.</p>
-          </div>
-
+          <p class="pricing-notice pricing-notice--inline">
+            <strong>Precio:</strong> se confirma contigo en m&aacute;x. 24 h tras enviar la solicitud.
+          </p>
           <button type="submit" class="submit-btn" [disabled]="loading || appointmentForm.invalid">
             {{ loading ? 'Enviando...' : 'Solicitar Cita' }}
           </button>
         </form>
       </div>
 
-      <!-- Horarios y consejos al final -->
-      <div class="appointment-bottom-info">
-        <div class="info-card">
-          <h3>⏰ Horarios Disponibles</h3>
-          <p><strong>Domingo a Domingo:</strong></p>
-          <ul class="schedule-list">
-            <li>Mañana: 9:00 AM - 1:00 PM</li>
-            <li>Tarde: 2:00 PM - 6:00 PM</li>
-            <li>Noche: 6:00 PM - 10:00 PM*</li>
-          </ul>
-          <p class="schedule-note">*Sujeto a confirmación previa</p>
+      <!-- Info secundaria: acordeones colapsables (no ocupan espacio hasta que el usuario los abre) -->
+      <div class="info-accordions">
+        <div class="accordion-item">
+          <button type="button" class="accordion-trigger" [class.open]="expandedPanel === 'pagos'"
+            (click)="togglePanel('pagos')" [attr.aria-expanded]="expandedPanel === 'pagos'">
+            <span class="accordion-trigger__left">
+              <span class="accordion-icon" aria-hidden="true">
+                <mat-icon>credit_card</mat-icon>
+              </span>
+              <span>Facilidades de pago</span>
+            </span>
+            <span class="accordion-chevron" aria-hidden="true"></span>
+          </button>
+          @if (expandedPanel === 'pagos') {
+            <div class="accordion-body">
+              <div class="info-block info-block--highlight">
+                <p class="info-block__label">Sin reporte en centrales</p>
+                <div class="payment-chips">
+                  <span class="chip">Sistecrédito</span>
+                  <span class="chip">Visa / MC</span>
+                  <span class="chip">Codensa</span>
+                  <span class="chip">Falabella</span>
+                  <span class="chip">Éxito</span>
+                  <span class="chip">Nequi</span>
+                  <span class="chip">DaviPlata</span>
+                  <span class="chip">Bancolombia</span>
+                </div>
+              </div>
+
+              <div class="info-block info-block--accent">
+                <p class="info-block__label">¿Reportado? Plan de confianza</p>
+                <div class="trust-steps">
+                  <div class="trust-step">
+                    <span class="trust-step__num">1</span>
+                    <div class="trust-step__text">
+                      <strong>1er tatuaje</strong>
+                      <span>Cuotas completas antes de la sesión.</span>
+                    </div>
+                  </div>
+                  <div class="trust-step">
+                    <span class="trust-step__num">2</span>
+                    <div class="trust-step__text">
+                      <strong>2do tatuaje</strong>
+                      <span>50% inicial, resto financiado.</span>
+                    </div>
+                  </div>
+                  <div class="trust-step">
+                    <span class="trust-step__num">3</span>
+                    <div class="trust-step__text">
+                      <strong>3er tatuaje</strong>
+                      <span>20% inicial, resto a cuotas.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
-        <div class="info-card">
-          <h3>💡 Consejos</h3>
-          <ul>
-            <li>Trae referencias visuales si las tienes</li>
-            <li>Considera el tiempo de curación</li>
-            <li>Ven descansado y bien alimentado</li>
-            <li>Pregunta todas tus dudas</li>
-          </ul>
+
+        <div class="accordion-item">
+          <button type="button" class="accordion-trigger" [class.open]="expandedPanel === 'horarios'"
+            (click)="togglePanel('horarios')" [attr.aria-expanded]="expandedPanel === 'horarios'">
+            <span class="accordion-trigger__left">
+              <span class="accordion-icon" aria-hidden="true">
+                <mat-icon>schedule</mat-icon>
+              </span>
+              <span>Horarios disponibles</span>
+            </span>
+            <span class="accordion-chevron" aria-hidden="true"></span>
+          </button>
+          @if (expandedPanel === 'horarios') {
+            <div class="accordion-body">
+              <p class="info-block__label">Domingo a domingo</p>
+              <div class="schedule-cards">
+                <div class="schedule-card">
+                  <mat-icon class="schedule-card__icon" aria-hidden="true">wb_sunny</mat-icon>
+                  <div>
+                    <strong>Mañana</strong>
+                    <span>9:00 AM – 1:00 PM</span>
+                  </div>
+                </div>
+                <div class="schedule-card">
+                  <mat-icon class="schedule-card__icon" aria-hidden="true">wb_cloudy</mat-icon>
+                  <div>
+                    <strong>Tarde</strong>
+                    <span>2:00 PM – 6:00 PM</span>
+                  </div>
+                </div>
+                <div class="schedule-card">
+                  <mat-icon class="schedule-card__icon" aria-hidden="true">dark_mode</mat-icon>
+                  <div>
+                    <strong>Noche</strong>
+                    <span>6:00 PM – 10:00 PM</span>
+                  </div>
+                </div>
+              </div>
+              <p class="accordion-note">*Horario nocturno sujeto a confirmación previa</p>
+            </div>
+          }
+        </div>
+
+        <div class="accordion-item">
+          <button type="button" class="accordion-trigger" [class.open]="expandedPanel === 'consejos'"
+            (click)="togglePanel('consejos')" [attr.aria-expanded]="expandedPanel === 'consejos'">
+            <span class="accordion-trigger__left">
+              <span class="accordion-icon" aria-hidden="true">
+                <mat-icon>lightbulb</mat-icon>
+              </span>
+              <span>Consejos antes de tu cita</span>
+            </span>
+            <span class="accordion-chevron" aria-hidden="true"></span>
+          </button>
+          @if (expandedPanel === 'consejos') {
+            <div class="accordion-body">
+              <ul class="tip-list">
+                <li class="tip-item">
+                  <span class="tip-item__bullet" aria-hidden="true"></span>
+                  <span>Trae referencias visuales si las tienes</span>
+                </li>
+                <li class="tip-item">
+                  <span class="tip-item__bullet" aria-hidden="true"></span>
+                  <span>Considera el tiempo de curación</span>
+                </li>
+                <li class="tip-item">
+                  <span class="tip-item__bullet" aria-hidden="true"></span>
+                  <span>Ven descansado y bien alimentado</span>
+                </li>
+                <li class="tip-item">
+                  <span class="tip-item__bullet" aria-hidden="true"></span>
+                  <span>Pregunta todas tus dudas sin pena</span>
+                </li>
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="connect-card">
+        <div class="connect-card__head">
+          <span class="connect-card__icon" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 1 0 15 6a2.96 2.96 0 0 0-.09.7l-7.05 4.12c.54.5 1.25.81 2.04.81A2.99 2.99 0 1 0 18 16.08z"/>
+            </svg>
+          </span>
+          <div>
+            <h3>S&iacute;gueme en redes</h3>
+            <p>Referencias, procesos y novedades del estudio</p>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/stiven7ink/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/Stevencardenass/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="https://www.tiktok.com/@stiven7ink" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/573124194089" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+          </a>
         </div>
       </div>
     </div>

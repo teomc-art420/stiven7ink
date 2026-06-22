@@ -1,6 +1,8 @@
 <section class="about-hero">
   <div class="hero-content">
+    <span class="kicker">Stiven7ink &middot; El Artista</span>
     <h1>Sobre Mí</h1>
+    <div class="header-divider" aria-hidden="true"></div>
     <p class="subtitle">Más que tinta, una historia en cada trazo</p>
   </div>
 </section>
@@ -45,18 +47,25 @@
         <div class="skills-block">
           <h3>Estilos que Domino</h3>
           <div class="styles-list">
-            <span class="style-tag">Realismo</span>
-            <span class="style-tag">Tradicional</span>
-            <span class="style-tag">Minimalista</span>
-            <span class="style-tag">Geométrico</span>
-            <span class="style-tag">Acuarela</span>
-            <span class="style-tag">Blackwork</span>
+            @for (style of styles; track style) {
+              <a
+                class="style-tag"
+                [routerLink]="['/portfolio']"
+                [queryParams]="{ estilo: style }"
+                [attr.aria-label]="'Ver trabajos de ' + style + ' en el portafolio'">
+                {{ style }}
+              </a>
+            }
           </div>
+          <p class="styles-hint">Toca un estilo para ver esos trabajos en el portafolio</p>
         </div>
 
         <div class="cta-block">
           <p>¿Tienes una idea en mente?</p>
-          <a routerLink="/contact" class="btn primary">Hablemos</a>
+          <div class="cta-actions">
+            <a routerLink="/appointments" class="cta-btn primary">Agenda tu cita</a>
+            <a routerLink="/contact" class="cta-btn ghost">Hablemos</a>
+          </div>
         </div>
       </div>
     </div>
